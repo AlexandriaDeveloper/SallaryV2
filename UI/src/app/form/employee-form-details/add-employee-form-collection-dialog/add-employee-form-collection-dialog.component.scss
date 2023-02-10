@@ -1,0 +1,43 @@
+
+.close{
+  position: absolute;
+top: 0px;
+right: 0;
+}
+
+mat-card-header{
+  top: 0;
+  background-color: #3f51b5;
+  padding: 10px;
+}
+mat-card-content{
+  padding: 10px;
+text-align: center;
+  mat-form-field{
+    width: 90%;
+  }
+}
+::ng-deep{
+  .mat-mdc-option{
+    span{
+      color: #000 !important;
+
+    }
+
+
+  }
+  .mat-mdc-option:hover{
+    background-color: #3f51b5 !important;
+    transition: .4s ease-in-out;
+   span{
+    color: #fff !important;
+   }
+  }
+  mat-select{
+      span{
+        color: #000 !important;
+      }
+
+  }
+
+}

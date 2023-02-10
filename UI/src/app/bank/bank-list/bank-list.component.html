@@ -1,0 +1,30 @@
+
+<button mat-raised-button color="primary" (click)="openAddBankDialog()">
+  اضافة بنك
+  <mat-icon>add</mat-icon>
+</button>
+<table mat-table #table [dataSource]="data">
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-raised-button color="primary" [routerLink]="['branch-list/'+row.id]">
+        <mat-icon> account_tree</mat-icon>
+        الفروع
+      </button>
+      <button mat-raised-button color="accent" (click)="openEditBankDialog(row)">
+        <mat-icon> edit</mat-icon>
+        تعديل
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteBank(row)">
+        <mat-icon>delete</mat-icon>
+        حذف
+      </button>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> أسم البنك </th>
+    <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="['actions','name']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['actions','name'];"></tr>
+</table>

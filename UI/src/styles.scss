@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Cairo";
+  src:local("Cairo") , url(./assets/fonts/Cairo/Cairo-VariableFont_slnt,wght.ttf) format("truetype");
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Cairo", sans-serif; }
+.full-width-table {
+  width: 100%;
+
+ table{
+
+
+ }
+}
+::ng-deep{
+  th{
+    font-family: Cairo !important;
+    font-weight: bold !important;
+    background-color: #3f51b5 !important;
+    color: #fff !important;
+  }
+  td{
+    font-family: Cairo !important;
+    font-weight: bold;
+  }
+
+
+
+}

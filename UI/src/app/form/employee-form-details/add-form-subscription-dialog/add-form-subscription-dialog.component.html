@@ -1,0 +1,33 @@
+<div class="header">
+  <button mat-mini-fab color="primary" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+<div class="title">اضافة موظف</div>
+
+</div>
+<div>
+<section class="example-section" >
+
+   <div style="display: flex;flex-direction: column;">
+    <mat-checkbox *ngFor="let subsription of subsriptions" color="primary"
+    [value]="subsription"
+    [(checked)]="subsription.checked"
+    ([ngModel])="subsription"
+    (change)="subsription.checked =$event.checked" >
+      <div style="font-size: 14px ;font-family: Cairo;">
+      {{subsription.subscriptionName}}
+
+    </div>
+
+
+    </mat-checkbox>
+    <div  style="display: flex; justify-content: center;" >
+      <button mat-raised-button color="primary" (click)="onSubmit()"  >
+        حفظ
+      </button>
+
+    </div>
+  </div>
+
+
+</section>

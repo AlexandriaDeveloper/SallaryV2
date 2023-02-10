@@ -1,0 +1,46 @@
+
+<div class="header">
+  <button mat-mini-fab color="primary" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+<div class="title"> إضافة حساب بنكى</div>
+
+</div>
+<div>
+
+  <mat-divider></mat-divider>
+</div>
+<div class="order-container" *ngIf="bankForm">
+
+  <form [formGroup]="bankForm" (ngSubmit)="onSubmit()">
+   <div class="order-data">
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>اختار البنك ...</mat-label>
+      <mat-select (selectionChange)="bankSelectChange($event)">
+        <mat-option *ngFor="let bank of banks" [value]="bank.id">{{bank.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>اختار الفرع ...</mat-label>
+        <mat-select (selectionChange)="branchSelectChange($event)">
+          <mat-option *ngFor="let bankbranch of bankBranches" [value]="bankbranch.id">{{bankbranch.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field  appearance="fill">
+      <mat-label  style="font-family: Cairo;"> رقم الحساب  </mat-label>
+      <input matInput formControlName="accountNumber"  >
+    </mat-form-field>
+
+
+
+    <button mat-raised-button  color="primary">Save</button>
+   </div>
+  </form>
+
+</div>
+
+

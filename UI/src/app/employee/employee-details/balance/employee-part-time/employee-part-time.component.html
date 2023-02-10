@@ -1,0 +1,56 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-header >
+      <div class="close" >
+
+        <button color="primary" mat-mini-fab (click)="onNoClick()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px;">جزء من الوقت   </mat-card-title>
+
+    </mat-card-header>
+  </mat-card-header>
+  <mat-card-content>
+    <button mat-raised-button color="primary"  (click)="openAddPartTime()">أضافة جزء من الوقت  <mat-icon>add</mat-icon> </button>
+    <table mat-table [dataSource]="model" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="startFrom">
+        <th mat-header-cell *matHeaderCellDef> بدء فى  </th>
+        <td mat-cell *matCellDef="let element"> {{element?.startFrom |date}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="endAt">
+        <th mat-header-cell *matHeaderCellDef> انتهى فى  </th>
+        <td mat-cell *matCellDef="let element"> {{element?.endAt |date}} </td>
+      </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef> التفاصيل </th>
+        <td mat-cell *matCellDef="let element"> {{element?.details}} </td>
+      </ng-container>
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef> الحالة </th>
+        <td mat-cell *matCellDef="let element">
+          <div style="background-color: green; color: #fff;text-align: center;padding: 10px;font-weight: bold;" *ngIf="element?.endAt === null">
+
+            مستمر</div>
+          <div style="background-color: red; color:  #fff;text-align: center;padding: 10px;font-weight: bold;" *ngIf="element?.endAt !== null"> انتهى</div>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="['startFrom','endAt','details','state']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['startFrom','endAt','details','state'];"></tr>
+    </table>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>Ok</button>
+  </mat-card-actions>
+</mat-card>

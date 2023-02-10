@@ -1,0 +1,149 @@
+
+<mat-accordion>
+  <mat-expansion-panel (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false" expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title  style="color :'red'" >
+
+        اوامر الخصم
+
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="balanceHistory?.employeeOrders" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">     <button color="primary" mat-raised-button (click)="openDialog()">تعديل</button></td>
+      </ng-container>
+   <!-- Name Column -->
+   <ng-container matColumnDef="orderFileName">
+    <th mat-header-cell *matHeaderCellDef> ملف الامر </th>
+    <td mat-cell *matCellDef="let element">
+
+
+      {{element.orderFileName}}
+
+    </td>
+   </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef> بيانات الامر</th>
+        <td mat-cell *matCellDef="let element">
+
+
+          {{element.details}}
+
+        </td>
+      </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>  عدد ايام</th>
+        <td mat-cell *matCellDef="let element">
+
+
+       {{element.quantity}}
+
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> المبلغ المستحق</th>
+        <td mat-cell *matCellDef="let element">
+
+
+            {{element.amount}}
+
+
+
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="startFrom">
+        <th mat-header-cell *matHeaderCellDef> تاريخ البدء</th>
+        <td mat-cell *matCellDef="let element">
+
+
+       {{element.startFrom |date}}
+
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="endAt">
+        <th mat-header-cell *matHeaderCellDef> تاريخ الانتهاء</th>
+        <td mat-cell *matCellDef="let element">
+
+
+       {{element.endAt |date}}
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['actions','orderFileName','details','quantity','amount','startFrom','endAt']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['actions','orderFileName','details','quantity','amount','startFrom','endAt'];"></tr>
+    </table>
+  </mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+
+      <mat-panel-title  style="color :'green'" >
+
+        ما تم استقطاعه
+
+      </mat-panel-title>
+      <mat-panel-description>
+
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="balanceHistory?.employeeDeductions" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">  <button color="primary" mat-raised-button (click)="openDialog()">تعديل</button></td>
+      </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="formFileDetails">
+      <th mat-header-cell *matHeaderCellDef> بيان الملف</th>
+      <td mat-cell *matCellDef="let element">
+
+
+        {{element.orderFileName}}
+
+      </td>
+    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef> الوصف</th>
+        <td mat-cell *matCellDef="let element">
+
+
+          {{element.details}}
+
+        </td>
+      </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> ما تم استقطاعه </th>
+        <td mat-cell *matCellDef="let element">
+
+
+       {{element.amount}}
+
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="['actions','formFileDetails','details','amount']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['actions','formFileDetails','details','amount'];"></tr>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,34 @@
+
+<mat-card  color="primary">
+
+  <mat-card-header >
+    <div class="close" style="padding: 5px;">
+
+      <button color="primary" mat-mini-fab (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px; color: #fff;">أنشاء مجموعه  </mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="fill">
+    <mat-label>أضف مجموعه </mat-label>
+    <mat-select [(value)]="selectedCollection" formControlName="collection"  >
+      <mat-option *ngFor="let collection of collectoins" [value]="collection.id" >{{collection.name}}</mat-option>
+
+    </mat-select>
+  </mat-form-field>
+  <div style="display: flex; justify-content: center;">
+    <button mat-raised-button color="primary" type="submit">حفظ</button>
+    <button mat-raised-button color="warn">الغاء</button>
+
+   </div>
+</form>
+
+
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,85 @@
+
+
+<mat-card  color="primary">
+
+  <mat-card-header >
+    <div class="close" style="padding: 5px;">
+
+      <button color="primary" mat-mini-fab (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px; color: #fff;">اضافة أشتراك موظف    </mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmitEmployee()">
+
+      <div class="employee-search" style="display: flex; justify-content: space-evenly;padding: 10px;">
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>كود طب</mat-label>
+          <input matInput formControlName="tabCode">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>كود تجارة</mat-label>
+          <input matInput formControlName="tegaraCode">
+        </mat-form-field>
+        <button type="submit" [disabled]="employeeForm.value.tabCode ===''&&employeeForm.value.tegaraCode ===''" mat-fab color="primary">بحث
+
+      <mat-icon>search</mat-icon>
+      </button>
+      </div>
+
+
+        <div style="display: flex ; justify-content: center; font-family: Cairo; font-size: 18px;color:red" color="warn"
+         *ngIf="notExistMessage">عفوا لم يتم العثور على الموظف ...</div>
+         <div style="display: flex ; justify-content: center; font-family: Cairo; font-size: 18px;color:red" color="warn"
+         *ngIf="employeeNotExistMessage">الموظف غير موجود بالملف ...</div>
+        </form>
+
+
+        <div class="employee-data" *ngIf="employee">
+          <mat-form-field appearance="fill">
+            <mat-label> الاسم</mat-label>
+            <input matInput [value]="employee?.name" readonly="">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label> الرقم القومى</mat-label>
+            <input matInput [value]="employee?.nationalId" readonly="">
+          </mat-form-field>
+
+            <form [formGroup]="employeeSubscriptionForm">
+              <mat-form-field appearance="fill">
+                <mat-label>Favorite food</mat-label>
+                <mat-select formControlName="subscriptionId">
+                  <mat-option *ngFor="let subscription of subscriptions" [value]="subscription.id">
+                    {{subscription.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <mat-label>Favorite food</mat-label>
+                <input matInput type="number" placeholder="المبلغ" formControlName="amount">
+              </mat-form-field>
+            </form>
+
+      <div style="display: flex;justify-content: center;">
+
+        <button mat-raised-button color="primary" [disabled]="employeeSubscriptionForm.invalid" (click)="submit()">حفظ</button>
+
+      </div>
+        </div>
+
+
+<div style="display: flex;justify-content: center;">
+
+
+</div>
+
+
+  </mat-card-content>
+
+</mat-card>

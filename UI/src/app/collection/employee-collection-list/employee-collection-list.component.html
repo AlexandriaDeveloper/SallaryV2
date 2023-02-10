@@ -1,0 +1,56 @@
+<button mat-raised-button  color="primary"  (click)="openDialog()">
+إضافة موظف
+<mat-icon>add</mat-icon>
+</button>
+<table [dataSource]="data" mat-table class="full-width-table" matSort aria-label="Elements" fixedLayout="true" cdkDropList (cdkDropListDropped)="drop($event)" >
+<ng-container>
+
+
+</ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let row">
+
+      <button mat-mini-fab color="warn" (click)="deleteEmployee(row.id)" >
+        <mat-icon>delete</mat-icon>
+      </button>
+
+    </td>
+
+
+  </ng-container>
+  <ng-container matColumnDef="num">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let row; let i = index;">
+
+      <span [matBadge]="i+1" matBadgeSize="large"  style="text-align: center;">     </span>
+
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="employeeTabCode">
+    <th mat-header-cell *matHeaderCellDef>كود طب</th>
+    <td mat-cell *matCellDef="let row">{{row?.employeeTabCode}}</td>
+  </ng-container>
+  <ng-container matColumnDef="employeeTegaraCode">
+    <th mat-header-cell *matHeaderCellDef>كود تجارة</th>
+    <td mat-cell *matCellDef="let row">{{row?.employeeTegaraCode}}</td>
+  </ng-container>
+  <ng-container matColumnDef="employeeName">
+    <th mat-header-cell *matHeaderCellDef>اسم الموظف</th>
+    <td mat-cell *matCellDef="let row">{{row?.employeeName}}</td>
+  </ng-container>
+  <ng-container matColumnDef="employeeSection">
+    <th mat-header-cell *matHeaderCellDef>الوظيفه</th>
+    <td mat-cell *matCellDef="let row">{{row?.employeeSection}}</td>
+  </ng-container>
+  .    <ng-container matColumnDef="employeeCollageName">
+    <th mat-header-cell *matHeaderCellDef>اسم الكليه</th>
+    <td mat-cell *matCellDef="let row">{{row?.employeeCollageName}}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef=displayedColumns ></tr>
+  <tr mat-row *matRowDef="let row;  columns: displayedColumns" cdkDrag>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+    {{i+1}}
+  </tr>
+</table>

@@ -1,0 +1,31 @@
+<mat-card  color="primary">
+
+  <mat-card-header >
+    <div class="close" >
+
+      <button color="primary" mat-mini-fab (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px;" *ngIf="data.state !=='edit'">أنشاء بنك  </mat-card-title>
+    <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px;" *ngIf="data.state ==='edit'">تعديل بنك  </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field style="width: 100%;" appearance="fill">
+    <mat-label>اسم البنك</mat-label>
+    <input matInput type="text" formControlName="name">
+
+  </mat-form-field>
+  <div style="display: flex; justify-content: center;">
+    <button mat-raised-button color="primary" type="submit">حفظ</button>
+    <button mat-raised-button color="warn">الغاء</button>
+
+   </div>
+</form>
+
+
+  </mat-card-content>
+
+</mat-card>

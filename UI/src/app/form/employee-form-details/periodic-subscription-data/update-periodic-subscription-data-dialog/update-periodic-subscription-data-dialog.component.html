@@ -1,0 +1,34 @@
+
+
+
+
+<mat-card  color="primary">
+
+  <mat-card-header >
+    <div class="close" style="padding: 5px;">
+
+      <button color="primary" mat-mini-fab (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px; color: #fff;">تعديل المبلغ   </mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field class="example-full-width">
+        <mat-label>المبلغ</mat-label>
+        <input matInput type="number" placeholder=""  formControlName="amount">
+      </mat-form-field>
+    </form>
+
+<div style="display: flex;justify-content: center;">
+
+  <button mat-raised-button color="primary" (click)="submit()">حفظ</button>
+
+</div>
+
+
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,56 @@
+mat-form-field{
+  padding: 10px;
+    width: 80%;
+
+  }
+  mat-card-header{
+  background-color: #3f51b5;
+
+  }
+  .close{
+    position: absolute;
+  top: 0px;
+  right: 0;
+  }
+.employee-data{
+
+  width: 100%;
+  text-align: center;
+}
+.employee-search{
+  text-align: center;
+  width: 80%;
+}
+::ng-deep{
+
+  .mat-mdc-option{
+    span{
+      color: #000 !important;
+
+    }
+
+
+  }
+  .mat-mdc-option:hover{
+    background-color: #3f51b5 !important;
+    transition: .4s ease-in-out;
+   span{
+    color: #fff !important;
+   }
+  }
+  mat-select{
+      span{
+        color: #000 !important;
+      }
+
+  }
+
+
+
+  .mat-calendar-header{
+    background-color: #3f51b5 !important;
+    color: #fff;
+  }
+
+
+}

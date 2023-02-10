@@ -1,0 +1,86 @@
+
+
+<div>
+  <button mat-raised-button color="primary" (click)="AddEmployeeDialog()">أضف اشتراك موظف
+
+<mat-icon>add</mat-icon>
+
+  </button>
+</div>
+<div class="header"  *ngIf="perioicSubscriptionByForm.data?.length >0">
+
+  بيانات اشتراكات الموظفين بملف :
+
+<button mat-raised-button color="accent" [routerLink]="'/form/form-details/'+formId">{{perioicSubscriptionByForm.formName}}</button>
+
+</div>
+
+<mat-tab-group backgroundColor="primary" color="primary" (selectedTabChange)="onChange($event)" >
+  <mat-tab
+  #selectedTab
+  *ngFor="let tab of tabs"
+  [label]="tab.subscriptionName"
+
+  >
+<div  class="content" >
+
+<table mat-table #table [dataSource]="perioicSubscriptionByForm.data" *ngIf="perioicSubscriptionByForm.data?.length >0">
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let row">
+       <button mat-raised-button color="primary" (click)="openDialog(row.id)">تعديل</button>
+
+        <button mat-raised-button color="warn" (click)="deletePeriodicSubscription(row)">حذف</button>
+    </td>
+    <td mat-footer-cell *matFooterCellDef> </td>
+  </ng-container>
+  <ng-container matColumnDef="employeeTabCode">
+    <th mat-header-cell *matHeaderCellDef> كود طب </th>
+    <td mat-cell *matCellDef="let row"> {{row.employeeTabCode}} </td>
+    <td mat-footer-cell *matFooterCellDef> </td>
+  </ng-container>
+  <ng-container matColumnDef="employeeTegaraCode">
+    <th mat-header-cell *matHeaderCellDef> كود تجارة </th>
+    <td mat-cell *matCellDef="let row"> {{row.employeeTegaraCode}} </td>
+    <td mat-footer-cell *matFooterCellDef> </td>
+  </ng-container>
+  <ng-container matColumnDef="employeeName">
+    <th mat-header-cell *matHeaderCellDef> اسم الموظف </th>
+    <td mat-cell *matCellDef="let row"> {{row.employeeName}} </td>
+    <td mat-footer-cell *matFooterCellDef> الاجمـــــــــــالى </td>
+  </ng-container>
+
+  <ng-container matColumnDef="credit">
+    <th mat-header-cell *matHeaderCellDef> مدين</th>
+    <td mat-cell *matCellDef="let row"><div  *ngIf="row.credirOrDebit==='c'"> {{row.amount}}</div> </td>
+    <td mat-footer-cell *matFooterCellDef> {{perioicSubscriptionByForm.totalCredit}} </td>
+  </ng-container>
+  <ng-container matColumnDef="debit">
+    <th mat-header-cell *matHeaderCellDef> دائن</th>
+    <td mat-cell *matCellDef="let row"> <div  *ngIf="row.credirOrDebit==='d'"> {{row.amount}}</div> </td>
+    <td mat-footer-cell *matFooterCellDef> {{perioicSubscriptionByForm.totalDebit}} </td>
+  </ng-container>
+
+
+
+
+  <tr mat-header-row *matHeaderRowDef="['action', 'employeeTabCode','employeeTegaraCode','employeeName','credit','debit']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['action','employeeTabCode','employeeTegaraCode','employeeName','credit','debit'];"></tr>
+  <tr mat-footer-row *matFooterRowDef=" ['action','employeeTabCode','employeeTegaraCode','employeeName','credit','debit'];"></tr>
+
+
+</table>
+<div class="total">
+
+
+   <div [ngClass]="perioicSubscriptionByForm.net<0 ?'red':'green'">
+    {{perioicSubscriptionByForm.net |currency :' EGP ':'symbol'}}
+   </div>
+
+</div>
+</div>
+
+
+</mat-tab>
+
+</mat-tab-group>

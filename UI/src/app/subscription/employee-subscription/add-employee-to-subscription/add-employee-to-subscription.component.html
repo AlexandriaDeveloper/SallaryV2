@@ -1,0 +1,82 @@
+
+<div class="header">
+  <button mat-mini-fab color="primary" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+<div class="title">اضافة موظف</div>
+
+</div>
+<div>
+
+<mat-card style="padding-top: 5px !important;" color="primary">
+
+  <mat-card-header >
+
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmitEmployee()">
+
+      <div style="display: flex; justify-content: space-evenly;padding: 10px;">
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>كود طب</mat-label>
+          <input matInput formControlName="tabCode">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>كود تجارة</mat-label>
+          <input matInput formControlName="tegaraCode">
+        </mat-form-field>
+        <button type="submit" [disabled]="employeeForm.value.tabCode ===''&&employeeForm.value.tegaraCode ===''" mat-fab color="primary">بحث
+
+      <mat-icon>search</mat-icon>
+      </button>
+      </div>
+
+
+        <div style="display: flex ; justify-content: center; font-family: Cairo; font-size: 18px;color:red" color="warn" *ngIf="notExistMessage">عفوا لم يتم العثور على الموظف ...</div>
+        </form>
+<div *ngIf="employee">
+
+
+
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label> الاسم</mat-label>
+      <input matInput [value]="employee?.name" readonly="">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label> الرقم القومى</mat-label>
+      <input matInput [value]="employee?.nationalId" readonly="">
+    </mat-form-field>
+
+
+
+  </div>
+
+  <form [formGroup]="subscriptionForm" (ngSubmit)="onAddEmployeeToSubscription()">
+
+
+
+      <mat-form-field appearance="fill">
+        <mat-label>المبلغ </mat-label>
+        <input type="number" matInput formControlName="amount">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>ملاحظات </mat-label>
+        <textarea  matInput formControlName="details"></textarea>
+      </mat-form-field>
+
+
+    <div style="display: flex;justify-content: center;">
+
+      <button mat-raised-button color="primary" [disabled]="subscriptionForm.invalid" type="submit">اضافة</button>
+    </div>
+  </form>
+
+</div>
+  </mat-card-content>
+
+</mat-card>

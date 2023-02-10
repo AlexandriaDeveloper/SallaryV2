@@ -1,0 +1,65 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>    الأسم :  {{employee?.name}}</mat-card-title>
+      <mat-card-subtitle>
+        <span   style="color: black !important;">{{employee?.section}}</span> -
+      <span *ngIf="employee?.employeeInPartTime ===true"  style="color: black !important;"> يعمل جزء من الوقت </span>
+
+      <span *ngIf="employee?.employeeInPartTime ===false" style="color: black !important;" >يعمل وقت كامل</span>
+
+      </mat-card-subtitle>
+
+    </mat-card-title-group>
+    <button mat-mini-fab matRipple color="primary" [disabled]="employee?.next===0" (click)="NextClick()">
+      <mat-icon>arrow_right</mat-icon>
+
+
+    </button>
+    <button mat-mini-fab matRipple  color="primary" [disabled]="employee?.previous===0" (click)="PreviousClick()">
+      <mat-icon>arrow_left</mat-icon>
+    </button>
+
+
+  </mat-card-header>
+   <mat-card-content style="margin: 10px;">
+      كود طب : {{employee?.tabCode}}
+    </mat-card-content>
+    <mat-card-content style="margin: 10px;">
+      كود تجارة : {{employee?.tegaraCode}}
+    </mat-card-content>
+    <mat-card-content style="margin: 10px;">
+     الرقم القومى: {{employee?.nationalId}}
+    </mat-card-content>
+</mat-card>
+<mat-tab-group  dynamicHeight backgroundColor="primary" style="padding: 20px;">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">balance</mat-icon>
+      رصيد الحساب
+    </ng-template>
+    <app-balance [employee]="employee"  [editable]="editable" ></app-balance>
+
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon *ngIf="notification===true" class="example-tab-icon">receipt_long</mat-icon>
+      <mat-icon matBadge="!" matBadgePosition="before" matBadgeColor="warn" *ngIf="notification===false" class="example-tab-icon">receipt_long</mat-icon>
+      اشتراكات
+    </ng-template>
+   <app-subscription [formId]="formId"  [employeeId]="id" [editable]="editable" (notification)="getNotify($event)"></app-subscription>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">monetization_on</mat-icon>
+
+     الحساب البنكى
+    </ng-template>
+
+   <app-employee-bank *ngIf="employee" [employee]="employee"></app-employee-bank>
+  </mat-tab>
+</mat-tab-group>
+
+

@@ -1,0 +1,100 @@
+::ng-deep{
+  span{
+    color: #fff !important;
+    font-family: Cairo !important;
+
+  }
+
+
+}
+.list{
+  a{
+  padding: 30px;
+  position: relative;
+  mat-icon{
+    position: relative;
+    top: 5px;
+
+  }
+  }
+
+  a.active{
+    //background-color:#35439e ;
+    background-color:#7c4dff ;
+
+    transition: .1S ease-in;
+    transform: translateX(10px);
+   // transform: skew(360deg);
+
+  }
+  a.active:hover{
+    background-color:#5c3ab9 !important ;
+  }
+  a.active::after{
+    content: '';
+    position: absolute;
+    border-top: 40px solid transparent !important;
+    border-bottom: 40px solid transparent !important;
+    border-left: 40px solid #3f51b5 !important;
+
+    width: 0;
+    height: 0;
+    top:-10px;
+    left: -10px;
+
+
+  }
+  // a.active::before{
+  //   content: 'EEE';
+  //   position: absolute;
+  //   border: 30px solid #b53f8e !important;
+  //   border-radius: 30px;
+  //   overflow: hidden;
+  //   top:10px;
+  //   right: 10px;
+
+
+
+  // }
+}
+.sidenav-container {
+  height: 100%;
+
+}
+
+.sidenav {
+  width: 200px;
+
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+
+
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+}
+.menu.title{
+  background-color: #3f51b5 !important;
+  color: #fff;
+  border: none;
+  display: flex;
+  justify-content: center;
+  border-bottom:1px solid #273272 ;
+  text-shadow: 20px;
+  position: relative;
+  font-family: Cairo;
+
+}
+
+mat-sidenav{
+  background-color: #3f51b5;
+
+
+
+}

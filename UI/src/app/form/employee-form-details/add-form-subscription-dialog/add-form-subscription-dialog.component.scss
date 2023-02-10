@@ -1,0 +1,17 @@
+.example-section {
+  margin: 12px 0;
+}
+.header{
+  background-color: #3f51b5;
+  padding: 10px;
+  display: flex;
+  .title{
+
+    position: relative;
+    right: 30px;
+    top: 10px;
+    color: #fff;
+    font-family: Cairo;
+
+  }
+}

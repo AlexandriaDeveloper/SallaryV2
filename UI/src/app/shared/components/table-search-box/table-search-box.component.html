@@ -1,0 +1,25 @@
+<!-- <mat-form-field color="primary" class="example-full-width" appearance="fill">
+  <mat-label>{{label}}</mat-label>
+  <input type="search" matInput [placeholder]="placeHolder" #element>
+
+
+  <button color="primary" *ngIf="closeIcon" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()"
+    autocomplete="off">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field> -->
+
+
+<div style="display:flex;justify-items:center">
+  <mat-form-field matRipple   class="example-form-field" appearance="fill"  >
+
+    <mat-label> {{label}}</mat-label>
+    <input   matInput type="text" @myAnimation  #element>
+
+    <button  @myAnimation *ngIf="closeIcon" color="primary"  matSuffix mat-icon-button aria-label="Clear" style="color: black;" (click)="clear()">
+      <mat-icon>close</mat-icon>
+    </button>
+
+  </mat-form-field>
+  <div *ngIf="Sort" class="sort-header" matSort mat-sort-header (matSortChange)="sortChanges($event)"></div>
+  </div>

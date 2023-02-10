@@ -1,0 +1,66 @@
+
+<div  class="spacer"></div>
+<table mat-table [dataSource]="data" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>
+  </th>
+    <td mat-cell *matCellDef="let element">
+      <button color="primary" mat-flat-button (click)="openSubscriptionDeductionDialog(element.subscriptionId)" *ngIf="editable">
+        سداد
+        <mat-icon>add</mat-icon>
+      </button>
+      <button color="accent" mat-raised-button (click)="openSubscriptioHistoryDialog(element.subscriptionId)">تفاصيل</button></td>
+  </ng-container>
+
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="subscriptionName">
+    <th mat-header-cell *matHeaderCellDef> الاشتراك </th>
+    <td mat-cell *matCellDef="let element">
+
+
+   {{element.subscriptionName}}
+
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="credit">
+    <th mat-header-cell *matHeaderCellDef> مدين</th>
+    <td mat-cell *matCellDef="let element">
+
+
+        {{element.credit}}
+
+
+
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="debit">
+    <th mat-header-cell *matHeaderCellDef> دائن </th>
+    <td mat-cell *matCellDef="let element">
+
+
+        {{element.debit}}
+
+
+
+    </td>
+  </ng-container>
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="net">
+    <th mat-header-cell *matHeaderCellDef> الصافى </th>
+    <td mat-cell *matCellDef="let element">
+      <div [ngClass]="element.net <0 ?'fail': 'success'">  {{element.net}} </div>
+
+
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['actions','subscriptionName','credit','debit','net']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['actions','subscriptionName','credit','debit','net'];"></tr>
+</table>

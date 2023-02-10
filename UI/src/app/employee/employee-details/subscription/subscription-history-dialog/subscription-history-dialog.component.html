@@ -1,0 +1,84 @@
+<table   mat-table [dataSource]="periodicSubscriptionHistory" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>
+  </th>
+    <td mat-cell *matCellDef="let element">
+      <!-- <button color="primary" mat-flat-button (click)="openSubscriptionDeductionDialog(element.subscriptionId)" *ngIf="editable">
+        سداد
+        <mat-icon>add</mat-icon>
+      </button>
+      <button color="accent" mat-raised-button (click)="openSubscriptioHistoryDialog(element.subscriptionId)">تفاصيل</button></td> -->
+  </ng-container>
+
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="formName">
+    <th mat-header-cell *matHeaderCellDef>  مرتبات  </th>
+    <td mat-cell *matCellDef="let element">
+<div style="font-size: 18px ; font-weight: bold;text-align: center;">
+
+
+  {{element.formName}}
+</div>
+
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="creditOrDebit" >
+    <th mat-header-cell *matHeaderCellDef> مدين</th>
+    <td mat-cell *matCellDef="let element">
+
+<div *ngFor="let item of element.creditOrDebit" >
+
+
+
+  <div *ngIf="item.credit!==0" class="credit">
+    {{item.credit}}
+  </div>
+
+</div>
+
+
+
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="creditOrDebit2">
+    <th mat-header-cell *matHeaderCellDef> دائن</th>
+    <td mat-cell *matCellDef="let element">
+
+      <div  *ngFor="let item of element.creditOrDebit"  >
+
+        <div *ngIf="item.debit!==0" class="debit">
+          {{item.debit}}
+        </div>
+      </div>
+
+
+
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="net">
+    <th mat-header-cell *matHeaderCellDef> الصافى</th>
+    <td mat-cell *matCellDef="let element">
+
+<div [ngClass]="element.net <0 ?'fail': 'success'" >
+  {{element.net}}
+
+</div>
+
+
+
+
+    </td>
+  </ng-container>
+
+
+
+  <tr mat-header-row *matHeaderRowDef="['actions','formName','creditOrDebit','creditOrDebit2','net']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['actions','formName','creditOrDebit','creditOrDebit2','net']"></tr>
+</table>

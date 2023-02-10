@@ -1,0 +1,25 @@
+.spacer{
+
+  height: 50px;
+}
+.success{
+  text-align: center;
+    padding: 10px;
+    background-color: rgb(45, 173, 45);
+    color: #fff;
+    border-radius: 20PX;
+    font-size: 16px;
+
+    font-weight: bold;
+  }
+  .fail{
+    text-align: center;
+    padding: 10px;
+    background-color: #ff4081;
+    color: #fff;
+    letter-spacing: 2px;
+    border-radius: 20PX;
+    font-size: 16px;
+    font-weight: bold;
+
+  }
