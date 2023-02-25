@@ -54,7 +54,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     DragDropModule,
     MatBadgeModule,
     MatMenuModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+
 
   ]
 })

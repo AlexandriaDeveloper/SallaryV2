@@ -37,6 +37,8 @@
 
         public string TegaraCode { get; set; }
 
+        public string Grade { get; set; }
+
         public string? CollageName { get; set; }
 
         public string? Section { get; set; }

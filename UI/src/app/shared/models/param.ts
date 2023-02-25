@@ -66,3 +66,8 @@ export class EmployeeSubsriptionParam extends Param{
   amount? :number=null;
   isActive? : boolean =null
 }
+export class FinancialDataTypeParam extends Param{
+  financialDataTypesId?:number;
+  name? : string;
+  reservationDate?:string=null;
+}

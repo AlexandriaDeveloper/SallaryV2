@@ -8,7 +8,8 @@ nationalId: string,
 employeeHasBank:boolean,
 employeeInPartTime ?:boolean;
 section :string,
-collage:string
+collage:string,
+grade:string,
 next?:number
 previous?:number
 
@@ -211,4 +212,13 @@ employeeName:number
 employeeTabCode:string
 employeeTegaraCode:string
 id:number
+}
+export class FinancialDataType{
+id?:number=0;
+name :string='';
+reservationDate:string;
+parentFinancialDataTypeId:number;
+
+
+
 }

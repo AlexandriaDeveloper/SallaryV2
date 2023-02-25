@@ -12,15 +12,15 @@ using Persistence.Data;
 namespace Web.Api.Data.Migrations
 {
     [DbContext(typeof(SallaryCQRSAppContext))]
-    [Migration("20230113115600_FullSallryForm")]
-    partial class FullSallryForm
+    [Migration("20230214190713_Fix-Auto-GenerateId")]
+    partial class FixAutoGenerateId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -154,49 +154,49 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2311),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6854),
                             Name = "اجر وظيفى "
                         },
                         new
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2313),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6856),
                             Name = "اجر مكمل"
                         },
                         new
                         {
                             Id = 3,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2314),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6858),
                             Name = "أجر تعويضى"
                         },
                         new
                         {
                             Id = 4,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2315),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6859),
                             Name = "جزاء"
                         },
                         new
                         {
                             Id = 5,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2316),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6860),
                             Name = "غياب"
                         },
                         new
                         {
                             Id = 6,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2317),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6861),
                             Name = "رد مبلغ"
                         },
                         new
                         {
                             Id = 7,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2318),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6864),
                             Name = "أستقطاع مبلغ من المرتب "
                         });
                 });
@@ -245,14 +245,14 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2458),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5883),
                             Name = "مرتبات بطاقات حكوميه"
                         },
                         new
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2459),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5884),
                             Name = "مرتبات تحويلات بنكيه"
                         });
                 });
@@ -374,6 +374,54 @@ namespace Web.Api.Data.Migrations
                     b.HasIndex("BranchId");
 
                     b.ToTable("EmployeeBanks");
+                });
+
+            modelBuilder.Entity("Domain.Models.EmployeeBasicFinancialData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FinancialDataTypesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("FinancialDataTypesId");
+
+                    b.ToTable("EmployeeBasicFinancialData");
                 });
 
             modelBuilder.Entity("Domain.Models.EmployeeBasicSallary", b =>
@@ -509,6 +557,9 @@ namespace Web.Api.Data.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EmployeeOrderNumber")
+                        .HasColumnType("int");
+
                     b.Property<int>("FormId")
                         .HasColumnType("int");
 
@@ -521,11 +572,12 @@ namespace Web.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("FormId");
 
-                    b.ToTable("EmployeeForm");
+                    b.HasIndex("EmployeeId", "FormId")
+                        .IsUnique();
+
+                    b.ToTable("EmployeeForms");
                 });
 
             modelBuilder.Entity("Domain.Models.EmployeeFormCredit", b =>
@@ -669,6 +721,9 @@ namespace Web.Api.Data.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("EmployeeGradeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
@@ -689,6 +744,8 @@ namespace Web.Api.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeGradeId");
 
                     b.HasIndex("GradeId");
 
@@ -735,7 +792,7 @@ namespace Web.Api.Data.Migrations
                     b.Property<DateTime?>("EndAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FormId")
+                    b.Property<int>("FormId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
@@ -766,8 +823,6 @@ namespace Web.Api.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("FormId");
-
-                    b.HasIndex("OrderFileId");
 
                     b.HasIndex("OrderId");
 
@@ -934,6 +989,282 @@ namespace Web.Api.Data.Migrations
                     b.ToTable("EmployeeSubscriptions");
                 });
 
+            modelBuilder.Entity("Domain.Models.FinancialDataType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FinancialDataTypesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FinancialDataTypesId");
+
+                    b.ToTable("FinancialDataTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1000,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6913),
+                            Name = "اجر وظيفى ",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2000,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6915),
+                            Name = "اجر مكمل",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3000,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6916),
+                            Name = "اجمالى الاجر ",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4000,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6917),
+                            Name = "حافز تعويضى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5000,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6918),
+                            Name = "اجر الشامل",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 1002,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6924),
+                            FinancialDataTypesId = 1000,
+                            Name = "الاساسى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 1003,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6925),
+                            FinancialDataTypesId = 1000,
+                            Name = "100% من الاساسى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 1004,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6929),
+                            FinancialDataTypesId = 1000,
+                            Name = "بدل حد ادنى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 1005,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6944),
+                            FinancialDataTypesId = 1000,
+                            Name = "علاوات غير مضمومه",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 1006,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6945),
+                            FinancialDataTypesId = 1000,
+                            Name = "بدل علاوة اجتماعيه و منحة",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3001,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6946),
+                            FinancialDataTypesId = 3000,
+                            Name = "الاساسى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3002,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6948),
+                            FinancialDataTypesId = 3000,
+                            Name = "علاوات غير مضمومه",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3003,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6949),
+                            FinancialDataTypesId = 3000,
+                            Name = "المنحة",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3004,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6950),
+                            FinancialDataTypesId = 3000,
+                            Name = "علاوة اجتماعيه",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3005,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6951),
+                            FinancialDataTypesId = 3000,
+                            Name = "علاوة اضافيه",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3006,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6953),
+                            FinancialDataTypesId = 3000,
+                            Name = "بدل عدوى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3007,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6954),
+                            FinancialDataTypesId = 3000,
+                            Name = "150% من الاساسى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2001,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6955),
+                            FinancialDataTypesId = 2000,
+                            Name = "50% من الاساسى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2002,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6957),
+                            FinancialDataTypesId = 2000,
+                            Name = "بدل جودة",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2003,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6958),
+                            FinancialDataTypesId = 2000,
+                            Name = "بدل حد ادنى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2004,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6959),
+                            FinancialDataTypesId = 2000,
+                            Name = "2019 حافز",
+                            ReservationDate = new DateTime(2019, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2005,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6961),
+                            FinancialDataTypesId = 2000,
+                            Name = "2020 حافز",
+                            ReservationDate = new DateTime(2020, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2006,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6963),
+                            FinancialDataTypesId = 2000,
+                            Name = "2021 حافز",
+                            ReservationDate = new DateTime(2021, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2007,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6964),
+                            FinancialDataTypesId = 2000,
+                            Name = "2022 حافز",
+                            ReservationDate = new DateTime(2022, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2008,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6965),
+                            FinancialDataTypesId = 2000,
+                            Name = "بدل غلاء معيشه 2022 ",
+                            ReservationDate = new DateTime(2022, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2009,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6966),
+                            FinancialDataTypesId = 2000,
+                            Name = "حافز اضافى",
+                            ReservationDate = new DateTime(2015, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("Domain.Models.FinancialYear", b =>
                 {
                     b.Property<int>("Id")
@@ -978,35 +1309,35 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2344),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6890),
                             Name = "العام المالى 2017-2018"
                         },
                         new
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2345),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6891),
                             Name = "العام المالى 2018-2019"
                         },
                         new
                         {
                             Id = 3,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2345),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6892),
                             Name = "العام المالى 2020-2019"
                         },
                         new
                         {
                             Id = 4,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2347),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6893),
                             Name = "العام المالى 2021-2020"
                         },
                         new
                         {
                             Id = 5,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2348),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6894),
                             Name = "العام المالى 2022-2021"
                         });
                 });
@@ -1068,7 +1399,7 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2276),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6795),
                             Details = "مرتبات شهر مارس",
                             FileNumber224 = "1",
                             FileNumber55 = "1",
@@ -1078,7 +1409,7 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2282),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6798),
                             Details = "مرتبات شهر ابريل",
                             FileNumber224 = "1",
                             FileNumber55 = "1",
@@ -1088,7 +1419,7 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 3,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2283),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6799),
                             Details = "مرتبات شهر مايو",
                             FileNumber224 = "2",
                             FileNumber55 = "2",
@@ -1098,7 +1429,7 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 4,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2284),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6828),
                             Details = "مرتبات شهر يونيو",
                             FileNumber224 = "3",
                             FileNumber55 = "3",
@@ -1141,7 +1472,15 @@ namespace Web.Api.Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Priority")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Grades");
 
@@ -1150,50 +1489,298 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2407),
-                            Name = "درجة كبير"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7042),
+                            Name = "الممتازة"
                         },
                         new
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2410),
-                            Name = "درجة اولى"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7044),
+                            Name = "العاليه"
                         },
                         new
                         {
                             Id = 3,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2424),
-                            Name = "درجة ثانيه"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7045),
+                            Name = "كبير"
                         },
                         new
                         {
                             Id = 4,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2425),
-                            Name = "درجة ثالثه"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7046),
+                            Name = "الاولى"
                         },
                         new
                         {
                             Id = 5,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2426),
-                            Name = "درجة رابعه"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7049),
+                            Name = "الاولى-أ",
+                            ParentId = 4,
+                            Priority = 1
                         },
                         new
                         {
                             Id = 6,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2427),
-                            Name = "درجة خامسه"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7050),
+                            Name = "الاولى-ب",
+                            ParentId = 4,
+                            Priority = 2
                         },
                         new
                         {
                             Id = 7,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2428),
-                            Name = "درجة سادسه"
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7051),
+                            Name = "الثانيه"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7052),
+                            Name = "الثانيه-أ",
+                            ParentId = 7,
+                            Priority = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7054),
+                            Name = "الثانيه-ب",
+                            ParentId = 7,
+                            Priority = 2
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7055),
+                            Name = "الثالثه"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7056),
+                            Name = "الثالثه-أ",
+                            ParentId = 10,
+                            Priority = 1
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7057),
+                            Name = "الثالثه-ب",
+                            ParentId = 10,
+                            Priority = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7058),
+                            Name = "الثالثه-ج",
+                            ParentId = 10,
+                            Priority = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7059),
+                            Name = "الرابعه"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7060),
+                            Name = "الرابعه-أ",
+                            ParentId = 14,
+                            Priority = 1
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7062),
+                            Name = "الرابعه-ب",
+                            ParentId = 14,
+                            Priority = 2
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7063),
+                            Name = "الخامسه"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7064),
+                            Name = "الخامسه-أ",
+                            ParentId = 17,
+                            Priority = 1
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7065),
+                            Name = "الخامسه-ب",
+                            ParentId = 17,
+                            Priority = 2
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7066),
+                            Name = "السادسه"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7067),
+                            Name = "السادسه-أ",
+                            ParentId = 20,
+                            Priority = 1
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(7069),
+                            Name = "السادسه-ب",
+                            ParentId = 20,
+                            Priority = 2
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.MinimumSallary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GradeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GradeId");
+
+                    b.ToTable("MinimumSallary");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 170m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5781),
+                            GradeId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 170m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5788),
+                            GradeId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Amount = 170m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5789),
+                            GradeId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Amount = 255m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5791),
+                            GradeId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Amount = 300m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5792),
+                            GradeId = 7
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Amount = 340m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5793),
+                            GradeId = 10
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Amount = 385m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5794),
+                            GradeId = 14
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Amount = 400m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5795),
+                            GradeId = 17
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Amount = 400m,
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 396, DateTimeKind.Local).AddTicks(5796),
+                            GradeId = 20
                         });
                 });
 
@@ -1241,84 +1828,44 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(1484),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6649),
                             Name = "غياب بدون إذن"
                         },
                         new
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(1498),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6663),
                             Name = "امر عقاب جزاء عن الغياب بدون إذن"
                         },
                         new
                         {
                             Id = 3,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(1499),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6664),
                             Name = "أمر عقاب خصم من مكافأة الامتحانات"
                         },
                         new
                         {
                             Id = 4,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(1500),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6665),
                             Name = "أجازة بدون مرتب"
                         },
                         new
                         {
                             Id = 5,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(1501),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6666),
                             Name = "أمر أستراداد مبلغ"
                         },
                         new
                         {
                             Id = 6,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(1502),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6667),
                             Name = "أستقطاع مبلغ ثابت"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Models.OrderFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderFiles");
                 });
 
             modelBuilder.Entity("Domain.Models.PeriodicSubscription", b =>
@@ -1351,13 +1898,10 @@ namespace Web.Api.Data.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EmployeeId")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EmployeeOrderDeductionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmployeeOrderId")
+                    b.Property<int>("FormId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
@@ -1372,9 +1916,12 @@ namespace Web.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("FormId");
 
-                    b.HasIndex("EmployeeOrderId");
+                    b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("EmployeeId", "FormId", "SubscriptionId", "CreditOrDebit")
+                        .IsUnique();
 
                     b.ToTable("PeriodicSubscription");
                 });
@@ -1423,42 +1970,42 @@ namespace Web.Api.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2372),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6991),
                             Name = "تأمين علاجى"
                         },
                         new
                         {
                             Id = 2,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2374),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6993),
                             Name = "نقابه"
                         },
                         new
                         {
                             Id = 3,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2375),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6994),
                             Name = "محمول شركة ETI"
                         },
                         new
                         {
                             Id = 4,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2376),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6995),
                             Name = "محمول شركه سيجنال "
                         },
                         new
                         {
                             Id = 5,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2377),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6996),
                             Name = "خزنه تك  "
                         },
                         new
                         {
                             Id = 6,
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 1, 13, 13, 55, 58, 810, DateTimeKind.Local).AddTicks(2382),
+                            CreatedDate = new DateTime(2023, 2, 14, 21, 7, 11, 394, DateTimeKind.Local).AddTicks(6996),
                             Name = "نفقه  "
                         });
                 });
@@ -1492,6 +2039,25 @@ namespace Web.Api.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Branche");
+                });
+
+            modelBuilder.Entity("Domain.Models.EmployeeBasicFinancialData", b =>
+                {
+                    b.HasOne("Domain.Models.Employee", "Employee")
+                        .WithMany("EmployeesBasicFinancialData")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.FinancialDataType", "FinancialDataTypes")
+                        .WithMany("EmployeesBasicFinancialData")
+                        .HasForeignKey("FinancialDataTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("FinancialDataTypes");
                 });
 
             modelBuilder.Entity("Domain.Models.EmployeeBasicSallary", b =>
@@ -1575,6 +2141,10 @@ namespace Web.Api.Data.Migrations
 
             modelBuilder.Entity("Domain.Models.EmployeeGrade", b =>
                 {
+                    b.HasOne("Domain.Models.EmployeeGrade", null)
+                        .WithMany("EmployeeGrades")
+                        .HasForeignKey("EmployeeGradeId");
+
                     b.HasOne("Domain.Models.Employee", "Employees")
                         .WithMany("EmployeeGrades")
                         .HasForeignKey("EmployeeId")
@@ -1602,11 +2172,9 @@ namespace Web.Api.Data.Migrations
 
                     b.HasOne("Domain.Models.Form", "Form")
                         .WithMany("EmployeeOrders")
-                        .HasForeignKey("FormId");
-
-                    b.HasOne("Domain.Models.OrderFile", "OrderFile")
-                        .WithMany("EmployeeOrder")
-                        .HasForeignKey("OrderFileId");
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Order", "Order")
                         .WithMany("EmployeeOrder")
@@ -1619,8 +2187,6 @@ namespace Web.Api.Data.Migrations
                     b.Navigation("Form");
 
                     b.Navigation("Order");
-
-                    b.Navigation("OrderFile");
                 });
 
             modelBuilder.Entity("Domain.Models.EmployeeOrderExecuation", b =>
@@ -1676,17 +2242,60 @@ namespace Web.Api.Data.Migrations
                     b.Navigation("Subscription");
                 });
 
+            modelBuilder.Entity("Domain.Models.FinancialDataType", b =>
+                {
+                    b.HasOne("Domain.Models.FinancialDataType", "FinancialDataTypes")
+                        .WithMany("ChildsElements")
+                        .HasForeignKey("FinancialDataTypesId");
+
+                    b.Navigation("FinancialDataTypes");
+                });
+
+            modelBuilder.Entity("Domain.Models.Grade", b =>
+                {
+                    b.HasOne("Domain.Models.Grade", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("Domain.Models.MinimumSallary", b =>
+                {
+                    b.HasOne("Domain.Models.Grade", "Grade")
+                        .WithMany()
+                        .HasForeignKey("GradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Grade");
+                });
+
             modelBuilder.Entity("Domain.Models.PeriodicSubscription", b =>
                 {
-                    b.HasOne("Domain.Models.Employee", null)
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("PeriodicSubscriptions")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Domain.Models.EmployeeOrder", "EmployeeOrder")
-                        .WithMany("PeriodicSubscriptions")
-                        .HasForeignKey("EmployeeOrderId");
+                    b.HasOne("Domain.Models.Form", "Form")
+                        .WithMany("PeriodicSubscription")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("EmployeeOrder");
+                    b.HasOne("Domain.Models.Subscription", "Subscription")
+                        .WithMany("PeriodicSubscription")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Form");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("Domain.Models.Bank", b =>
@@ -1716,6 +2325,8 @@ namespace Web.Api.Data.Migrations
 
                     b.Navigation("EmployeeSubscriptions");
 
+                    b.Navigation("EmployeesBasicFinancialData");
+
                     b.Navigation("PartTimeDurations");
 
                     b.Navigation("PeriodicSubscriptions");
@@ -1736,11 +2347,21 @@ namespace Web.Api.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Models.EmployeeGrade", b =>
+                {
+                    b.Navigation("EmployeeGrades");
+                });
+
             modelBuilder.Entity("Domain.Models.EmployeeOrder", b =>
                 {
                     b.Navigation("EmployeeOrderExecuations");
+                });
 
-                    b.Navigation("PeriodicSubscriptions");
+            modelBuilder.Entity("Domain.Models.FinancialDataType", b =>
+                {
+                    b.Navigation("ChildsElements");
+
+                    b.Navigation("EmployeesBasicFinancialData");
                 });
 
             modelBuilder.Entity("Domain.Models.FinancialYear", b =>
@@ -1751,6 +2372,8 @@ namespace Web.Api.Data.Migrations
             modelBuilder.Entity("Domain.Models.Form", b =>
                 {
                     b.Navigation("EmployeeOrders");
+
+                    b.Navigation("PeriodicSubscription");
                 });
 
             modelBuilder.Entity("Domain.Models.Grade", b =>
@@ -1763,14 +2386,11 @@ namespace Web.Api.Data.Migrations
                     b.Navigation("EmployeeOrder");
                 });
 
-            modelBuilder.Entity("Domain.Models.OrderFile", b =>
-                {
-                    b.Navigation("EmployeeOrder");
-                });
-
             modelBuilder.Entity("Domain.Models.Subscription", b =>
                 {
                     b.Navigation("EmployeeSubscriptions");
+
+                    b.Navigation("PeriodicSubscription");
                 });
 #pragma warning restore 612, 618
         }

@@ -45,6 +45,8 @@ namespace Application.Services
                 }
                 if (headerCell.CellType == CellType.String)
                     dt.Columns.Add(headerCell.StringCellValue.Trim());
+                if (headerCell.CellType == CellType.Numeric)
+                    dt.Columns.Add(headerCell.NumericCellValue.ToString());
             }
             //return dt;
 
@@ -63,6 +65,7 @@ namespace Application.Services
                 // skip header row 
                 if (rowIndex++ == 0) continue;
                 DataRow dataRow = dt.NewRow();
+                
 
                 for (int i = 0; i < row.LastCellNum; i++)
                 {

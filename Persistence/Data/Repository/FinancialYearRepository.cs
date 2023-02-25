@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repository;
 using Domain.Interfaces;
 using Domain.Models;
+using System;
 
 namespace Persistence.Data.Repository
 {
@@ -8,6 +9,8 @@ namespace Persistence.Data.Repository
     {
         public FinancialYearRepository(SallaryCQRSAppContext context, IAuthService authService) : base(context, authService)
         {
+
+         
         }
 
 

@@ -20,6 +20,9 @@ namespace Domain.Interfaces
         IBudgetItemRepository BudgetItemRepository { get; }
 
         IEmployeeGradeRepository EmployeeGradeRepository { get; }
+
+        IEmployeeBasicFinancialDataRepository EmployeeBasicFinancialDataRepository { get; }
+        IFinancialDataTypesRepository FinancialDataTypesRepository { get; }
         IGradeRepository GradeRepository { get; }
         IEmployeeFormRepository EmployeeFormRepository { get; }
         IBankRepository BankRepository { get; }

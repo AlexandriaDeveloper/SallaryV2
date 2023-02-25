@@ -8,6 +8,7 @@ const routes: Routes = [{ path: 'employee', loadChildren: () => import('./employ
 { path: 'collection', loadChildren: () => import('./collection/collection.module').then(m => m.CollectionModule) },
 { path: 'subscription', loadChildren: () => import('./subscription/subscription.module').then(m => m.SubscriptionModule) },
 { path: 'bank', loadChildren: () => import('./bank/bank.module').then(m => m.BankModule) },
+{ path: 'financial-data-type', loadChildren: () => import('./financial-data-type/financial-data-type.module').then(m => m.FinancialDataTypeModule) },
 
 
 ];

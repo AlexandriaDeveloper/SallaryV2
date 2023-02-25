@@ -39,6 +39,8 @@ namespace Persistence.Data.Repository
         private Lazy<IEmployeeCollectionsRepository> _employeeCollectionsRepository;
         private Lazy<IEmployeeFormRepository> _employeeFormRepository;
         private Lazy<IPeriodicSubscriptionRepository> _periodicSubscriptionRepository;
+        private Lazy<IEmployeeBasicFinancialDataRepository> _employeeBasicFinancialDataRepository;
+        private Lazy<IFinancialDataTypesRepository> _financialDataTypesRepository;
         public UOW(SallaryCQRSAppContext context, IAuthService authService)
         {
             this._context = context;
@@ -69,6 +71,9 @@ namespace Persistence.Data.Repository
         public ICollectionRepository CollectionRepository => _collectionRepository.Value;
         public IEmployeeCollectionsRepository EmployeeCollectionsRepository => _employeeCollectionsRepository.Value;
         public IEmployeeFormRepository EmployeeFormRepository => _employeeFormRepository.Value;
+
+        public IEmployeeBasicFinancialDataRepository EmployeeBasicFinancialDataRepository => _employeeBasicFinancialDataRepository.Value;
+        public IFinancialDataTypesRepository FinancialDataTypesRepository => _financialDataTypesRepository.Value;
         public IPeriodicSubscriptionRepository PeriodicSubscriptionRepository => _periodicSubscriptionRepository.Value;
         public void Dispose()
         {
@@ -127,7 +132,8 @@ namespace Persistence.Data.Repository
             this._formRepository = this._formRepository ?? new Lazy<IFormRepository>(() => new FormRepository(context, authService));
             this._employeeFormRepository = this._employeeFormRepository ?? new Lazy<IEmployeeFormRepository>(() => new EmployeeFormRepository(context, authService));
             this._periodicSubscriptionRepository = this._periodicSubscriptionRepository ?? new Lazy<IPeriodicSubscriptionRepository>(() => new PeriodicSubscriptionRepository(context, authService));
-
+            this._employeeBasicFinancialDataRepository = this._employeeBasicFinancialDataRepository ?? new Lazy<IEmployeeBasicFinancialDataRepository>(() => new EmployeeBasicFinancialDataRepository(context, authService));
+            this._financialDataTypesRepository = this._financialDataTypesRepository ?? new Lazy<IFinancialDataTypesRepository>(() => new FinancialDataTypesRepository(context, authService));
         }
 
     }

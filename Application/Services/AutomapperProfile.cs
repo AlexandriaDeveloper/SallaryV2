@@ -4,6 +4,7 @@ using Application.EmployeeBankAccount.Query.GetEmployeeBankAccountData;
 using Application.EmployeeCollections.Commands.AssignEmployeeToCollection;
 using Application.EmployeeCollections.Queries;
 using Application.EmployeePartTimes;
+using Application.FinancialDataTypes;
 using Application.FinancialYears;
 using Application.Form;
 using Application.Orders;
@@ -87,6 +88,8 @@ namespace Domain.Services
             CreateMap<PagedList<EmployeeSubscription>, PagedList<EmployeeSubscriptionDto>>().ReverseMap();
             CreateMap<Bank, BankDto>().ReverseMap();
             CreateMap<Branch, BrancheDto>().ReverseMap();
+
+            CreateMap<FinancialDataType, FinancialDataTypeDto >().ReverseMap();
         }
 
 

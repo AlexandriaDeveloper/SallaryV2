@@ -35,6 +35,7 @@ namespace Domain.Models
         public ICollection<PeriodicSubscription>? PeriodicSubscriptions { get; set; }
         public ICollection<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
         public ICollection<EmployeeCollection>? EmployeeCollection { get; set; }
+        public ICollection<EmployeeBasicFinancialData> EmployeesBasicFinancialData{ get; set; }
 
         //PeriodicSubscription
         public EmployeeBank? EmployeeBank { get; set; }

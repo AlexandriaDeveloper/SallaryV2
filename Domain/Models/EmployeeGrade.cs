@@ -14,6 +14,8 @@ namespace Domain.Models
 
         public Grade Grade { get; set; }
         public Employee Employees { get; set; }
+
+        public ICollection<EmployeeGrade> EmployeeGrades { get; set; }
         public EmployeeGrade()
         {
 
