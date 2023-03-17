@@ -4,16 +4,11 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.FinancialDataTypes.Commands.DeleteFinicialDataType
 {
 
-    public record DeleteFinicialDataTypeCommand (int id ):ICommand;
+    public record DeleteFinicialDataTypeCommand(int id) : ICommand;
     public class DeleteFinicialDataTypeCommandHandler : ICommandHandler<DeleteFinicialDataTypeCommand>
     {
         private readonly IUOW _uow;
@@ -26,12 +21,14 @@ namespace Application.FinancialDataTypes.Commands.DeleteFinicialDataType
         public async Task<Result> Handle(DeleteFinicialDataTypeCommand request, CancellationToken cancellationToken)
         {
             FinancialDataType financialDataTypeFromDb = await _uow.FinancialDataTypesRepository.GetByIdAsync(request.id);
-            if (financialDataTypeFromDb == null) {
+            if (financialDataTypeFromDb == null)
+            {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
             await _uow.FinancialDataTypesRepository.HardDelete(financialDataTypeFromDb.Id);
             var result = await _uow.SaveChangesAsync(cancellationToken);
-            if (result != Domain.Enums.SaveState.Saved) {
+            if (result != Domain.Enums.SaveState.Saved)
+            {
                 return Result.Failure(result);
             }
             return Result.Success();
@@ -39,12 +36,12 @@ namespace Application.FinancialDataTypes.Commands.DeleteFinicialDataType
         }
     }
 
-    public class DeleteFinicialDataTypeCommandValidator:AbstractValidator<DeleteFinicialDataTypeCommand>
+    public class DeleteFinicialDataTypeCommandValidator : AbstractValidator<DeleteFinicialDataTypeCommand>
     {
 
         public DeleteFinicialDataTypeCommandValidator()
         {
-            RuleFor (x  => x.id).NotEmpty();
+            RuleFor(x => x.id).NotEmpty();
         }
     }
 }

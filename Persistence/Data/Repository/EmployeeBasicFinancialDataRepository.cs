@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Persistence.Data.Repository
 {
@@ -18,14 +19,15 @@ namespace Persistence.Data.Repository
         }
 
 
-        public List<EmployeeBasicFinancialData> GetEmployeeDataWithSpecificDate(int employeeId, DateTime? date) { 
-        
-            if(date.HasValue)
+        public async Task< List<EmployeeBasicFinancialData>> GetEmployeeDataWithSpecificDate(int employeeId, DateTime? date)
+        {
+
+            if (date.HasValue)
             {
 
-                return _context.EmployeeBasicFinancialData.Include(x => x.FinancialDataTypes).Where( t => t.FinancialDataTypes.ReservationDate<= date.Value && t.EmployeeId==employeeId).ToList();
+                return await _context.EmployeeBasicFinancialData.Include(x => x.FinancialDataTypes).Where(t => t.FinancialDataTypes.ReservationDate <= date.Value && t.EmployeeId == employeeId).ToListAsync();
             }
-            return _context.EmployeeBasicFinancialData.Include(x => x.FinancialDataTypes).Where(t =>  t.EmployeeId == employeeId).ToList();
+            return await _context.EmployeeBasicFinancialData.Include(x => x.FinancialDataTypes).Where(t => t.EmployeeId == employeeId).ToListAsync();
         }
     }
 }

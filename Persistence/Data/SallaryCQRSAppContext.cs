@@ -3,7 +3,6 @@ using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Services;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Persistence.Data
 {
@@ -12,17 +11,17 @@ namespace Persistence.Data
         private readonly AuthService _authService;
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<EmployeePartTime> EmployeesPartTimes { get; set; }
+        // public DbSet<EmployeePartTime> EmployeesPartTimes { get; set; }
 
-        public DbSet<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
-        public DbSet<FinancialYear> FinancialYears { get; set; }
+     //   public DbSet<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
+        // public DbSet<FinancialYear> FinancialYears { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<BudgetItem> BudgetItems { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
 
         public DbSet<EmployeeOrder> EmployeeOrders { get; set; }
-        public DbSet<EmployeeOrderExecuation> EmployeeOrderExecuations { get; set; }
-        //public DbSet<EmployeeOrderDeduction> EmployeeOrderDeductions { get; set; }
+        public DbSet<EmployeeOrderTypeExecuation> EmployeeOrderExecuations { get; set; }
+
         public DbSet<EmployeeGrade> EmployeeGrades { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<EmployeeCollection> EmployeeCollections { get; set; }
@@ -31,7 +30,7 @@ namespace Persistence.Data
 
         public DbSet<EmployeeForm> EmployeeForms { get; set; }
         public DbSet<EmployeeBank> EmployeeBanks { get; set; }
-          public DbSet<FinancialDataType> FinancialDataTypes { get; set; }
+        public DbSet<FinancialDataType> FinancialDataTypes { get; set; }
         public DbSet<EmployeeBasicFinancialData> EmployeeBasicFinancialData { get; set; }
         public SallaryCQRSAppContext(DbContextOptions<SallaryCQRSAppContext> options) : base(options)
         {
@@ -46,6 +45,7 @@ namespace Persistence.Data
 
 
 
+
             modelBuilder.Entity<Employee>().HasOne(x => x.EmployeeBank)
                 .WithOne(t => t.Employee)
                 .HasForeignKey<Employee>(fk => fk.EmployeeBankId);
@@ -54,6 +54,21 @@ namespace Persistence.Data
             modelBuilder.Entity<EmployeeForm>().HasOne(x => x.Credit)
                .WithOne(t => t.EmployeeForm)
                .HasForeignKey<EmployeeFormCredit>(fk => fk.EmployeeFormId);
+
+
+            modelBuilder.Entity<EmployeeVacationType>()
+               .HasOne(entity => entity.EmployeeOrder)
+               .WithOne(e => e.EmployeeVacationType)
+               .HasForeignKey<EmployeeVacationType>(k => k.EmployeeOrderId);
+
+
+            modelBuilder.Entity<EmployeeOrder>()
+               .HasOne(entity => entity.EmployeeOrderType)
+               .WithOne(e => e.EmployeeOrder)
+               .HasForeignKey<EmployeeOrderType>(k => k.EmployeeOrderId);
+
+
+
 
 
             modelBuilder.Entity<EmployeeForm>().HasOne(x => x.Debit)
@@ -82,20 +97,20 @@ namespace Persistence.Data
             modelBuilder.Entity<EmployeeSubscription>()
                 .HasIndex(x => new { x.EmployeeId, x.SubscriptionId }).IsUnique();
 
-            modelBuilder.Entity<EmployeeBasicSallary>()
-            .HasIndex(x => new { x.EmployeeId, x.FinancialYearId }).IsUnique();
+            //modelBuilder.Entity<EmployeeBasicSallary>()
+            //.HasIndex(x => new { x.EmployeeId, x.FinancialYearId }).IsUnique();
 
             modelBuilder.Entity<EmployeeCollection>()
                 .HasIndex(x => new { x.EmployeeId, x.CollectionId }).IsUnique();
 
 
-            modelBuilder.Entity <FinancialDataType> ().Property(m => m.Id).ValueGeneratedNever()
+            modelBuilder.Entity<FinancialDataType>().Property(m => m.Id).ValueGeneratedNever()
            ;
 
 
 
             modelBuilder.Entity<EmployeeBasicFinancialData>()
-                .HasIndex(x => new {x.EmployeeId,x.FinancialDataTypesId }).IsUnique();
+                .HasIndex(x => new { x.EmployeeId, x.FinancialDataTypesId }).IsUnique();
             this.SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
@@ -113,10 +128,9 @@ namespace Persistence.Data
             new Order() { Id = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.ABSENCE },
             new Order() { Id = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.PUNISHMENT_ABSENCE },
             new Order() { Id = 3, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.PUNISHMENT_EXAMINATION_REWARD },
-            new Order() { Id = 4, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.VACATION_WITHOT_SALLARY },
-            new Order() { Id = 5, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.REPAY },
-            new Order() { Id = 6, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.FIXED_AMOUNT }
-
+            new Order() { Id = 4, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.REPAY },
+            new Order() { Id = 5, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.FIXED_AMOUNT_IRADAT },
+             new Order() { Id = 6, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.OrderConstants.FIXED_AMOUNT_MORTADAT }
              );
 
             modelBuilder.Entity<Form>().HasData(
@@ -135,45 +149,44 @@ namespace Persistence.Data
                 new BudgetItem() { Id = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.MOKAMEL },
                 new BudgetItem() { Id = 3, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.TA3WIDI },
                 new BudgetItem() { Id = 4, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.GAZAA },
-                new BudgetItem() { Id = 5, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.ABSENCE },
-                new BudgetItem() { Id = 6, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.REPAY },
-                new BudgetItem() { Id = 7, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.DEDUCTION }
+                new BudgetItem() { Id = 5, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.IRADAT },
+                new BudgetItem() { Id = 6, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.MORTADAT },
+                new BudgetItem() { Id = 7, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.ISTRDAD }
 
                 );
 
+            //modelBuilder.Entity<FinancialYear>().HasData(
+            //    new FinancialYear() { Id = 1, Name = "العام المالى 2017-2018", CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            //    new FinancialYear() { Id = 2, Name = "العام المالى 2018-2019", CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            //    new FinancialYear() { Id = 3, Name = "العام المالى 2020-2019", CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            //    new FinancialYear() { Id = 4, Name = "العام المالى 2021-2020", CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            //    new FinancialYear() { Id = 5, Name = "العام المالى 2022-2021", CreatedBy = "Admin", CreatedDate = DateTime.Now }
 
-            modelBuilder.Entity<FinancialYear>().HasData(
-                new FinancialYear() { Id = 1, Name = "العام المالى 2017-2018", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-                new FinancialYear() { Id = 2, Name = "العام المالى 2018-2019", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-                new FinancialYear() { Id = 3, Name = "العام المالى 2020-2019", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-                new FinancialYear() { Id = 4, Name = "العام المالى 2021-2020", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-                new FinancialYear() { Id = 5, Name = "العام المالى 2022-2021", CreatedBy = "Admin", CreatedDate = DateTime.Now }
 
-
-                );
+            //    );
 
 
             modelBuilder.Entity<FinancialDataType>().HasData(
 
-                //بنود
+               //بنود
 
-               new FinancialDataType() { Id = 1000, Name = Constant.FinincialData.WAZIFI,ReservationDate=new DateTime(2015,6,30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+               new FinancialDataType() { Id = 1000, Name = Constant.FinincialData.WAZIFI, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 2000, Name = Constant.FinincialData.MOKAMEL, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id =3000, Name = Constant.FinincialData.AGMALI_AGR, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+               new FinancialDataType() { Id = 3000, Name = Constant.FinincialData.AGMALI_AGR, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 4000, Name = Constant.FinincialData.TAWIDI, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 5000, Name = Constant.FinincialData.SHAMEL, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
                //مكونات اجر وظيفى 
 
-               new FinancialDataType() { Id = 1002, Name = Constant.FinincialData.BASIC, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId=1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+               new FinancialDataType() { Id = 1002, Name = Constant.FinincialData.BASIC, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1003, Name = Constant.FinincialData.BASIC2, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1004, Name = Constant.FinincialData.BADAL_HAD_ADNA, ReservationDate = new DateTime(2015, 6, 30),  ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+               new FinancialDataType() { Id = 1004, Name = Constant.FinincialData.BADAL_HAD_ADNA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1005, Name = Constant.FinincialData.ALAWA_KHIR_MADMOMA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1006, Name = Constant.FinincialData.BADAL_ALAWA_IGTMAIA_WE_MENHA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1007, Name = Constant.FinincialData.ALAWA_2015, ReservationDate = new DateTime(2015, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1008, Name = Constant.FinincialData.ALAWA_2016, ReservationDate = new DateTime(2016, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1009, Name = Constant.FinincialData.ALAWA_2017, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1010, Name = Constant.FinincialData.ALAWA_2017, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+               new FinancialDataType() { Id = 1010, Name = Constant.FinincialData.ALAWA_2017_2, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1011, Name = Constant.FinincialData.ALAWA_2018, ReservationDate = new DateTime(2018, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1012, Name = Constant.FinincialData.ALAWA_2018_2, ReservationDate = new DateTime(2018, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
                new FinancialDataType() { Id = 1013, Name = Constant.FinincialData.ALAWA_2019, ReservationDate = new DateTime(2019, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
@@ -227,20 +240,20 @@ namespace Persistence.Data
           new Grade() { Id = 3, Name = Constant.Model.Grades.KABIR, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
           new Grade() { Id = 4, Name = Constant.Model.Grades.AWLA, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-          new Grade() { Id = 5, Name = Constant.Model.Grades.AWLA_A, ParentId=4,Priority=1,  CreatedBy = "Admin", CreatedDate = DateTime.Now },
+          new Grade() { Id = 5, Name = Constant.Model.Grades.AWLA_A, ParentId = 4, Priority = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 6, Name = Constant.Model.Grades.AWLA_B, ParentId = 4, Priority = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
           new Grade() { Id = 7, Name = Constant.Model.Grades.TANIA, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-          new Grade() { Id = 8, Name = Constant.Model.Grades.TANIA_A, ParentId = 7, Priority = 1 ,CreatedBy = "Admin", CreatedDate = DateTime.Now },
+          new Grade() { Id = 8, Name = Constant.Model.Grades.TANIA_A, ParentId = 7, Priority = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 9, Name = Constant.Model.Grades.TANIA_B, ParentId = 7, Priority = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
           new Grade() { Id = 10, Name = Constant.Model.Grades.TALTA, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-          new Grade() { Id = 11, Name = Constant.Model.Grades.TALTA_A, ParentId = 10 , Priority = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+          new Grade() { Id = 11, Name = Constant.Model.Grades.TALTA_A, ParentId = 10, Priority = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 12, Name = Constant.Model.Grades.TALTA_B, ParentId = 10, Priority = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 13, Name = Constant.Model.Grades.TALTA_C, ParentId = 10, Priority = 3, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
 
-          new Grade() { Id = 14, Name = Constant.Model.Grades.RABA,  CreatedBy = "Admin", CreatedDate = DateTime.Now },
+          new Grade() { Id = 14, Name = Constant.Model.Grades.RABA, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 15, Name = Constant.Model.Grades.RABA_A, ParentId = 14, Priority = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 16, Name = Constant.Model.Grades.RABA_B, ParentId = 14, Priority = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
@@ -251,7 +264,7 @@ namespace Persistence.Data
           new Grade() { Id = 20, Name = Constant.Model.Grades.SADSA, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 21, Name = Constant.Model.Grades.SADSA_A, ParentId = 20, Priority = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now },
           new Grade() { Id = 22, Name = Constant.Model.Grades.SADSA_B, ParentId = 20, Priority = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now }
-    );
+        );
 
 
             modelBuilder.Entity<MinimumSallary>().HasData(
@@ -268,7 +281,16 @@ namespace Persistence.Data
 
             modelBuilder.Entity<Collection>().HasData(
             new Collection() { Id = 1, Name = "مرتبات بطاقات حكوميه", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-            new Collection() { Id = 2, Name = "مرتبات تحويلات بنكيه", CreatedBy = "Admin", CreatedDate = DateTime.Now }            
+            new Collection() { Id = 2, Name = "مرتبات تحويلات بنكيه", CreatedBy = "Admin", CreatedDate = DateTime.Now }
+        );
+
+
+            modelBuilder.Entity<Vacation>().HasData(
+            new Vacation() { Id = 1, Name = Constant.Model.VacationTypesConstraint.AGAZA_BEDON_MORATAB, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            new Vacation() { Id = 2, Name = Constant.Model.VacationTypesConstraint.GOZAA_MN_EL_WAKT, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            new Vacation() { Id = 3, Name = Constant.Model.VacationTypesConstraint.INTADAB_GOZ2I, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            new Vacation() { Id = 4, Name = Constant.Model.VacationTypesConstraint.INTADAB_KOLI, CreatedBy = "Admin", CreatedDate = DateTime.Now }
+
     );
         }
     }

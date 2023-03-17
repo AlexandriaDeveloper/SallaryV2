@@ -3,22 +3,17 @@ using AutoMapper;
 using Domain.Constants;
 using Domain.Interfaces;
 using Domain.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.FinancialDataTypes.Commands.AddFinincialDataType
 {
 
-    public record AddFinincialDataTypeCommand(FinancialDataTypeDto data):ICommand;
+    public record AddFinincialDataTypeCommand(FinancialDataTypeDto data) : ICommand;
     public class AddFinincialDataTypeCommandHandler : ICommandHandler<AddFinincialDataTypeCommand>
     {
         private readonly IUOW _uow;
         private readonly IMapper _mapper;
 
-        public AddFinincialDataTypeCommandHandler(IUOW uow , IMapper mapper)
+        public AddFinincialDataTypeCommandHandler(IUOW uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -30,34 +25,36 @@ namespace Application.FinancialDataTypes.Commands.AddFinincialDataType
             if (request.data.ParentFinancialDataTypeId.HasValue)
             {
 
-                maxId = _uow.FinancialDataTypesRepository.GetMaxChildId(request.data.ParentFinancialDataTypeId.Value)+1;
+                maxId = _uow.FinancialDataTypesRepository.GetMaxChildId(request.data.ParentFinancialDataTypeId.Value) + 1;
 
             }
-            else {
+            else
+            {
 
 
                 maxId = _uow.FinancialDataTypesRepository.GetMaxParentId() + 1000;
             }
-            request.data.Id= maxId;
-               await _uow.FinancialDataTypesRepository.AddItem(new Domain.Models.FinancialDataType()
-                {
+            request.data.Id = maxId;
+            await _uow.FinancialDataTypesRepository.AddItem(new Domain.Models.FinancialDataType()
+            {
 
-                    Id = request.data.Id,
-                    Name = request.data.Name,
-                    ParentFinancialDataTypeId = request.data.ParentFinancialDataTypeId,
-                    ReservationDate = request.data.ReservationDate,
+                Id = request.data.Id,
+                Name = request.data.Name,
+                ParentFinancialDataTypeId = request.data.ParentFinancialDataTypeId,
+                ReservationDate = request.data.ReservationDate,
 
-                });
+            });
 
-              var result =  await  _uow.SaveChangesAsync(cancellationToken);
+            var result = await _uow.SaveChangesAsync(cancellationToken);
 
-                if (result != Domain.Enums.SaveState.Saved) { 
-                
+            if (result != Domain.Enums.SaveState.Saved)
+            {
+
                 return Result.Failure(result);
-                }
-                return Result.Success();
+            }
+            return Result.Success();
 
-           
+
             return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
         }
     }

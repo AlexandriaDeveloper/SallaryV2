@@ -2,7 +2,8 @@
 
 namespace Domain.Models
 {
-    public class FinancialDataType:Entity {
+    public class FinancialDataType : Entity
+    {
         public int? ParentFinancialDataTypeId { get; set; }
 
         public DateTime ReservationDate { get; set; }

@@ -42,19 +42,5 @@ namespace Web.Api.Controllers
             }
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
-
-        //[HttpPost("EmployeeOrderDeduction")]
-        //public async Task<ActionResult<Result<Unit?>>> EmployeeOrderDeduction([FromBody] PayDeductionEmployeeCommand command)
-        //{
-
-
-        //    var result =(await Mediator.Send(command));
-        //    if (result.IsFailure)
-        //    {
-        //        return HandleFailureResult(result);
-
-        //    }
-        //    return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
-        //}
     }
 }

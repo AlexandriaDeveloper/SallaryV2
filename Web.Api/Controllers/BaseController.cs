@@ -10,12 +10,6 @@ namespace Web.Api.Controllers
 
         protected readonly IMediator Mediator;
 
-
-
-        //protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-
-        //protected readonly ISender Sender;
-
         protected BaseController(IMediator mediator) => Mediator = mediator;
 
 

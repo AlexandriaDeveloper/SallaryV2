@@ -18,6 +18,9 @@ import { EmployeeBankComponent } from './employee-details/employee-bank/employee
 import { AddEmployeeBankDialogComponent } from './employee-details/employee-bank/add-employee-bank-dialog/add-employee-bank-dialog.component';
 import { EmployeePartTimeDialogComponent } from './employee-details/balance/employee-part-time-dialog/employee-part-time-dialog.component';
 import { EmployeePartTimeComponent } from './employee-details/balance/employee-part-time/employee-part-time.component';
+import { BalanceElementDetailsDialogComponent } from './employee-details/balance/balance-element-details-dialog/balance-element-details-dialog.component';
+import { AddEmployeeElementDialogComponent } from './employee-details/balance/balance-element-details-dialog/add-employee-element-dialog/add-employee-element-dialog.component';
+
 
 
 @NgModule({
@@ -35,7 +38,9 @@ import { EmployeePartTimeComponent } from './employee-details/balance/employee-p
     EmployeeBankComponent,
     AddEmployeeBankDialogComponent,
     EmployeePartTimeDialogComponent,
-    EmployeePartTimeComponent
+    EmployeePartTimeComponent,
+    BalanceElementDetailsDialogComponent,
+    AddEmployeeElementDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -5,22 +5,16 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Application.EmployeeBasicFinancialsDatas.Queries.GetEmployeeFinincialData
 {
 
-    public record GetEmployeeFinincialDataQuery (int employeeId,DateTime? dateOfElements ):IQuery<EmployeeFinicialDataDto>;
-    public class GetEmployeeFinincialDataQueryHandler : IQueryHandler<GetEmployeeFinincialDataQuery,EmployeeFinicialDataDto>
+    public record GetEmployeeFinincialDataQuery(int employeeId, DateTime? dateOfElements) : IQuery<EmployeeFinicialDataDto>;
+    public class GetEmployeeFinincialDataQueryHandler : IQueryHandler<GetEmployeeFinincialDataQuery, EmployeeFinicialDataDto>
     {
         private readonly IUOW _uow;
         private readonly IMapper _mapper;
 
-        public GetEmployeeFinincialDataQueryHandler( IUOW uow , IMapper mapper)
+        public GetEmployeeFinincialDataQueryHandler(IUOW uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -28,7 +22,7 @@ namespace Application.EmployeeBasicFinancialsDatas.Queries.GetEmployeeFinincialD
 
         public async Task<Result<EmployeeFinicialDataDto>> Handle(GetEmployeeFinincialDataQuery request, CancellationToken cancellationToken)
         {
-            DateTime searchByDate= DateTime.Now;
+            DateTime searchByDate = DateTime.Now;
 
 
             if (request.dateOfElements.HasValue)
@@ -43,18 +37,17 @@ namespace Application.EmployeeBasicFinancialsDatas.Queries.GetEmployeeFinincialD
             }
 
 
-           GetEmployeeFinincialDataQuerySpecification spec = new GetEmployeeFinincialDataQuerySpecification(request.employeeId, fType.Id, request.dateOfElements);
+            GetEmployeeFinincialDataQuerySpecification spec = new GetEmployeeFinincialDataQuerySpecification(request.employeeId, fType.Id, request.dateOfElements);
 
 
             var Wazifi = await _uow.EmployeeBasicFinancialDataRepository.GetAllBySpecAsync(spec);
-            decimal WazifiAmount =Wazifi.Data.Sum(x => x.Amount);
+            decimal WazifiAmount = Wazifi.Data.Sum(x => x.Amount);
 
 
 
             Domain.Models.FinancialDataType fType2 = await _uow.FinancialDataTypesRepository.GetByNameAsync(Constant.FinincialData.MOKAMEL);
             GetEmployeeFinincialDataQuerySpecification spec2 = new GetEmployeeFinincialDataQuerySpecification(request.employeeId, fType2.Id, request.dateOfElements);
             var mokamle = await _uow.EmployeeBasicFinancialDataRepository.GetAllBySpecAsync(spec2);
-           
 
 
 
@@ -63,27 +56,30 @@ namespace Application.EmployeeBasicFinancialsDatas.Queries.GetEmployeeFinincialD
             var tawidi = await _uow.EmployeeBasicFinancialDataRepository.GetAllBySpecAsync(spec3);
 
 
-            return Result<EmployeeFinicialDataDto>.Success(new EmployeeFinicialDataDto() { Wazifi = WazifiAmount, Mokamel=mokamle.Data.Sum(x => x.Amount) ,Tawidi=tawidi.Data.Sum(x=> x.Amount)});
+            return Result<EmployeeFinicialDataDto>.Success(new EmployeeFinicialDataDto() { Wazifi = WazifiAmount, Mokamel = mokamle.Data.Sum(x => x.Amount), Tawidi = tawidi.Data.Sum(x => x.Amount) });
 
         }
     }
 
-    public class GetEmployeeFinincialDataQuerySpecification : Specification< EmployeeBasicFinancialData> {
+    public class GetEmployeeFinincialDataQuerySpecification : Specification<EmployeeBasicFinancialData>
+    {
 
-        public GetEmployeeFinincialDataQuerySpecification(int employeeId,int FinicialDataTypeId,DateTime? dateElement)
+        public GetEmployeeFinincialDataQuerySpecification(int employeeId, int FinicialDataTypeId, DateTime? dateElement)
         {
             AddInclude(x => x.FinancialDataTypes);
             AddCriteries(x => x.EmployeeId == employeeId);
             AddCriteries(x => x.FinancialDataTypes.ParentFinancialDataTypeId == FinicialDataTypeId);
 
-            if (dateElement.HasValue) {
+            if (dateElement.HasValue)
+            {
                 AddCriteries(x => x.FinancialDataTypes.ReservationDate <= dateElement.Value);
 
             }
         }
     }
 
-    public class EmployeeFinicialDataDto {
+    public class EmployeeFinicialDataDto
+    {
 
         public decimal Wazifi { get; set; }
         public decimal Mokamel { get; set; }

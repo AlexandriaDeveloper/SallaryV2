@@ -55,17 +55,28 @@ export class DeductionOrder{
 
 export class EmployeeOrder{
       employeeId:number=0;
-      orderFileId:number=0;
-      financialYearId:number=0;
-      formId:number;
-      orderId:number=0;
       details:string='';
       orderNumber:string='';
-      quantity:number=0;
-      creditOrDebit:string='d';
-      amount :number;
-      startFrom?:Date= null;
-      endAt?:Date=null;
+      employeeOrderType:EmployeeOrderType= new EmployeeOrderType()
+}
+export class EmployeeOrderType{
+  formId:number;
+  quantity?:number;
+  creditOrDebit:string='d';
+  amount? :number;
+  orderId:number=0;
+}
+export class EmployeeVacation{
+  employeeId:number=0;
+  formId:number;
+
+  vacationId:number=0;
+  details:string='';
+  orderNumber:string='';
+  quantity:number=0;
+  creditOrDebit:string='d';
+  startAt?:Date= null;
+  endAt?:Date=null;
 
 }
 export class FinancialYear{
@@ -218,7 +229,10 @@ id?:number=0;
 name :string='';
 reservationDate:string;
 parentFinancialDataTypeId:number;
-
-
-
 }
+export class EmployeeDataFinancialDataType{
+  id?:number;
+  amount=0;
+  employeeId;
+  financialDataTypeId:number;
+  }

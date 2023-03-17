@@ -1,26 +1,20 @@
 ﻿using Application.Common.Messaging;
 using Application.Services;
 using AutoMapper;
-using Domain.Constants;
 using Domain.Interfaces;
 using Domain.Shared;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.EmployeeBasicFinancialDatas.Commands.UploadEmployeeBasicFinicialData
 {
-    public record UploadEmployeeBasicFinicialDataCommand (UploadEmployeeBasicFinicialDataParam file):ICommand;
+    public record UploadEmployeeBasicFinicialDataCommand(UploadEmployeeBasicFinicialDataParam file) : ICommand;
     public class UploadEmployeeBasicFinicialDataCommandHandler : ICommandHandler<UploadEmployeeBasicFinicialDataCommand>
     {
         private readonly IUOW _uow;
         private readonly IMapper _mapper;
 
-        public UploadEmployeeBasicFinicialDataCommandHandler(IUOW uow , IMapper mapper)
+        public UploadEmployeeBasicFinicialDataCommandHandler(IUOW uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -28,35 +22,37 @@ namespace Application.EmployeeBasicFinancialDatas.Commands.UploadEmployeeBasicFi
 
         public async Task<Result> Handle(UploadEmployeeBasicFinicialDataCommand request, CancellationToken cancellationToken)
         {
-            
+
             var tempPath = await CopyFile(request.file.File);
             NPOIService npoi = new NPOIService();
             DataTable dt = npoi.ReadFile(tempPath, "Sheet1");
-            bool hasError= false;
+            bool hasError = false;
             foreach (DataRow row in dt.Rows)
             {
-                var emp =await _uow.EmployeeRepository.GetByExpressionAsync(x => x.TegaraCode == row.ItemArray[0]);
+                var emp = await _uow.EmployeeRepository.GetByExpressionAsync(x => x.TegaraCode == row.ItemArray[0]);
 
-                if (emp == null) {
-                    hasError= true;
+                if (emp == null)
+                {
+                    hasError = true;
                     break;
                 }
-               
+
                 for (int i = 2; i < row.ItemArray.Length; i++)
                 {
                     int finicialId;
                     decimal amount;
-                    bool  haveAmount =  decimal.TryParse(row.ItemArray[i].ToString(), out amount);
+                    bool haveAmount = decimal.TryParse(row.ItemArray[i].ToString(), out amount);
                     bool haveFinicialId = int.TryParse(dt.Columns[i].ColumnName.ToString(), out finicialId);
 
-                    if (!haveFinicialId) {
+                    if (!haveFinicialId)
+                    {
 
                         hasError = true;
                         break;
 
                     }
 
-                    if (haveAmount )
+                    if (haveAmount)
                     {
                         Domain.Models.EmployeeBasicFinancialData employeeDataToUpload = new Domain.Models.EmployeeBasicFinancialData();
                         employeeDataToUpload.EmployeeId = emp.Id;
@@ -64,18 +60,20 @@ namespace Application.EmployeeBasicFinancialDatas.Commands.UploadEmployeeBasicFi
                         employeeDataToUpload.FinancialDataTypesId = int.Parse(dt.Columns[i].ColumnName.ToString());
                         await _uow.EmployeeBasicFinancialDataRepository.AddItem(employeeDataToUpload);
                     }
-                    
+
                 }
 
-              
+
             }
 
-            if (hasError) {
-                return Result.Failure(new Error("500","حدث خطأ ما "));
+            if (hasError)
+            {
+                return Result.Failure(new Error("500", "حدث خطأ ما "));
             }
             var result = await _uow.SaveChangesAsync(cancellationToken);
 
-            if (result != Domain.Enums.SaveState.Saved) {
+            if (result != Domain.Enums.SaveState.Saved)
+            {
                 return Result.Failure(result);
             }
 

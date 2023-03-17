@@ -4,15 +4,10 @@ using Domain.Constants;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.FinancialDataTypes.Queries.GetParentElements
 {
-    public record GetParentElementsQuery(ElementParameter param): IQuery<List<FinancialDataTypeDto>>;
+    public record GetParentElementsQuery(ElementParameter param) : IQuery<List<FinancialDataTypeDto>>;
     public class GetParentElementsQueryHandler : IQueryHandler<GetParentElementsQuery, List<FinancialDataTypeDto>>
     {
         private readonly IUOW _uow;
@@ -25,18 +20,19 @@ namespace Application.FinancialDataTypes.Queries.GetParentElements
         }
         public async Task<Result<List<FinancialDataTypeDto>>> Handle(GetParentElementsQuery request, CancellationToken cancellationToken)
         {
-       
+
 
 
             GetParentElementsQuerySpecification spec = new GetParentElementsQuerySpecification(request.param);
 
             List<FinancialDataType> financialDataTypeFromDb = _uow.FinancialDataTypesRepository.GetAllBySpecAsync(spec).Result.Data;
 
-            if (financialDataTypeFromDb == null) {
+            if (financialDataTypeFromDb == null)
+            {
                 Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
 
-            List<FinancialDataTypeDto> financialDataTypeDtos = _mapper.Map <List< FinancialDataTypeDto>>(financialDataTypeFromDb);
+            List<FinancialDataTypeDto> financialDataTypeDtos = _mapper.Map<List<FinancialDataTypeDto>>(financialDataTypeFromDb);
 
             return Result.Success(financialDataTypeDtos);
 
@@ -46,7 +42,8 @@ namespace Application.FinancialDataTypes.Queries.GetParentElements
     }
 
 
-    public class GetParentElementsQuerySpecification : Specification<FinancialDataType> {
+    public class GetParentElementsQuerySpecification : Specification<FinancialDataType>
+    {
 
         public GetParentElementsQuerySpecification(ElementParameter param)
         {
@@ -55,17 +52,18 @@ namespace Application.FinancialDataTypes.Queries.GetParentElements
             {
                 AddCriteries(x => x.ParentFinancialDataTypeId == param.FinancialDataTypesId);
             }
-            else {
+            else
+            {
                 AddCriteries(x => x.ParentFinancialDataTypeId.HasValue == false);
 
             }
 
-            if(!string.IsNullOrEmpty( param.Name))
-            AddCriteries(x => x.Name.Contains( param.Name));
+            if (!string.IsNullOrEmpty(param.Name))
+                AddCriteries(x => x.Name.Contains(param.Name));
             if (param.ReservationDate.HasValue)
             {
 
-                AddCriteries(x => x.ReservationDate <=param.ReservationDate);
+                AddCriteries(x => x.ReservationDate <= param.ReservationDate);
 
             }
 
@@ -74,10 +72,11 @@ namespace Application.FinancialDataTypes.Queries.GetParentElements
 
     }
 
-    public class ElementParameter{
+    public class ElementParameter
+    {
         public int? FinancialDataTypesId { get; set; }
         public string? Name { get; set; }
         public DateTime? ReservationDate { get; set; }
-       
+
     }
 }

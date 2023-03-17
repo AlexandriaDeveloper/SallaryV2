@@ -15,8 +15,9 @@ public static class Constant
             public static string PUNISHMENT_EXAMINATION_REWARD = "أمر عقاب خصم من مكافأة الامتحانات";
             public static string REPAY = "أمر أستراداد مبلغ";
             //  public static string DEDUCTION = "أستقطاع مبلغ من المرتب ";
-            public static string FIXED_AMOUNT = "أستقطاع مبلغ ثابت";
-            public static string SUBSCRIPTIONS = "أشتراكات";
+            public static string FIXED_AMOUNT_IRADAT = "أستقطاع مبلغ ثابت ايرادات";
+            public static string FIXED_AMOUNT_MORTADAT = "أستقطاع مبلغ ثابت مرتدات";
+            // public static string SUBSCRIPTIONS = "أشتراكات";
         }
 
         public static class BudgetItems
@@ -25,11 +26,13 @@ public static class Constant
             public static string MOKAMEL = "اجر مكمل";
             public static string TA3WIDI = "أجر تعويضى";
             public static string GAZAA = "جزاء";
-            public static string ABSENCE = "غياب";
-            public static string DEDUCTION = "أستقطاع مبلغ من المرتب ";
-            public static string REPAY = "رد مبلغ";
+            public static string MORTADAT = "مرتدات";
+            public static string IRADAT = "إيرادات";
 
-            public static string SUBSCRIPTIONS = "أشتراكات";
+            public static string ISTRDAD = "أسترداد";
+
+
+            //public static string SUBSCRIPTIONS = "أشتراكات";
 
         }
 
@@ -63,6 +66,14 @@ public static class Constant
             public static string SADSA = "السادسه";
             public static string SADSA_A = "السادسه-أ";
             public static string SADSA_B = "السادسه-ب";
+        }
+
+        public static class VacationTypesConstraint
+        {
+            public static string AGAZA_BEDON_MORATAB = "اجازة بدون مرتب";
+            public static string GOZAA_MN_EL_WAKT = "جزء من الوقت";
+            public static string INTADAB_GOZ2I = "انتداب جزئى";
+            public static string INTADAB_KOLI = "انتداب كلى";
         }
     }
 

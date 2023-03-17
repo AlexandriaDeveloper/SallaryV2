@@ -43,33 +43,16 @@
       <input matInput  [value]="employee?.name">
     </mat-form-field>
 
-    <mat-form-field  appearance="fill">
-      <mat-label  style="font-family: Cairo;">اسم الموظف</mat-label>
-      <input matInput [value]="employee?.section">
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="selectedDate" [(value)]="selectedDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field color="primary" appearance="fill">
-      <mat-label>اسم الموظف</mat-label>
-      <mat-select formControlName="financialYearId" [(value)]=" employeeOrder.financialYearId.id"  >
 
-        <mat-option  *ngFor="let financialYear of financialYears" [(value)]="financialYear.id"  >
-          <span >
-          {{financialYear.name}}
-        </span>
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field color="primary" appearance="fill">
-      <mat-label style="font-family: Cairo;">نوع الامر</mat-label>
-      <mat-select formControlName="orderId"  [(value)]="employeeOrder.orderId" >
-        <mat-option  *ngFor="let order of orders" [value]="order.id"  >
-          <span >
-          {{order.name}}
-        </span>
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
 
     <mat-form-field  appearance="fill">
       <mat-label  style="font-family: Cairo;">رقم الامر</mat-label>
@@ -81,39 +64,31 @@
       <textarea  matInput formControlName="details" [(value)]="employeeOrder.details" ></textarea>
     </mat-form-field>
 
-    <mat-form-field  appearance="fill">
-      <mat-label  style="font-family: Cairo;"> مبلغ ثابت  </mat-label>
-      <textarea  matInput formControlName="amount" [(value)]="employeeOrder.amount" ></textarea>
-    </mat-form-field>
-    
-    <mat-form-field  appearance="fill">
-      <mat-label  style="font-family: Cairo;">عدد الايام  </mat-label>
-      <input type="number" matInput formControlName="quantity" [(value)]="employeeOrder.quantity" >
-    </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Choose a date</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate    formControlName="startFrom">
-          <input matEndDate     formControlName="endAt" (dateChange)="calculateQuantity($event)">
-        </mat-date-range-input>
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker>
-        <mat-date-range-picker-actions>
-          <button mat-button matDateRangePickerCancel>Cancel</button>
-          <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
-        </mat-date-range-picker-actions>
-      </mat-date-range-picker>
-    </mat-form-field>
 
-    <!-- <mat-form-field appearance="fill">
-      <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker1" formControlName="endAt">
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1 color="accent" ></mat-datepicker>
-    </mat-form-field> -->
+
+
+      <ng-container formGroupName="employeeOrderType">
+        <mat-form-field color="primary" appearance="fill">
+          <mat-label style="font-family: Cairo;">نوع الامر</mat-label>
+          <mat-select formControlName="orderId"  [(value)]="employeeOrder.employeeOrderType.orderId" >
+            <mat-option  *ngFor="let order of orders" [value]="order.id"  >
+              <span >
+              {{order.name}}
+            </span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field  appearance="fill">
+          <mat-label  style="font-family: Cairo;"> مبلغ ثابت  </mat-label>
+          <textarea  matInput formControlName="amount" [(value)]="employeeOrder.amount" ></textarea>
+        </mat-form-field>
+
+        <mat-form-field  appearance="fill">
+          <mat-label  style="font-family: Cairo;">عدد الايام  </mat-label>
+          <input type="number" matInput formControlName="quantity" [(value)]="employeeOrder.quantity" >
+        </mat-form-field>
+      </ng-container>
 
 
     <button mat-raised-button  color="primary">Save</button>

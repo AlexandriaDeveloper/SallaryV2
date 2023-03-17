@@ -41,7 +41,7 @@ namespace Domain.Employees.Queries.GetEmployeeById
                     return Result<EmployeeDetailsDto>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
                 }
 
-               
+
                 empToReturn.Next = await _uow.EmployeeFormRepository.NextEmployeeInForm(employeeForm.EmployeeOrderNumber, request.formId.Value);
                 empToReturn.Previous = await _uow.EmployeeFormRepository.PreviousEmployeeInForm(employeeForm.EmployeeOrderNumber, request.formId.Value);
             }
@@ -61,9 +61,9 @@ namespace Domain.Employees.Queries.GetEmployeeById
 
             public GetEmployeesByIdQuerySpecification(int id)
             {
-                AddInclude(x => x.PartTimeDurations);
+                // AddInclude(x => x.PartTimeDurations);
                 AddInclude(x => x.EmployeeGrades);
-                
+
                 AddCriteries(x => x.Id == id);
             }
 

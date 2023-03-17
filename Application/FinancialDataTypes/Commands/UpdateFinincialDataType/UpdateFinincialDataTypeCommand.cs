@@ -6,46 +6,42 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.FinancialDataTypes.Commands.UpdateFinincialDataType
 {
-    public record UpdateFinincialDataTypeCommand(FinancialDataTypeDto FinancialDataType):ICommand;
+    public record UpdateFinincialDataTypeCommand(FinancialDataTypeDto FinancialDataType) : ICommand;
     public class UpdateFinincialDataTypeCommandHandler : ICommandHandler<UpdateFinincialDataTypeCommand>
     {
         private readonly IUOW _uow;
         private readonly IMapper _mapper;
 
-        public UpdateFinincialDataTypeCommandHandler(IUOW uow,IMapper mapper)
+        public UpdateFinincialDataTypeCommandHandler(IUOW uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
         }
         public async Task<Result> Handle(UpdateFinincialDataTypeCommand request, CancellationToken cancellationToken)
         {
-            FinancialDataType financialDataType =await _uow.FinancialDataTypesRepository.GetByIdAsync(request.FinancialDataType.Id);
+            FinancialDataType financialDataType = await _uow.FinancialDataTypesRepository.GetByIdAsync(request.FinancialDataType.Id);
             if (financialDataType == null)
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
 
-             _mapper.Map<FinancialDataTypeDto, FinancialDataType>(request.FinancialDataType, financialDataType);
+            _mapper.Map<FinancialDataTypeDto, FinancialDataType>(request.FinancialDataType, financialDataType);
 
 
-             await _uow.FinancialDataTypesRepository.Update(financialDataType);
-            var result =await _uow.SaveChangesAsync(cancellationToken);
-            if (result != SaveState.Saved) {
+            await _uow.FinancialDataTypesRepository.Update(financialDataType);
+            var result = await _uow.SaveChangesAsync(cancellationToken);
+            if (result != SaveState.Saved)
+            {
                 return Result.Failure(result);
             }
-        return    Result.Success();
+            return Result.Success();
         }
     }
 
-    public class UpdateFinincialDataTypeCommandValidator:AbstractValidator<UpdateFinincialDataTypeCommand>
+    public class UpdateFinincialDataTypeCommandValidator : AbstractValidator<UpdateFinincialDataTypeCommand>
     {
 
         public UpdateFinincialDataTypeCommandValidator()

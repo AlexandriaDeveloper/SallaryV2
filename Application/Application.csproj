@@ -32,8 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FinancialYears\Commands\" />
-    <Folder Include="FinancialYears\Queries\GetFinancialYearById\" />
     <Folder Include="Order\Commands\" />
   </ItemGroup>
 

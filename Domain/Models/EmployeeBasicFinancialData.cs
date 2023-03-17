@@ -1,10 +1,5 @@
 ﻿using Domain.Primitives;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Models
 {
@@ -18,7 +13,7 @@ namespace Domain.Models
         public decimal Amount { get; set; }
 
 
-        public  FinancialDataType FinancialDataTypes { get; set; }
+        public FinancialDataType FinancialDataTypes { get; set; }
         public Employee Employee { get; set; }
     }
 }

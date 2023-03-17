@@ -71,3 +71,17 @@ export class FinancialDataTypeParam extends Param{
   name? : string;
   reservationDate?:string=null;
 }
+
+
+export class GetEmployeeElementDetailsParam extends Param{
+
+  employeeId?: number;
+  finicialDataTypeId?:number;
+  reservationDate?:string;
+}
+
+export class GetVacationTypeParam extends Param{
+
+  id?: number =null;
+  name?:string=null;
+}

@@ -1,13 +1,10 @@
-﻿using Application.Banks.Commands.RegisterBankWithBranches;
-using Application.EmployeeBankAccount;
-using Application.FinancialDataTypes;
+﻿using Application.FinancialDataTypes;
 using Application.FinancialDataTypes.Commands.AddFinincialDataType;
 using Application.FinancialDataTypes.Commands.DeleteFinicialDataType;
 using Application.FinancialDataTypes.Commands.UpdateFinincialDataType;
 using Application.FinancialDataTypes.Queries.GetParentElements;
 using Domain.Shared;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Api.Controllers
@@ -15,8 +12,6 @@ namespace Web.Api.Controllers
 
     public class FinancialDataTypeController : BaseController
     {
-
-        //AddFinincialDataTypeCommand
         public FinancialDataTypeController(IMediator mediator) : base(mediator)
         {
         }

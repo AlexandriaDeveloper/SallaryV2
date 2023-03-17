@@ -1,11 +1,11 @@
-﻿using Domain.Primitives;
+﻿//using Domain.Primitives;
 
-namespace Domain.Models
-{
-    public class FinancialYear : Entity
-    {
+//namespace Domain.Models
+//{
+//    public class FinancialYear : Entity
+//    {
 
-        public ICollection<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
+//        public ICollection<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
 
-    }
-}
+//    }
+//}

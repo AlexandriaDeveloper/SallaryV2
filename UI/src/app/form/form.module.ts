@@ -19,6 +19,7 @@ import { AddEmployeePeriodicFormDialogComponent } from './employee-form-details/
 import { UploadSusbcriptionFileComponent } from './employee-form-details/upload-susbcription-file/upload-susbcription-file.component';
 import { OrdersDetailsComponent } from './employee-form-details/orders-details/orders-details.component';
 import { NewEmployeeOrderDialogComponent } from './employee-form-details/orders-details/new-employee-order-dialog/new-employee-order-dialog.component';
+import { EmployeeVacationDialogComponent } from './employee-form-details/orders-details/employee-vacation-dialog/employee-vacation-dialog.component';
 
 
 
@@ -36,6 +37,7 @@ import { NewEmployeeOrderDialogComponent } from './employee-form-details/orders-
      UpdatePeriodicSubscriptionDataDialogComponent,
      AddEmployeePeriodicFormDialogComponent,
      UploadSusbcriptionFileComponent,
+     EmployeeVacationDialogComponent,
 
 
 

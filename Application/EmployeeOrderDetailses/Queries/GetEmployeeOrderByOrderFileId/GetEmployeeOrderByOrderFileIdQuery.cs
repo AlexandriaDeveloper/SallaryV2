@@ -27,12 +27,10 @@ public class GetEmployeeOrderByOrderFileIdQueryHandler :
                 employeeOrderDetail.Employee.TabCode,
                 employeeOrderDetail.Employee.TegaraCode,
                  employeeOrderDetail.Employee.Name,
-                 employeeOrderDetail.Order.Name,
+                 employeeOrderDetail.EmployeeOrderType.Order.Name,
                  employeeOrderDetail.Details,
-                 employeeOrderDetail.Quantity,
-                 employeeOrderDetail.StartFrom,
-                 employeeOrderDetail.EndAt,
-                 employeeOrderDetail.EmployeeOrderExecuations.Sum(x => x.Amount)
+                 employeeOrderDetail.EmployeeOrderType.Quantity,
+                 employeeOrderDetail.EmployeeOrderType.EmployeeOrderExecuations.Sum(x => x.Amount)
                 ));
 
 
@@ -49,13 +47,14 @@ public class GetEmployeeOrderByOrderFileIdQuerySpecification : Specification<Emp
     {
 
         AddInclude(x => x.Employee);
-        AddInclude(x => x.Order);
-        AddInclude(x => x.EmployeeOrderExecuations);
+        AddInclude(x => x.EmployeeOrderType);
+        AddInclude(x => x.EmployeeOrderType.Order);
+        AddInclude(x => x.EmployeeOrderType.EmployeeOrderExecuations);
         //  AddInclude(x => x.OrderFile);
 
 
         if (param.FormId.HasValue)
-            AddCriteries(x => x.FormId.Equals(param.FormId.Value));
+            AddCriteries(x => x.EmployeeOrderType.FormId.Equals(param.FormId.Value));
         if (!string.IsNullOrEmpty(param.TabCode))
             AddCriteries(x => x.Employee.TabCode == param.TabCode);
         if (!string.IsNullOrEmpty(param.TegaraCode))
@@ -63,16 +62,11 @@ public class GetEmployeeOrderByOrderFileIdQuerySpecification : Specification<Emp
         if (!string.IsNullOrEmpty(param.EmployeeName))
             AddCriteries(x => x.Employee.Name.StartsWith(param.EmployeeName));
         if (!string.IsNullOrEmpty(param.OrderName))
-            AddCriteries(x => x.Order.Name.StartsWith(param.OrderName));
+            AddCriteries(x => x.EmployeeOrderType.Order.Name.StartsWith(param.OrderName));
         if (!string.IsNullOrEmpty(param.Details))
             AddCriteries(x => x.Details.StartsWith(param.Details));
-        if (param.StartFrom.HasValue)
-            AddCriteries(x => x.StartFrom >= param.StartFrom);
-        if (param.EndAt.HasValue)
-            AddCriteries(x => x.StartFrom <= param.EndAt);
-
         if (param.Amount.HasValue)
-            AddCriteries(x => x.EmployeeOrderExecuations.Sum(t => t.Amount).Equals(param.Amount));
+            AddCriteries(x => x.EmployeeOrderType.EmployeeOrderExecuations.Sum(t => t.Amount).Equals(param.Amount));
 
         AddOrderBy(x => x.Id);
 
@@ -82,7 +76,6 @@ public class GetEmployeeOrderByOrderFileIdQuerySpecification : Specification<Emp
 
 public class GetEmployeeOrderByOrderFileIdQueryParams : Param
 {
-   // public int? OrderFileId { get; set; }
     public string TabCode { get; set; }
     public string TegaraCode { get; set; }
     public int? FormId { get; set; }

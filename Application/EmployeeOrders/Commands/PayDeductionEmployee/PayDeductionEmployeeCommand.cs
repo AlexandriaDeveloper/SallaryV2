@@ -37,17 +37,18 @@ namespace Domain.EmployeeOrders.Commands.PayDeductionEmployee
             }
 
             EmployeeOrder employeeOrderDeduction = new EmployeeOrder();
-            employeeOrderDeduction.EmployeeOrderExecuations = new List<EmployeeOrderExecuation>();
-            employeeOrderDeduction.OrderId = request.employeeOrder.OrderId;
+            employeeOrderDeduction.EmployeeOrderType = new EmployeeOrderType();
+            employeeOrderDeduction.EmployeeOrderType.EmployeeOrderExecuations = new List<EmployeeOrderTypeExecuation>();
+            employeeOrderDeduction.EmployeeOrderType.OrderId = request.employeeOrder.OrderId;
             employeeOrderDeduction.EmployeeId = request.employeeOrder.EmployeeId;
-            employeeOrderDeduction.CreditOrDebit = request.employeeOrder.CreditOrDepit;
-            employeeOrderDeduction.FormId = request.employeeOrder.FormId;
+            employeeOrderDeduction.EmployeeOrderType.CreditOrDebit = request.employeeOrder.CreditOrDepit;
+            employeeOrderDeduction.EmployeeOrderType.FormId = request.employeeOrder.FormId;
             employeeOrderDeduction.Details = request.employeeOrder.Details;
 
 
-            BudgetItem budgetItem = await _uow.BudgetItemRepository.GetByNameAsync(Constant.Model.BudgetItems.DEDUCTION);
+            BudgetItem budgetItem = await _uow.BudgetItemRepository.GetByNameAsync(Constant.Model.BudgetItems.IRADAT);
 
-            employeeOrderDeduction.EmployeeOrderExecuations.Add(CalculateEmployeeOrderExecuation(budgetItem.Id, request.employeeOrder.Amount));
+            employeeOrderDeduction.EmployeeOrderType.EmployeeOrderExecuations.Add(CalculateEmployeeOrderExecuation(budgetItem.Id, request.employeeOrder.Amount));
 
 
             await _uow.EmployeeOrderRepository.AddItem(employeeOrderDeduction);
@@ -60,10 +61,10 @@ namespace Domain.EmployeeOrders.Commands.PayDeductionEmployee
             return Result<Unit>.Success(Unit.Value);
         }
 
-        private EmployeeOrderExecuation CalculateEmployeeOrderExecuation(int budgetItemId, decimal amount, int? subscriptionId = null)
+        private EmployeeOrderTypeExecuation CalculateEmployeeOrderExecuation(int budgetItemId, decimal amount, int? subscriptionId = null)
         {
 
-            EmployeeOrderExecuation ex = new EmployeeOrderExecuation();
+            EmployeeOrderTypeExecuation ex = new EmployeeOrderTypeExecuation();
             ex.BudgetItemId = budgetItemId;
             ex.Amount = amount;
             ex.CreatedBy = _authService.GetCurrentLoggedInUser();

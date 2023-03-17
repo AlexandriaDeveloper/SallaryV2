@@ -54,17 +54,17 @@ public class UploadEmployeeFileCommandHandler : ICommandHandler<UploadEmployeeFi
                     CreatedDate = DateTime.Now,
                     StartFrom = DateTime.Now,
                 });
-                employeeToDb.EmployeeBasicSallaries = new List<EmployeeBasicSallary>();
-                employeeToDb.EmployeeBasicSallaries.Add(new EmployeeBasicSallary()
-                {
-                    FinancialYearId = request.financialYearId,
-                    BasicSallary = Math.Round(decimal.Parse(employee.ItemArray[7].ToString()), 2),
-                    Wazifi = Math.Round(decimal.Parse(employee.ItemArray[8].ToString()), 2),
-                    Mokamel = Math.Round(decimal.Parse(employee.ItemArray[9].ToString()), 2),
-                    Taawidi = Math.Round(decimal.Parse(employee.ItemArray[10].ToString()), 2),
-                    CreatedBy = _authService.GetCurrentLoggedInUser(),
-                    CreatedDate = DateTime.Now,
-                });
+                //employeeToDb.EmployeeBasicSallaries = new List<EmployeeBasicSallary>();
+                //employeeToDb.EmployeeBasicSallaries.Add(new EmployeeBasicSallary()
+                //{
+                //    FinancialYearId = request.financialYearId,
+                //    BasicSallary = Math.Round(decimal.Parse(employee.ItemArray[7].ToString()), 2),
+                //    Wazifi = Math.Round(decimal.Parse(employee.ItemArray[8].ToString()), 2),
+                //    Mokamel = Math.Round(decimal.Parse(employee.ItemArray[9].ToString()), 2),
+                //    Taawidi = Math.Round(decimal.Parse(employee.ItemArray[10].ToString()), 2),
+                //    CreatedBy = _authService.GetCurrentLoggedInUser(),
+                //    CreatedDate = DateTime.Now,
+                //});
 
                 await _uow.EmployeeRepository.AddItem(employeeToDb);
             }

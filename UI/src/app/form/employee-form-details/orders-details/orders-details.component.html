@@ -1,7 +1,12 @@
-<button mat-raised-button color="primary" (click)="openDialog()" >
-  اضافة امر جديد
-<mat-icon>add</mat-icon>
+
+<button  color="primary" mat-raised-button [matMenuTriggerFor]="menu">
+  اضافة
+  <mat-icon>settings</mat-icon>
 </button>
+<mat-menu color="primary" #menu="matMenu">
+  <button color="primary"  mat-menu-item  (click)="openEmployeeOrderDialog()" >  اضافة خصم  <mat-icon>receipt_long</mat-icon></button>
+  <button color="primary"  mat-menu-item (click)="openEmployeeVacationDialog()">  اضافه اجازة <mat-icon>sunny</mat-icon></button>
+</mat-menu>
 
 <div class="mat-elevation-z8">
 
@@ -12,9 +17,10 @@
       <td mat-cell *matCellDef="let row">
 <div style="display: flex;">
 
-  <button matRipple mat-mini-fab color="primary" aria-label="Example icon button with a home icon" routerLink="details/{{row.id}}">
+  <!-- <button matRipple mat-mini-fab color="primary" aria-label="Example icon button with a home icon" routerLink="/employee/details/{{row.id}}">
     <mat-icon>manage_accounts</mat-icon>
-  </button>
+  </button> -->
+
   <button matRipple mat-mini-fab  color="warn" aria-label="Example icon button with a home icon" (click)="deleteOrderDetails(row)">
     <mat-icon>no_accounts</mat-icon>
   </button>

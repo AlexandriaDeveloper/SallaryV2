@@ -2,6 +2,7 @@
 
 
 <div style="display: flex; justify-content: space-between;">
+  <div>
   <button color="primary" mat-flat-button [matMenuTriggerFor]="menu">
     <mat-icon>settings</mat-icon>
   </button>
@@ -11,6 +12,16 @@
     <button  color="primary"  mat-menu-item (click)="openPartTimeHistoryDialog()"> جزء من الوقت</button>
     <button  color="primary"  mat-menu-item (click)="openPartTimeDialog()">جزء من الوقت</button>
   </mat-menu>
+
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>من تاريخ </mat-label>
+      <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="dateChange($event)">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
 <div style="color: red;font-size: 16px; font-weight: bold;" *ngIf="employee?.employeeInPartTime===true">
   يعمل جزء من الوقت
 </div>
@@ -20,13 +31,44 @@
 </div>
   <div class="" style="display: flex; padding: 30px;justify-content: space-between;">
 
-    <div> الاجر الاساسى :  {{employeeBasicSallary?.basicSallary}} </div>
+    <!-- <div> الاجر الاساسى :  {{employeeBasicSallary?.basicSallary}} </div> -->
 
-  <div> الاجر الوظيفى :  {{employeeBasicSallary?.wazifi}} </div>
+  <div  >
+    <button color="primary" mat-icon-button (click)="getFincicialData(1000)">
+    <mat-icon>settings</mat-icon>
+  </button>
+  الاجر الوظيفى :  {{employeeBasicSallary?.wazifi}}
 
-  <div> الاجر المكمل :  {{employeeBasicSallary?.mokamel}} </div>
+</div>
 
-  <div> حافز تعويضى :  {{employeeBasicSallary?.taawidi}} </div>
+  <div >
+    <button color="primary"mat-icon-button (click)="getFincicialData(2000)">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    الاجر المكمل :  {{employeeBasicSallary?.mokamel}}
+
+  </div>
+
+  <div >
+
+    <button color="primary" mat-icon-button (click)="getFincicialData(4000)">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    حافز تعويضى :  {{employeeBasicSallary?.taawidi}}
+
+  </div>
+
+  <div >
+
+    <button color="primary" mat-icon-button (click)="getFincicialData(3000)">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    اجمالى الاجر:
+
+  </div>
   </div>
 
 

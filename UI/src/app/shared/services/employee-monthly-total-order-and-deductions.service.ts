@@ -18,10 +18,10 @@ export class EmployeeMonthlyTotalOrderAndDeductionsService extends HttpCustomCli
   }
 
   getEmployeeMonthlyTotalOrderAndDeductionsHistoryDetailsService(employeeId : number,orderId:number){
-    debugger
      let params  = new HttpParams();
     params= params.append('employeeId',employeeId);
      params=params.append('orderId',orderId)
+
     return this.httpCall.get(environment.apiUrl+'employeeMonthlyCalculatSallary/GetEmployeeOrders',{params});
   }
 

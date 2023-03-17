@@ -1,0 +1,74 @@
+
+<mat-card *ngIf="items">
+  <mat-card-header>
+    <div class="close" style="padding: 5px;">
+
+      <button color="primary" mat-mini-fab (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-card-title style="font-family: Cairo; padding: 10px;padding-right: 40px; color: #fff;">أنشاء مجموعه  </mat-card-title>
+  </mat-card-header>
+  <mat-card-content  >
+
+<div style="display: flex; justify-content: center;padding: 10px;">
+  <button mat-mini-fab color="primary" (click)="openNewDialog()"> <mat-icon>add</mat-icon></button>
+
+</div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div  formArrayName="employeeFinicialElementData" >
+<ng-container *ngFor="let item of getFormControls().controls; let findex = index" >
+
+<div  class="example-form-fields" >
+  <div [formGroupName]="findex" style="display:flex;"  >
+    <button mat-icon-button color="warn" (click)="deleteItem(item,findex)"><mat-icon>delete</mat-icon></button>
+    <mat-form-field  >
+      <mat-label>البند</mat-label>
+      <input matInput readonly formControlName="name">
+    </mat-form-field>
+
+
+
+    <mat-form-field >
+      <mat-label>المبلغ </mat-label>
+      <input matInput placeholder="Ex. Pizza"formControlName="amount">
+    </mat-form-field>
+
+    <mat-form-field >
+      <mat-label> تاريخ الحصول</mat-label>
+      <input matInput placeholder="Ex. Pizza" readonly formControlName="reservationDate">
+    </mat-form-field>
+<mat-fprm-field>
+
+<div style="display: flex ;justify-content: center;">
+
+  <button mat-icon-button  color="primary" (click)="UpdateEmployeeFinicialElementData(item)"><mat-icon>save</mat-icon></button>
+</div>
+</mat-fprm-field>
+  </div>
+</div>
+
+</ng-container>
+
+
+    </div>
+    <div class="example-form-fields">
+
+      <mat-form-field  >
+        <mat-label>البند</mat-label>
+        <input matInput readonly value="الاجمالى" style="font-weight: bolder;font-family: cairo;">
+      </mat-form-field>
+
+      <mat-form-field >
+        <mat-label>المبلغ </mat-label>
+        <input matInput placeholder="Ex. Pizza" style="font-weight: bolder;" readonly [value]="items?.total">
+      </mat-form-field>
+    </div>
+
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+
+  </mat-card-actions>
+</mat-card>

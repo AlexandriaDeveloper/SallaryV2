@@ -8,6 +8,7 @@ import { MatTable } from '@angular/material/table';
 import { OrderFileDataSource } from './order-file-details-dataSource';
 import { OrderFileDetailsParam } from 'src/app/shared/models/param';
 import { EmployeeOrderFileDetailsService } from 'src/app/shared/services/employee-order-file-details.service';
+import { EmployeeVacationDialogComponent } from './employee-vacation-dialog/employee-vacation-dialog.component';
 
 @Component({
   selector: 'app-orders-details',
@@ -42,7 +43,7 @@ export class OrdersDetailsComponent  implements AfterViewInit, OnInit{
      this.table.dataSource = this.dataSource;
      this.paginator=this.dataSource.paginator;
   }
-  openDialog(): void {
+  openEmployeeOrderDialog(): void {
     const dialogRef = this.dialog.open(NewEmployeeOrderDialogComponent, {
       data: {formId: this.ordersParam.formId},
 
@@ -57,7 +58,21 @@ export class OrdersDetailsComponent  implements AfterViewInit, OnInit{
       this.table.dataSource = this.dataSource.connect();
     });
   }
+  openEmployeeVacationDialog(): void {
+    const dialogRef = this.dialog.open(EmployeeVacationDialogComponent, {
+      data: {formId: this.ordersParam.formId},
 
+      maxWidth:'600px',
+     // minHeight:'759px',
+      disableClose:true,
+      panelClass:['dialog']
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //this.animal = result;
+      this.table.dataSource = this.dataSource.connect();
+    });
+  }
   handlePageEvent(event: PageEvent) {
     this.dataSource.orderParam.pageIndex=event.pageIndex;
     this.table.dataSource = this.dataSource.connect();

@@ -9,7 +9,7 @@ namespace Domain.Primitives
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual int Id { get; set; }
-        [MaxLength(150), Required]
+        [MaxLength(150)]
         public virtual string Name { get; set; } = "";
 
         //Audtiting

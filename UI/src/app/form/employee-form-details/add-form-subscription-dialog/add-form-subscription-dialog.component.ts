@@ -1,8 +1,8 @@
 import { EmployeeFormService } from 'src/app/shared/services/employee-form.service';
-import { CheckedSucription, EmployeeForm } from './../../../shared/models/employee/employee';
+import { CheckedSucription, EmployeeForm, FinancialYear, IEmployee } from './../../../shared/models/employee/employee';
 import { SubscriptionService } from './../../../shared/services/subscription.service';
 import { Component, Inject, AfterViewInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Sucription } from 'src/app/shared/models/employee/employee';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -41,4 +41,7 @@ export class AddFormSubscriptionDialogComponent implements AfterViewInit {
 
     this.employeeFormService.postEmployeeSubscription(this.data.formId,this.subsriptions).subscribe(x =>  this.onNoClick())
   }
+
+
+  
 }
