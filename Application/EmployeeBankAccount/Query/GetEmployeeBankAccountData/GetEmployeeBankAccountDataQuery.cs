@@ -22,7 +22,7 @@ namespace Application.EmployeeBankAccount.Query.GetEmployeeBankAccountData
         public async Task<Result<EmployeeBankAccontDataDto>> Handle(GetEmployeeBankAccountDataQuery request, CancellationToken cancellationToken)
         {
             GetEmployeeBankAccountDataQuerySpecification spec = new GetEmployeeBankAccountDataQuerySpecification(request.employeeBankId);
-            EmployeeBank empBank = await _uow.EmployeeBankRepository.GetBySingleOrDefaultAsync(spec);
+            Domain.Models.EmployeeBankAccount empBank = await _uow.EmployeeBankRepository.GetBySingleOrDefaultAsync(spec);
             if (empBank == null)
             {
 
@@ -36,7 +36,7 @@ namespace Application.EmployeeBankAccount.Query.GetEmployeeBankAccountData
         }
     }
 
-    public class GetEmployeeBankAccountDataQuerySpecification : Specification<EmployeeBank>
+    public class GetEmployeeBankAccountDataQuerySpecification : Specification<Domain.Models.EmployeeBankAccount>
     {
 
         public GetEmployeeBankAccountDataQuerySpecification(int employeeBankId)

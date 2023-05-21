@@ -45,7 +45,7 @@ namespace Application.EmployeeSubscriptions.Queries.GetEmployeeSubscriptionList
         public bool IsActive { get; set; }
     }
 
-    public class GetEmployeeSubscriptionListQuerySpecification : Specification<EmployeeSubscription>
+    public class GetEmployeeSubscriptionListQuerySpecification : Specification<RegisterdEmployeeSubscription>
     {
         public GetEmployeeSubscriptionListQuerySpecification(EmployeeSubscriptionParam param)
         {

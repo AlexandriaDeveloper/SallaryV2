@@ -21,12 +21,12 @@ namespace Application.PeriodicSubscriptions.Commands.DeletePeriodicSubscription
         }
         public async Task<Result> Handle(DeletePeriodicSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            PeriodicSubscription periodicSubscription = await _uow.PeriodicSubscriptionRepository.GetByIdAsync(request.Id);
+            FormEmployeeSubscription periodicSubscription = await _uow.FormEmployeeSubscriptionRepository.GetByIdAsync(request.Id);
             if (periodicSubscription == null)
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            await _uow.PeriodicSubscriptionRepository.HardDelete(request.Id);
+            await _uow.FormEmployeeSubscriptionRepository.HardDelete(request.Id);
             var result = await _uow.SaveChangesAsync(cancellationToken);
             if (result != Domain.Enums.SaveState.Saved)
             {

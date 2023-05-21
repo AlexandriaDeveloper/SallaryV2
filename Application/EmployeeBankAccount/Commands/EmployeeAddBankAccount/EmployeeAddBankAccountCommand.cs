@@ -36,7 +36,12 @@ namespace Application.EmployeeBankAccount.Commands.EmployeeAddBankAccount
             }
 
 
-            var employeeBank = new EmployeeBank() { BranchId = request.employeeAccount.BranchId, AccountNumber = request.employeeAccount.AccountNumber, CreatedBy = _authService.GetCurrentLoggedInUser(), CreatedDate = DateTime.Now };
+            var employeeBank = new Domain.Models.EmployeeBankAccount() { 
+                BranchId = request.employeeAccount.BranchId, 
+                AccountNumber = request.employeeAccount.AccountNumber, 
+                CreatedBy = _authService.GetCurrentLoggedInUser(), 
+                CreatedDate = DateTime.Now
+            };
             await _uow.EmployeeRepository.EmployeeAddBankAccount(request.employeeAccount.EmployeeId, employeeBank
               );
 

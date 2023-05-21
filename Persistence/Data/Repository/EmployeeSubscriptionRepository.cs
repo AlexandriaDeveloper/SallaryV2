@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Data.Repository
 {
-    public class EmployeeSubscriptionRepository : Repository<EmployeeSubscription>, IEmployeeSubscriptionRepository
+    public class EmployeeSubscriptionRepository : Repository<RegisterdEmployeeSubscription>, IEmployeeSubscriptionRepository
     {
         private readonly SallaryCQRSAppContext _context;
 
@@ -17,19 +17,19 @@ namespace Persistence.Data.Repository
             _context = context;
         }
 
-        public async Task<List<EmployeeSubscription>> GetEmployeeSubscriptionBySubscriptionId(int subscriptionId)
+        public async Task<List<RegisterdEmployeeSubscription>> GetEmployeeSubscriptionBySubscriptionId(int subscriptionId)
         {
 
-            List<EmployeeSubscription> result = new List<EmployeeSubscription>();
-            result = await _context.EmployeeSubscriptions.Where(x => x.IsActive && x.SubscriptionId.Equals(subscriptionId)).ToListAsync();
+            List<RegisterdEmployeeSubscription> result = new List<RegisterdEmployeeSubscription>();
+            result = await _context.RegisterdEmployeeSubscriptions.Where(x => x.IsActive && x.SubscriptionId.Equals(subscriptionId)).ToListAsync();
             return result;
 
         }
-        public async Task<List<EmployeeSubscription>> GetSubscriptionsByEmployeeId(int employeeId)
+        public async Task<List<RegisterdEmployeeSubscription>> GetSubscriptionsByEmployeeId(int employeeId)
         {
 
-            List<EmployeeSubscription> result = new List<EmployeeSubscription>();
-            result = await _context.EmployeeSubscriptions.Where(x => x.IsActive && x.EmployeeId.Equals(employeeId)).ToListAsync();
+            List<RegisterdEmployeeSubscription> result = new List<RegisterdEmployeeSubscription>();
+            result = await _context.RegisterdEmployeeSubscriptions.Where(x => x.IsActive && x.EmployeeId.Equals(employeeId)).ToListAsync();
             return result;
 
         }

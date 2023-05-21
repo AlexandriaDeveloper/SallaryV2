@@ -23,7 +23,7 @@ namespace Application.EmployeeSubscriptions.Queries.GetEmployeeSubscriptionById
         }
         public async Task<Result<EmployeeToSubscriptionDto>> Handle(GetEmployeeSubscriptionByIdQuery request, CancellationToken cancellationToken)
         {
-            EmployeeSubscription employeeSubscriptionFromDb = await _uow.EmployeeSubscriptionRepository.GetByIdAsync(request.id);
+            RegisterdEmployeeSubscription employeeSubscriptionFromDb = await _uow.EmployeeSubscriptionRepository.GetByIdAsync(request.id);
             if (employeeSubscriptionFromDb == null)
             {
 

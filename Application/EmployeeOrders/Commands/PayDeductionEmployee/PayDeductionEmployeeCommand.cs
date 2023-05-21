@@ -4,11 +4,12 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using MediatR;
+using static Domain.Constants.Constant.Model;
 
 namespace Domain.EmployeeOrders.Commands.PayDeductionEmployee
 {
 
-    public record PayDeductionEmployeeCommand(EmployeeOrderDeductionDto employeeOrder) : ICommand<Unit>;
+    public record PayDeductionEmployeeCommand(FormEmployeeOrderDto employeeOrder) : ICommand<Unit>;
 
     public class PayDeductionEmployeeCommandHandler : ICommandHandler<PayDeductionEmployeeCommand, Unit>
     {
@@ -36,22 +37,25 @@ namespace Domain.EmployeeOrders.Commands.PayDeductionEmployee
                 return Result<Unit>.Failure(new Error("", Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST));
             }
 
-            EmployeeOrder employeeOrderDeduction = new EmployeeOrder();
-            employeeOrderDeduction.EmployeeOrderType = new EmployeeOrderType();
-            employeeOrderDeduction.EmployeeOrderType.EmployeeOrderExecuations = new List<EmployeeOrderTypeExecuation>();
-            employeeOrderDeduction.EmployeeOrderType.OrderId = request.employeeOrder.OrderId;
-            employeeOrderDeduction.EmployeeId = request.employeeOrder.EmployeeId;
-            employeeOrderDeduction.EmployeeOrderType.CreditOrDebit = request.employeeOrder.CreditOrDepit;
-            employeeOrderDeduction.EmployeeOrderType.FormId = request.employeeOrder.FormId;
-            employeeOrderDeduction.Details = request.employeeOrder.Details;
+            FormEmployeeOrder FormEmployeeOrder = new FormEmployeeOrder();
+         
+            FormEmployeeOrder.FormEmployeeOrderExecuations = new List<FormEmployeeOrderExecuation>();
+            FormEmployeeOrder.OrderId = request.employeeOrder.OrderId;
+            FormEmployeeOrder.CreditOrDebit = request.employeeOrder.CreditOrDebit;
+            FormEmployeeOrder.FormEmployeeId = request.employeeOrder.FormEmployeeId;
+            FormEmployeeOrder.Details = request.employeeOrder.Details;
 
 
-            BudgetItem budgetItem = await _uow.BudgetItemRepository.GetByNameAsync(Constant.Model.BudgetItems.IRADAT);
+            // BudgetItem budgetItem = await _uow.BudgetItemRepository.GetByNameAsync(Constant.Model.BudgetItems.IRADAT);
+            foreach (var item in request.employeeOrder.FormEmployeeOrderExecutions)
+            {
+                if(item.Amount.HasValue || item.Amount.HasValue && item.Amount.Value != 0)
+                    FormEmployeeOrder.FormEmployeeOrderExecuations.Add(CalculateEmployeeOrderExecuation(item.BudgetItemId, item.Amount.Value));
+            }
+         
 
-            employeeOrderDeduction.EmployeeOrderType.EmployeeOrderExecuations.Add(CalculateEmployeeOrderExecuation(budgetItem.Id, request.employeeOrder.Amount));
 
-
-            await _uow.EmployeeOrderRepository.AddItem(employeeOrderDeduction);
+            await _uow.FormEmployeeOrderRepository.AddItem(FormEmployeeOrder);
             var result = await _uow.SaveChangesAsync(cancellationToken);
             if (result == Enums.SaveState.Exception)
             {
@@ -61,10 +65,10 @@ namespace Domain.EmployeeOrders.Commands.PayDeductionEmployee
             return Result<Unit>.Success(Unit.Value);
         }
 
-        private EmployeeOrderTypeExecuation CalculateEmployeeOrderExecuation(int budgetItemId, decimal amount, int? subscriptionId = null)
+        private FormEmployeeOrderExecuation CalculateEmployeeOrderExecuation(int budgetItemId, decimal amount, int? subscriptionId = null)
         {
 
-            EmployeeOrderTypeExecuation ex = new EmployeeOrderTypeExecuation();
+            FormEmployeeOrderExecuation ex = new FormEmployeeOrderExecuation();
             ex.BudgetItemId = budgetItemId;
             ex.Amount = amount;
             ex.CreatedBy = _authService.GetCurrentLoggedInUser();
@@ -76,4 +80,29 @@ namespace Domain.EmployeeOrders.Commands.PayDeductionEmployee
 
 
     }
+
+
+    public class FormEmployeeOrderDto {
+        public string Details  { get; set; }
+        public DateTime SelectedDate { get; set; }=DateTime.Now;
+        public int FormEmployeeId { get; set; }
+       // public int EmployeeOrderId { get; set; }
+        public int OrderId { get; set; }
+   
+        public char CreditOrDebit { get; set; } = 'c';
+
+        public List<FormEmployeeOrderExecution> FormEmployeeOrderExecutions { get; set; }
+    }
+
+    public class FormEmployeeOrderExecution
+    { 
+
+        public decimal? Amount { get; set; }
+
+        public int BudgetItemId { get; set; }
+
+        public int FormEmployeeOrderId { get; set; }
+    }
 }
+
+   

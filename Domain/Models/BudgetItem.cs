@@ -4,7 +4,6 @@ namespace Domain.Models
 {
     public class BudgetItem : Entity
     {
-
-        public ICollection<EmployeeOrderTypeExecuation>? EmployeeOrderExecuations { get; set; }
+        public ICollection<FormEmployeeOrderExecuation>? EmployeeOrderExecuations { get; set; }
     }
 }

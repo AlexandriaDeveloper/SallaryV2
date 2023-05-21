@@ -9,13 +9,15 @@ import { HttpCustomClientService } from './http-custom-client.service';
 export class EmployeeOrderFileDetailsService extends HttpCustomClientService {
 
   constructor() {
-    super('employeeOrderDetails')
+    super('formEmployeeOrderDetails')
    }
 
    GetEmployeeOrderDetailsByOrderFileIdDto(param :OrderFileDetailsParam){
     let params = new HttpParams()
    if(param.formId)
      params= params.append('formId',param.formId)
+   if(param.formEmployeeOrderId)
+     params= params.append('formEmployeeOrderId',param.formEmployeeOrderId)
    if(param.employeeName)
    params=   params.append('employeeName',param.employeeName)
    if(param.tabCode)

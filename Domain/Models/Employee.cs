@@ -1,4 +1,5 @@
 ﻿using Domain.Primitives;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,21 +21,21 @@ namespace Domain.Models
         public string? CollageName { get; set; }
         [MaxLength(40)]
         public string? Section { get; set; }
+        [Required]
+        public int QanonId { get; set; } 
 
         public int? EmployeeBankId { get; set; }
         [NotMapped]
         public bool EmployeeHasBank { get => EmployeeBankId.HasValue; }
 
-        public ICollection<EmployeeOrder>? EmployeeOrders { get; set; }
-        public ICollection<EmployeeSubscription>? EmployeeSubscriptions { get; set; }
+        public ICollection<RegisterdEmployeeSubscription>? RegisterdEmployeeSubscriptions { get; set; }
         public ICollection<EmployeeGrade>? EmployeeGrades { get; set; }
-        public ICollection<PeriodicSubscription>? PeriodicSubscriptions { get; set; }
-      //  public ICollection<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
         public ICollection<EmployeeCollection>? EmployeeCollection { get; set; }
         public ICollection<EmployeeBasicFinancialData> EmployeesBasicFinancialData { get; set; }
-
+        public ICollection<FormEmployee> FormEmployees { get; set; }
         //PeriodicSubscription
-        public EmployeeBank? EmployeeBank { get; set; }
+        public EmployeeBankAccount? EmployeeBank { get; set; }
+        public Qanon? Qanon { get; set; }
 
 
 

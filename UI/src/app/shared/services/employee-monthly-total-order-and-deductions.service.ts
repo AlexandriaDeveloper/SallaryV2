@@ -10,7 +10,7 @@ import { EmployeeOrder } from '../models/employee/employee';
 export class EmployeeMonthlyTotalOrderAndDeductionsService extends HttpCustomClientService {
 
   constructor(private httpCall :HttpClient) {
-    super('employeeMonthlyCalculatSallary')
+    super('employeeOrder')
 
   }
   getEmployeeMonthlyTotalOrderAndDeductionsService(id : number){

@@ -1,5 +1,6 @@
 ﻿using Application.Common.Messaging;
 using Domain.Constants;
+using Domain.Employees.Queries.GetEmployeeById;
 using Domain.Interfaces;
 using Domain.Shared;
 using MediatR;
@@ -7,7 +8,7 @@ using MediatR;
 namespace Domain.EmployeeOrders.Commands.EmployeeToSubscription
 {
 
-    public record EmployeeToSubscriptionOrderCommand(int subscriptionId, int orderFileId) : ICommand<Unit>;
+    public record EmployeeToSubscriptionOrderCommand(int subscriptionId, int formId) : ICommand<Unit>;
     public class EmployeeToSubscriptionOrderCommandHandler : ICommandHandler<EmployeeToSubscriptionOrderCommand, Unit>
     {
         private readonly IUOW _uow;
@@ -25,38 +26,32 @@ namespace Domain.EmployeeOrders.Commands.EmployeeToSubscription
             {
                 return Result<Unit>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            //if (!await _uow.FormRepository.CheckExistAsync(request.subscriptionId))
-            //{
-            //    return Result<Unit>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
-            //}
-            // var order = await _uow.OrderRepository.GetByNameAsync(Constant.Model.OrderConstants.SUBSCRIPTIONS);
-            //var budget = await _uow.BudgetItemRepository.GetByNameAsync(Constant.Model.BudgetItems.SUBSCRIPTIONS);
-
-            //if (order == null )
-            //{
-            //    Result<Unit>.Failure(new Error("", Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST));
-            //}
+   
             var employeesInSubscription = await _uow.EmployeeSubscriptionRepository.GetEmployeeSubscriptionBySubscriptionId(request.subscriptionId);
 
             foreach (var employee in employeesInSubscription)
             {
-                var employeeOrder = new Domain.Models.EmployeeOrder()
+                var empFormSpec = new GetEmployeesByIdAndFormQuerySpecification(employee.Id, request.formId);
+               var empForm = _uow.FormEmployeeRepository.GetBySingleOrDefaultAsync(empFormSpec);
+                if (empForm != null)
                 {
+                    var employeeOrder = new Domain.Models.FormEmployeeSubscription()
+                    {
+                        SubscriptionId=request.subscriptionId,
+                        Amount=employee.Amount,
+                        FormEmployeeId = empForm.Id,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = _authService.GetCurrentLoggedInUser(),
+                        CreditOrDebit='d'
+                    
+                    };
 
-                    EmployeeId = employee.Id,
-                    CreatedDate = DateTime.Now,
-                    CreatedBy = _authService.GetCurrentLoggedInUser(),
 
-                };
-                employeeOrder.EmployeeOrderType = new Models.EmployeeOrderType()
-                {
-                    FormId = request.orderFileId,
-                    CreditOrDebit = 'd',
-                    CreatedDate = DateTime.Now,
-                    CreatedBy = _authService.GetCurrentLoggedInUser(),
-                };
+                    await _uow.FormEmployeeSubscriptionRepository.AddItem(employeeOrder);
 
-                await _uow.EmployeeOrderRepository.AddItem(employeeOrder);
+                }
+
+              
 
             }
 

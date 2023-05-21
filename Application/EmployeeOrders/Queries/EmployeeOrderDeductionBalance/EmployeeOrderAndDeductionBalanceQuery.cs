@@ -36,7 +36,7 @@ namespace Domain.EmployeeOrders.Queries.EmployeeOrderDeductionBalance
 
             employeeBalance.EmployeeOrdersDtos = new List<EmployeeTotalOrderDto>();
 
-            var employeeOrdes = _uow.EmployeeOrderRepository.GetEmployeeSumOrders(request.employeeId);
+            var employeeOrdes = _uow.FormEmployeeOrderRepository.GetEmployeeSumOrders(request.employeeId);
 
 
             employeeBalance.EmployeeOrdersDtos = employeeOrdes;

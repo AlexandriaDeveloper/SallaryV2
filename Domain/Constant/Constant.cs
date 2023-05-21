@@ -6,6 +6,14 @@ public static class Constant
 {
     public static class Model
     {
+
+        public static class CollagesName {
+
+            public static string TAB = "كلية الطب";
+            public static string SAIDALA = "كلية صيدلة";
+            public static string ASNAN = "كلية طب اسنان";
+
+        }
         public static class OrderConstants
         {
 

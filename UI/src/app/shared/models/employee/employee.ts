@@ -47,8 +47,9 @@ export class DeductionOrder{
   id?:number;
   details: string='';
   orderId:number= 0;
-  employeeId:number= 0;
-  formId:number= 0;
+  // employeeId:number= 0;
+  // formId:number= 0;
+  formEmployeeId=0;
   amount:number= 0;
   creditOrDepit:string='c'
 }
@@ -57,18 +58,22 @@ export class EmployeeOrder{
       employeeId:number=0;
       details:string='';
       orderNumber:string='';
-      employeeOrderType:EmployeeOrderType= new EmployeeOrderType()
+      formEmployeeId?:number=0;
+      quantity?:number;
+      creditOrDebit:string='d';
+      amount? :number;
+      orderId:number=0;
+     // employeeOrderType:EmployeeOrderType= new EmployeeOrderType()
 }
-export class EmployeeOrderType{
-  formId:number;
-  quantity?:number;
-  creditOrDebit:string='d';
-  amount? :number;
-  orderId:number=0;
-}
+// export class EmployeeOrderType{
+//   formId:number;
+//   quantity?:number;
+//   creditOrDebit:string='d';
+//   amount? :number;
+//   orderId:number=0;
+// }
 export class EmployeeVacation{
-  employeeId:number=0;
-  formId:number;
+  formEmployeeId:number;
 
   vacationId:number=0;
   details:string='';
@@ -235,4 +240,24 @@ export class EmployeeDataFinancialDataType{
   amount=0;
   employeeId;
   financialDataTypeId:number;
+  }
+
+
+  export class FormEmployeeOrder{
+    formId :number;
+    employeeId:number;
+    formEmployeeId:number;
+    orderId:number;
+    creditOrDebit:string;
+    quantity:number;
+    selectedDate:Date;
+    details : string
+    formEmployeeOrderExecutions:FormEmployeeOrderExecutions[]=[];
+  }
+
+  export class FormEmployeeOrderExecutions{
+    id:number;
+    budgetItemId: number;
+    amount:number;
+    formEmployeeId:number;
   }

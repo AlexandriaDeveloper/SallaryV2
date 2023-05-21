@@ -7,7 +7,7 @@ namespace Domain.EmployeeOrders.Commands.EmployeeToSubscription
         public EmployeeToSubscriptionOrderCommandValidator()
         {
             RuleFor(p => p.subscriptionId).NotNull().NotEmpty();
-            RuleFor(p => p.orderFileId).NotNull().NotEmpty();
+            RuleFor(p => p.formId).NotNull().NotEmpty();
         }
     }
 }

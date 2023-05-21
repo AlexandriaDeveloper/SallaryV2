@@ -42,7 +42,7 @@
       <mat-icon class="example-tab-icon">balance</mat-icon>
       رصيد الحساب
     </ng-template>
-    <app-balance [employee]="employee"  [editable]="editable" ></app-balance>
+    <app-balance [employee]="employee" [formEmployeeId]="formEmployeeId"  [editable]="editable" ></app-balance>
 
   </mat-tab>
 
@@ -52,7 +52,7 @@
       <mat-icon matBadge="!" matBadgePosition="before" matBadgeColor="warn" *ngIf="notification===false" class="example-tab-icon">receipt_long</mat-icon>
       اشتراكات
     </ng-template>
-   <app-subscription [formId]="formId"  [employeeId]="id" [editable]="editable" (notification)="getNotify($event)"></app-subscription>
+   <app-subscription [formEmployeeId]="formEmployeeId"  [employeeId]="id" [editable]="editable" (notification)="getNotify($event)"></app-subscription>
   </mat-tab>
 
   <mat-tab>

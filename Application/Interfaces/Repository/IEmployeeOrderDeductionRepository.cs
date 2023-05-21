@@ -4,11 +4,11 @@ using Domain.Models;
 
 namespace Application.Interfaces.Repository
 {
-    public interface IEmployeeBalanceRepository : IRepository<EmployeeOrder>
+    public interface IEmployeeBalanceRepository : IRepository<FormEmployeeOrder>
     {
 
         List<EmployeeTotalOrderDeductionDto> GetEmployeeDeductionOrders(int employeeId);
-        Task<List<EmployeeOrder>> GetEmployeeOrdersDeductionByDeductionId(int orderDeductionId, int employeeId);
+        Task<List<FormEmployeeOrder>> GetEmployeeOrdersDeductionByDeductionId(int orderDeductionId, int employeeId);
 
     }
 }

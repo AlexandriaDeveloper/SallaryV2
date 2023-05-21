@@ -8,6 +8,6 @@ namespace Application.VacationTypes
         public int? Id { get; set; }
         public string Name { get; set; }
 
-        public virtual List<EmployeeVacationTypeDto>? EmployeeVacationTypes { get; set; }
+   //     public virtual List<FormEmployeeVacationTypeDto>? EmployeeVacationTypes { get; set; }
     }
 }

@@ -23,12 +23,12 @@ namespace Application.EmployeeSubscriptions.Commands.UpdateEmployeeSubscrtiption
         public async Task<Result> Handle(UpdateEmployeeSubscrtiptionCommand request, CancellationToken cancellationToken)
         {
 
-            EmployeeSubscription employeeToSubscripe = await _uow.EmployeeSubscriptionRepository.GetByIdAsync(request.employeeToSubscripe.Id.Value);
+            RegisterdEmployeeSubscription employeeToSubscripe = await _uow.EmployeeSubscriptionRepository.GetByIdAsync(request.employeeToSubscripe.Id.Value);
             if (employeeToSubscripe == null)
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            var updatedEntity = _mapper.Map<EmployeeToSubscriptionDto, EmployeeSubscription>(request.employeeToSubscripe, employeeToSubscripe);
+            var updatedEntity = _mapper.Map<EmployeeToSubscriptionDto, RegisterdEmployeeSubscription>(request.employeeToSubscripe, employeeToSubscripe);
 
             await _uow.EmployeeSubscriptionRepository.Update(updatedEntity);
             var result = await _uow.SaveChangesAsync(cancellationToken);

@@ -30,7 +30,7 @@ namespace Web.Api.Controllers
         }
 
         [HttpPost("PayDeductionEmployee")]
-        public async Task<IActionResult> PayDeductionEmployee(EmployeeOrderDeductionDto model)
+        public async Task<IActionResult> PayDeductionEmployee(FormEmployeeOrderDto model)
         {
 
             var result = (await Mediator.Send(new PayDeductionEmployeeCommand(model)));

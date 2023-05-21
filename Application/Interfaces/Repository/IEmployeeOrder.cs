@@ -4,10 +4,10 @@ using Domain.Models;
 
 namespace Application.Interfaces.Repository
 {
-    public interface IEmployeeOrderRepository : IRepository<EmployeeOrder>
+    public interface IFormEmployeeOrderRepository : IRepository<FormEmployeeOrder>
     {
         List<EmployeeTotalOrderDto> GetEmployeeSumOrders(int employeeId);
-        Task<List<EmployeeOrder>> GetEmployeeOrdersByOrderId(int orderId, int employeeId);
+        Task<List<FormEmployeeOrder>> GetEmployeeOrdersByOrderId(int orderId, int employeeId);
 
     }
 }

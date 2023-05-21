@@ -10,7 +10,7 @@
         public string FileNumber224 { get; set; }
     }
 
-    public class EmployeeFormDto
+    public class FormEmployeeDto
     {
         public int? Id { get; set; }
         public int EmployeeId { get; set; }

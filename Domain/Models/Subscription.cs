@@ -4,10 +4,8 @@ namespace Domain.Models
 {
     public class Subscription : Entity
     {
-
-
-        public ICollection<EmployeeSubscription> EmployeeSubscriptions { get; set; }
-        public ICollection<PeriodicSubscription> PeriodicSubscription { get; set; }
+        public ICollection<RegisterdEmployeeSubscription>? RegisterdEmployeeSubscriptions { get; set; }
+        public ICollection<FormEmployeeSubscription>? FormEmployeeSubscriptions { get; set; }
 
     }
 

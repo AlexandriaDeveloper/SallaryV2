@@ -3,6 +3,7 @@ using Application.EmployeeBasicFinancialsDatas.Queries.GetEmployeeFinincialData;
 using Application.Services.Calculations;
 using AutoMapper;
 using Domain.Constants;
+using Domain.Employees.Queries.GetEmployeeById;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Models;
@@ -13,7 +14,7 @@ using MediatR;
 namespace Application.EmployeeVacationTypes.Command.AddEmployeeVacation
 {
 
-    public record AddEmployeeVacationCommand(EmployeeVacationTypeDto employeeVacationDto) : ICommand;
+    public record AddEmployeeVacationCommand(FormEmployeeVacationTypeDto employeeVacationDto) : ICommand;
     public class AddEmployeeVacationCommandHandler : ICommandHandler<AddEmployeeVacationCommand>
     {
         private readonly IUOW _uow;
@@ -30,13 +31,14 @@ namespace Application.EmployeeVacationTypes.Command.AddEmployeeVacation
         }
         public async Task<Result> Handle(AddEmployeeVacationCommand request, CancellationToken cancellationToken)
         {
-           Domain.Models.Form form = await _uow.FormRepository.GetByIdAsync(request.employeeVacationDto.FormId);
+           Domain.Models.FormEmployee formEmployee =await _uow.FormEmployeeRepository.GetByIdAsync(request.employeeVacationDto.FormEmployeeId.Value);
+           Domain.Models.Form form = await _uow.FormRepository.GetByIdAsync(formEmployee.FormId);
             var formDate = DateTime.Parse(form.FormDate);
 
 
             IReadOnlyList<BudgetItem> budgetItems =await _uow.BudgetItemRepository.GetAllAsync();
 
-            var empData2 = await _mediator.Send(new GetEmployeeFinincialDataQuery(request.employeeVacationDto.EmployeeId.Value, DateTime.Now));
+            var empData2 = await _mediator.Send(new GetEmployeeFinincialDataQuery(formEmployee.EmployeeId, DateTime.Now));
 
             EmployeeBasicSallaryDataDto empData = new EmployeeBasicSallaryDataDto();
             //AutoMapper Later
@@ -46,7 +48,7 @@ namespace Application.EmployeeVacationTypes.Command.AddEmployeeVacation
 
 
 
-            EmployeeVacationType employeeVactaion = _mapper.Map<EmployeeVacationType>(request.employeeVacationDto);
+            FormEmployeeVacation employeeVactaion = _mapper.Map<FormEmployeeVacation>(request.employeeVacationDto);
 
             employeeVactaion.Vacation =await _uow.VacationTypeRepository.GetByIdAsync(employeeVactaion.VacationId);
 
@@ -54,21 +56,9 @@ namespace Application.EmployeeVacationTypes.Command.AddEmployeeVacation
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            EmployeeOrder order = new EmployeeOrder();
-            order.EmployeeId = request.employeeVacationDto.EmployeeId.Value;
-            order.Details = request.employeeVacationDto.Details;
-            order.CreatedDate = DateTime.Now;
-            order.CreatedBy = _authService.GetCurrentLoggedInUser();
-            employeeVactaion.CreatedDate = DateTime.Now;
-            order.CreatedBy = _authService.GetCurrentLoggedInUser();
-            //CalculateVacataion calcVacation = new CalculateVacataion(budgetItems);
-            //employeeVactaion.EmployeeVacationTypeExecuation =await calcVacation.CalculateVacation(empData, employeeVactaion, formDate);
-            order.EmployeeVacationType = employeeVactaion;
+            FormEmployeeVacation formEmployeeVacataion = _mapper.Map<FormEmployeeVacation>(request.employeeVacationDto);
 
-           
-
-
-            await _uow.EmployeeOrderRepository.AddItem(order);
+            await _uow.FormEmployeeVacationTypeRepository.AddItem(formEmployeeVacataion);
             SaveState result = await _uow.SaveChangesAsync(cancellationToken);
             if (result != SaveState.Saved)
             {

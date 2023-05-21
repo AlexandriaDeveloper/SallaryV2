@@ -25,7 +25,7 @@ namespace Domain.EmployeeOrders.Queries.GetEmployeeOrderData
 
             GetEmployeeOrdersDataDto employeeOrderDto = new();
 
-            var employeeOrderList = await _uow.EmployeeOrderRepository.GetEmployeeOrdersByOrderId(request.OrderId, request.EmployeeId);
+            var employeeOrderList = await _uow.FormEmployeeOrderRepository.GetEmployeeOrdersByOrderId(request.OrderId, request.EmployeeId);
 
             if (employeeOrderDto.EmployeeDeductions == null)
             {
@@ -41,34 +41,30 @@ namespace Domain.EmployeeOrders.Queries.GetEmployeeOrderData
             {
 
 
-                if (employeeOrder.EmployeeOrderType.CreditOrDebit == 'd')
+                if (employeeOrder.CreditOrDebit == 'd')
                     employeeOrderDto.EmployeeOrders.Add(new GetEmployeeOrdersDataDto.GetEmployeeOrdersListDto
                     {
 
-                        Amount = employeeOrder.EmployeeOrderType.EmployeeOrderExecuations.Sum(x => x.Amount),
-                        CreditOrDebit = employeeOrder.EmployeeOrderType.CreditOrDebit,
+                        Amount = employeeOrder.FormEmployeeOrderExecuations.Sum(x => x.Amount),
+                        CreditOrDebit = employeeOrder.CreditOrDebit,
                         Details = employeeOrder.Details,
-                        // EndAt = employeeOrder.EndAt,
-                        Quantity = employeeOrder.EmployeeOrderType.Quantity,
-                        //   StartFrom = employeeOrder.StartFrom,
-
-
+                        Quantity = employeeOrder.Quantity,
                         Id = employeeOrder.Id,
-                        OrderFileName = employeeOrder.EmployeeOrderType.Form.Name
+                        OrderFileName = employeeOrder.FormEmployee.Form.Name
 
                     });
 
-                else if (employeeOrder.EmployeeOrderType.CreditOrDebit == 'c')
+                else if (employeeOrder.CreditOrDebit == 'c')
                 {
 
 
                     employeeOrderDto.EmployeeDeductions.Add(new GetEmployeeOrdersDataDto.GetEmployeeDeductionsListDto
                     {
 
-                        Amount = employeeOrder.EmployeeOrderType.EmployeeOrderExecuations.Sum(x => x.Amount),
-                        CreditOrDebit = employeeOrder.EmployeeOrderType.CreditOrDebit,
+                        Amount = employeeOrder.FormEmployeeOrderExecuations.Sum(x => x.Amount),
+                        CreditOrDebit = employeeOrder.CreditOrDebit,
                         Details = employeeOrder.Details,
-                        OrderFileName = employeeOrder.EmployeeOrderType.Form.Details
+                        OrderFileName = employeeOrder.FormEmployee.Form.Details
 
 
 

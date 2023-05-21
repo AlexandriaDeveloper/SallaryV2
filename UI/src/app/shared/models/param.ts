@@ -1,3 +1,4 @@
+import { FormEmployeeOrderExecutionsService } from './../services/form-employee-order-executions.service';
 export class Param {
   pageSize: number=15 ;
   pageIndex: number=0;
@@ -27,6 +28,7 @@ export class OrderFileDetailsParam extends Param{
   tabCode?:string=null;
   tegaraCode?:string=null;
   formId?:number;
+  formEmployeeOrderId=null;
   employeeName?:string=null;
   orderName?:string=null;
   details?:string=null;
@@ -85,3 +87,14 @@ export class GetVacationTypeParam extends Param{
   id?: number =null;
   name?:string=null;
 }
+export class FormEmployeeOrderExecutionsParam {
+  id?: number=null;
+  formEmployeeOrderId?:number=null;
+  employeeId?:number=null;
+  formId?:number=null;
+  orderId? :number=null;
+  creditOrDebit?:string=null;
+  orderNumber :string=null;
+}
+
+

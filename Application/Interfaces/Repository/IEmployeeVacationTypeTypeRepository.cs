@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Application.Interfaces.Repository
 {
-    public interface IEmployeeVacationTypeRepository : IRepository<EmployeeVacationType>
+    public interface IFormEmployeeVacationTypeRepository : IRepository<FormEmployeeVacation>
     {
 
     }

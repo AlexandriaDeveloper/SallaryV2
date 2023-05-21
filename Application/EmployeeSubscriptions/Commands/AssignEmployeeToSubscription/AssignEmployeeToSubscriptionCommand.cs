@@ -23,7 +23,7 @@ namespace Domain.EmployeeSubscriptions.Commands.AssignEmployeeToSubscription
 
         public async Task<Result<Unit>> Handle(AssignEmployeeToSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            var employeeSubscripToDb = _mapper.Map<EmployeeSubscription>(request.employeeSubscriptionModel);
+            var employeeSubscripToDb = _mapper.Map<RegisterdEmployeeSubscription>(request.employeeSubscriptionModel);
 
             await _uow.EmployeeSubscriptionRepository.AddItem(employeeSubscripToDb);
 

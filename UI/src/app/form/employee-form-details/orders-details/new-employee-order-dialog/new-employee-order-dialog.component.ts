@@ -1,3 +1,4 @@
+import { combineLatest, map, merge, mergeAll, switchMap, zip } from 'rxjs';
 import { EmployeeMonthlyTotalOrderAndDeductionsService } from 'src/app/shared/services/employee-monthly-total-order-and-deductions.service';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -7,6 +8,7 @@ import * as moment from 'moment';
 import { EmployeeOrder, IEmployee } from 'src/app/shared/models/employee/employee';
 
 import { OrderService } from 'src/app/shared/services/order.service';
+import { EmployeeFormService } from 'src/app/shared/services/employee-form.service';
 
 @Component({
   selector: 'app-new-employee-order-dialog',
@@ -26,7 +28,8 @@ export class NewEmployeeOrderDialogComponent implements OnInit {
   private fb : FormBuilder,
   private employeeService : EmployeeService,
   private orderService :OrderService,
-  private monthlyEmployeeOrderService :EmployeeMonthlyTotalOrderAndDeductionsService
+  private monthlyEmployeeOrderService :EmployeeMonthlyTotalOrderAndDeductionsService,
+  private formEmployeeService : EmployeeFormService
 
   ){
    const dateNow = new Date();
@@ -52,37 +55,44 @@ return this.fb.group({
 
 }
   submitEmployee(){
-  this.employeeService
+
+   let emp= this.employeeService
     .findEmployeeByTabCodeOrTegaraCode(this.employeeForm.value.tabCode,this.employeeForm.value.tegaraCode)
-    .subscribe(x =>{
-      this.employee=x;
-      this.employeeOrder.employeeId=x.id;
-      this.orderService.getAllOrders().subscribe(x => this.orders=x)
-      this.orderForm=this.IntilizeOrderForm();
 
+  this.orderService.getAllOrders()
+  .subscribe(x => this.orders=x)
 
-
-      console.log(this.orderForm);
-    });
-
-
+zip(emp.pipe(switchMap(empResult =>{
+  console.log(empResult)
+  this.employee=empResult;
+  this.employeeOrder.employeeId=empResult.id;
+  return this.formEmployeeService
+  .getFormEmployeesByEmployeeIdAndFormId(empResult.id, this.data.formId)
+  .pipe(map(t => {
+    this.employeeOrder.formEmployeeId=t.id;
+    console.log(this.employeeOrder)
+    this.orderForm=this.IntilizeOrderForm()
+  }))}
+  ))).subscribe()
   }
 
 
   IntilizeOrderForm(){
+
     return this.fb
     .group({
-      selectedDate : [this.selectedDate],
+
       employeeId:[this.employeeOrder.employeeId],
       orderNumber:[this.employeeOrder.orderNumber],
       details:[this.employeeOrder.details],
-      employeeOrderType:this.fb.group({
-        orderId:[this.employeeOrder.employeeOrderType.orderId],
-        quantity:[this.employeeOrder.employeeOrderType.quantity],
-        creditOrDebit :[this.employeeOrder.employeeOrderType.creditOrDebit],
-        amount:[this.employeeOrder.employeeOrderType.amount],
-        formId :[this.data.formId]
-      })
+      selectedDate : [this.selectedDate],
+      orderId:[this.employeeOrder.orderId],
+      quantity:[this.employeeOrder.quantity],
+      creditOrDebit :[this.employeeOrder.creditOrDebit],
+      amount:[this.employeeOrder.amount],
+      formId :[this.data.formId],
+      formEmployeeId :[this.employeeOrder.formEmployeeId]
+
     });
 
 

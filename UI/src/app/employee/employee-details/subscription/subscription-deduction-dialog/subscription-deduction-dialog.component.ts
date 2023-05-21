@@ -48,7 +48,8 @@ export class SubscriptionDeductionDialogComponent implements OnInit,AfterViewIni
 
   IntilizeOrderForm(){
     return this.fb.group({
-      amount:['',Validators.required]
+      amount:['',Validators.required],
+      formEmployeeId:[this.data.formEmployeeId]
 
     });
 

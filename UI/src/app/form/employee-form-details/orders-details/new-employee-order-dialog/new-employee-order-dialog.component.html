@@ -1,5 +1,5 @@
 
-<div class="header">
+<div class="header" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle >
   <button mat-mini-fab color="primary" (click)="onNoClick()">
     <mat-icon>close</mat-icon>
   </button>
@@ -34,9 +34,9 @@
 </div>
   </form>
   <mat-divider></mat-divider>
-<div class="order-container">
+<div class="order-container" *ngIf="employee">
 
-  <form *ngIf="employee" [formGroup]="orderForm" (ngSubmit)="orderSubmit()">
+  <form  *ngIf="employeeOrder.formEmployeeId>0"   [formGroup]="orderForm" (ngSubmit)="orderSubmit()" >
    <div class="order-data">
     <mat-form-field  appearance="fill">
       <mat-label>اسم الموظف</mat-label>
@@ -64,14 +64,9 @@
       <textarea  matInput formControlName="details" [(value)]="employeeOrder.details" ></textarea>
     </mat-form-field>
 
-
-
-
-
-      <ng-container formGroupName="employeeOrderType">
         <mat-form-field color="primary" appearance="fill">
           <mat-label style="font-family: Cairo;">نوع الامر</mat-label>
-          <mat-select formControlName="orderId"  [(value)]="employeeOrder.employeeOrderType.orderId" >
+          <mat-select formControlName="orderId"  [(value)]="employeeOrder.orderId" >
             <mat-option  *ngFor="let order of orders" [value]="order.id"  >
               <span >
               {{order.name}}
@@ -88,7 +83,7 @@
           <mat-label  style="font-family: Cairo;">عدد الايام  </mat-label>
           <input type="number" matInput formControlName="quantity" [(value)]="employeeOrder.quantity" >
         </mat-form-field>
-      </ng-container>
+
 
 
     <button mat-raised-button  color="primary">Save</button>

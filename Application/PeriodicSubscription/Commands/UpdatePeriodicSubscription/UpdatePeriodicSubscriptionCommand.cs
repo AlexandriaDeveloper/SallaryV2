@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace Application.PeriodicSubscriptions.Commands.UpdatePeriodicSubscription
 {
-    public record UpdatePeriodicSubscriptionCommand(PeriodicSubscriptionDto model) : ICommand;
+    public record UpdatePeriodicSubscriptionCommand(FormEmployeeSubscriptionDto model) : ICommand;
     public class UpdatePeriodicSubscriptionCommandHandler : ICommandHandler<UpdatePeriodicSubscriptionCommand>
     {
         private readonly IUOW _uow;
@@ -21,13 +21,13 @@ namespace Application.PeriodicSubscriptions.Commands.UpdatePeriodicSubscription
         }
         public async Task<Result> Handle(UpdatePeriodicSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            PeriodicSubscription periodicSubscription = await _uow.PeriodicSubscriptionRepository.GetByIdAsync(request.model.Id.Value);
+            FormEmployeeSubscription periodicSubscription = await _uow.FormEmployeeSubscriptionRepository.GetByIdAsync(request.model.Id.Value);
             if (periodicSubscription == null)
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            PeriodicSubscription periodicSubscriptionDto = _mapper.Map<PeriodicSubscriptionDto, PeriodicSubscription>(request.model, periodicSubscription);
-            await _uow.PeriodicSubscriptionRepository.Update(periodicSubscriptionDto);
+            FormEmployeeSubscription periodicSubscriptionDto = _mapper.Map<FormEmployeeSubscriptionDto, FormEmployeeSubscription>(request.model, periodicSubscription);
+            await _uow.FormEmployeeSubscriptionRepository.Update(periodicSubscriptionDto);
             var result = await _uow.SaveChangesAsync(cancellationToken);
             if (result != Domain.Enums.SaveState.Saved)
             {
@@ -46,9 +46,9 @@ namespace Application.PeriodicSubscriptions.Commands.UpdatePeriodicSubscription
         {
             RuleFor(p => p.model.Id).NotNull().NotEmpty();
             RuleFor(p => p.model.Amount).NotNull().NotEmpty();
-            RuleFor(p => p.model.EmployeeId).NotNull().NotEmpty();
+            RuleFor(p => p.model.FormEmployeeId).NotNull().NotEmpty();
             RuleFor(p => p.model.SubscriptionId).NotNull().NotEmpty();
-            RuleFor(p => p.model.FormId).NotNull().NotEmpty();
+            //RuleFor(p => p.model.FormId).NotNull().NotEmpty();
 
         }
     }

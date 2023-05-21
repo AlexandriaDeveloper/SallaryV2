@@ -20,6 +20,8 @@ import { UploadSusbcriptionFileComponent } from './employee-form-details/upload-
 import { OrdersDetailsComponent } from './employee-form-details/orders-details/orders-details.component';
 import { NewEmployeeOrderDialogComponent } from './employee-form-details/orders-details/new-employee-order-dialog/new-employee-order-dialog.component';
 import { EmployeeVacationDialogComponent } from './employee-form-details/orders-details/employee-vacation-dialog/employee-vacation-dialog.component';
+import { FormEmployeeOrderDetailsComponent } from './employee-form-details/orders-details/form-employee-order-details/form-employee-order-details.component';
+import { FormEmployeeVacationDetailsComponent } from './employee-form-details/orders-details/form-employee-vacation-details/form-employee-vacation-details.component';
 
 
 
@@ -38,6 +40,8 @@ import { EmployeeVacationDialogComponent } from './employee-form-details/orders-
      AddEmployeePeriodicFormDialogComponent,
      UploadSusbcriptionFileComponent,
      EmployeeVacationDialogComponent,
+     FormEmployeeOrderDetailsComponent,
+     FormEmployeeVacationDetailsComponent,
 
 
 

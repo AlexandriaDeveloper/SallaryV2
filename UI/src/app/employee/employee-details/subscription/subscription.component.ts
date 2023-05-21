@@ -12,8 +12,9 @@ import { Component, AfterViewInit, OnInit, Input, Output, EventEmitter } from '@
   styleUrls: ['./subscription.component.scss']
 })
 export class SubscriptionComponent implements OnInit, AfterViewInit {
-@Input('employeeId') employeeId ;
-@Input('formId') formId ;
+ @Input('employeeId') employeeId ;
+@Input('formEmployeeId') formEmployeeId ;
+// @Input('formId') formId ;
 @Input('editable') editable =false ;
 param : EmployeeSubsriptionParam = new EmployeeSubsriptionParam();
 data:any;
@@ -51,7 +52,7 @@ this.loadData();
   openSubscriptionDeductionDialog(subscriptionId): void {
 
     const dialogRef = this.dialog.open(SubscriptionDeductionDialogComponent, {
-      data: { employeeId: this.employeeId ,subscriptionId:subscriptionId,formId :this.formId},
+      data: { employeeId: this.employeeId ,subscriptionId:subscriptionId,formEmployeeId :this.formEmployeeId},
      minWidth:'400px',
      minHeight:'300px',
      maxHeight:'900px',

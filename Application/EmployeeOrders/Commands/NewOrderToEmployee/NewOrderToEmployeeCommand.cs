@@ -34,37 +34,40 @@ namespace Domain.EmployeeOrders.Commands.NewOrderToEmployee
         public async Task<Result<Unit>> Handle(NewEmployeeOrderCommand request, CancellationToken cancellationToken)
         {
 
-            Form form = await _uow.FormRepository.GetByIdAsync(request.employeeOrder.EmployeeOrderType.FormId);
+            Form form = await _uow.FormRepository.GetByIdAsync(request.employeeOrder.FormId);
             var formDate = DateTime.Parse(form.FormDate);
 
             IReadOnlyList<BudgetItem> budgetItems = await _uow.BudgetItemRepository.GetAllAsync();
 
-            var empData2 = await _mediator.Send(new GetEmployeeFinincialDataQuery(request.employeeOrder.EmployeeId,request.employeeOrder.SelectedDate));
+            var empData2 = await _mediator.Send(new GetEmployeeFinincialDataQuery(request.employeeOrder.EmployeeId,request.employeeOrder.SelectedDate),cancellationToken);
 
-            EmployeeBasicSallaryDataDto empData =new EmployeeBasicSallaryDataDto();
+            EmployeeBasicSallaryDataDto empData =new ();
           //AutoMapper Later
             empData.Wazifi = empData2.Value.Wazifi;
             empData.Mokamel = empData2.Value.Mokamel;
             empData.Taawidi = empData2.Value.Tawidi;
            
-            Order order = await _uow.OrderRepository.GetByIdAsync(request.employeeOrder.EmployeeOrderType.OrderId);
+            Order order = await _uow.OrderRepository.GetByIdAsync(request.employeeOrder.OrderId);
             if (order == null)
             {
                 return Result<Unit>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            EmployeeOrder employeeOrder = _mapper.Map<EmployeeOrder>(request.employeeOrder);
-            CalculateOrder calcService = new CalculateOrder( budgetItems);
-            if (request.employeeOrder.EmployeeOrderType.Quantity.HasValue)
+            FormEmployeeOrder employeeOrder = _mapper.Map<FormEmployeeOrder>(request.employeeOrder);
+            employeeOrder.CreatedBy = _authService.GetCurrentLoggedInUser();
+            employeeOrder.CreatedDate =DateTime.Now;
+
+            CalculateOrder calcService = new (budgetItems);
+            if (request.employeeOrder.Quantity.HasValue)
             {
-                empData.Quantity = request.employeeOrder.EmployeeOrderType.Quantity;
-                employeeOrder.EmployeeOrderType.EmployeeOrderExecuations = await calcService.CalculateEmployeeOrder(empData, order, formDate);
+                empData.Quantity = request.employeeOrder.Quantity;
+                employeeOrder.FormEmployeeOrderExecuations = await calcService.CalculateEmployeeOrder(empData, order, formDate);
             }
-            else if (request.employeeOrder.EmployeeOrderType.Amount.HasValue)
+            else if (request.employeeOrder.Amount.HasValue)
             {
-                empData.Amount = request.employeeOrder.EmployeeOrderType.Amount;
-                employeeOrder.EmployeeOrderType.EmployeeOrderExecuations = await calcService.CalculateFixedEmployeeOrder(empData, order, formDate);
+                empData.Amount = request.employeeOrder.Amount;
+                employeeOrder.FormEmployeeOrderExecuations = await calcService.CalculateFixedEmployeeOrder(empData, order, formDate);
             }
-            await _uow.EmployeeOrderRepository.AddItem(employeeOrder);
+            await _uow.FormEmployeeOrderRepository.AddItem(employeeOrder);
             var result2 = await _uow.SaveChangesAsync(cancellationToken);
             if (result2 != SaveState.Saved)
             {

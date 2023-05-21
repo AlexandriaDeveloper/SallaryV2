@@ -12,8 +12,7 @@ namespace Domain.Models
         public int FinancialDataTypesId { get; set; }
         public decimal Amount { get; set; }
 
-
-        public FinancialDataType FinancialDataTypes { get; set; }
-        public Employee Employee { get; set; }
+        public  FinancialDataType? FinancialDataTypes { get; set; }
+        public  Employee? Employee { get; set; }
     }
 }

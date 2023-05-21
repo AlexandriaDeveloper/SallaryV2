@@ -23,12 +23,12 @@ namespace Application.EmployeeOrderDetailses.Commands.DeleteEmployeeOrderByOrder
         public async Task<Result> Handle(DeleteEmployeeOrderByOrderDetailsIdCommand request, CancellationToken cancellationToken)
         {
 
-            EmployeeOrder empOrderFromDb = await _uow.EmployeeOrderRepository.GetByIdAsync(request.orderDetailsId);
+            FormEmployeeOrder empOrderFromDb = await _uow.FormEmployeeOrderRepository.GetByIdAsync(request.orderDetailsId);
             if (empOrderFromDb == null)
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            await _uow.EmployeeOrderRepository.HardDelete(request.orderDetailsId);
+            await _uow.FormEmployeeOrderRepository.HardDelete(request.orderDetailsId);
             var result = await _uow.SaveChangesAsync(cancellationToken);
             if (result != Domain.Enums.SaveState.Saved)
             {

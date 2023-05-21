@@ -20,7 +20,7 @@ namespace Web.Api.Controllers
 
 
         [HttpPost()]
-        public async Task<ActionResult<Result<Unit>>> AddPeriodicSubscriptionDto([FromBody] PeriodicSubscriptionDto periodicSubscription)
+        public async Task<ActionResult<Result<Unit>>> AddPeriodicSubscriptionDto([FromBody] FormEmployeeSubscriptionDto periodicSubscription)
         {
 
             var result = await Mediator.Send(new EmployeePaySubscriptionCommand(periodicSubscription));
@@ -33,7 +33,7 @@ namespace Web.Api.Controllers
 
 
         [HttpPut()]
-        public async Task<ActionResult<Result<Unit>>> UpdarePeriodicSubscriptionDto([FromBody] PeriodicSubscriptionDto periodicSubscription)
+        public async Task<ActionResult<Result<Unit>>> UpdarePeriodicSubscriptionDto([FromBody] FormEmployeeSubscriptionDto periodicSubscription)
         {
 
             var result = await Mediator.Send(new UpdatePeriodicSubscriptionCommand(periodicSubscription));
@@ -93,7 +93,7 @@ namespace Web.Api.Controllers
         //AddEmployeeToPeriodicSubscriptionCommand
 
         [HttpPost("AddEmployeeToPeriodicSubscription")]
-        public async Task<ActionResult<Result<Unit>>> AddEmployeeToPeriodicSubscription([FromBody] PeriodicSubscriptionDto periodicSubscription)
+        public async Task<ActionResult<Result<Unit>>> AddEmployeeToPeriodicSubscription([FromBody] FormEmployeeSubscriptionDto periodicSubscription)
         {
 
             var result = await Mediator.Send(new AddEmployeeToPeriodicSubscriptionCommand(periodicSubscription));

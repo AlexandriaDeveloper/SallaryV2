@@ -10,7 +10,7 @@ using FluentValidation;
 
 namespace Application.PeriodicSubscriptions.Commands.EmployeePaySubscription
 {
-    public record EmployeePaySubscriptionCommand(PeriodicSubscriptionDto PeriodicSubscriptionDto) : ICommand;
+    public record EmployeePaySubscriptionCommand(FormEmployeeSubscriptionDto PeriodicSubscriptionDto) : ICommand;
     public class EmployeePaySubscriptionCommandHandler : ICommandHandler<EmployeePaySubscriptionCommand>
     {
         private readonly IUOW _uow;
@@ -24,9 +24,9 @@ namespace Application.PeriodicSubscriptions.Commands.EmployeePaySubscription
 
         public async Task<Result> Handle(EmployeePaySubscriptionCommand request, CancellationToken cancellationToken)
         {
-            PeriodicSubscription subscription = _mapper.Map<PeriodicSubscription>(request.PeriodicSubscriptionDto);
+            FormEmployeeSubscription subscription = _mapper.Map<FormEmployeeSubscription>(request.PeriodicSubscriptionDto);
             subscription.CreditOrDebit = 'c';
-            await _uow.PeriodicSubscriptionRepository.AddItem(subscription);
+            await _uow.FormEmployeeSubscriptionRepository.AddItem(subscription);
 
             var result = await _uow.SaveChangesAsync(cancellationToken);
             if (result != SaveState.Saved)
@@ -43,18 +43,19 @@ public class EmployeePaySubscriptionCommandValidator : AbstractValidator<Employe
     public EmployeePaySubscriptionCommandValidator()
     {
         RuleFor(p => p.PeriodicSubscriptionDto.Amount).NotEmpty();
-        RuleFor(p => p.PeriodicSubscriptionDto.FormId).NotEmpty();
-        RuleFor(p => p.PeriodicSubscriptionDto.EmployeeId).NotEmpty();
+        RuleFor(p => p.PeriodicSubscriptionDto.FormEmployeeId).NotEmpty();
+       // RuleFor(p => p.PeriodicSubscriptionDto.EmployeeId).NotEmpty();
         RuleFor(p => p.PeriodicSubscriptionDto.SubscriptionId).NotEmpty();
     }
 }
 
-public class PeriodicSubscriptionDto
+public class FormEmployeeSubscriptionDto
 {
     public int? Id { get; set; }
     public int SubscriptionId { get; set; }
-    public int EmployeeId { get; set; }
-    public int FormId { get; set; }
+    public int FormEmployeeId { get; set; }
+    //public int EmployeeId { get; set; }
+    //public int FormId { get; set; }
     public decimal Amount { get; set; }
 
 }

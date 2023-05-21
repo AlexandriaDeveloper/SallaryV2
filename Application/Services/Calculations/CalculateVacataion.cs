@@ -18,7 +18,7 @@ namespace Application.Services.Calculations
             _budgetItems = budgetItems;
         }
 
-        public async Task<List<EmployeeVacationTypeExecuation>> CalculateVacation(EmployeeBasicSallaryDataDto empData, EmployeeVacationType employeeVcationType, DateTime formDate)
+        public async Task<List<EmployeeVacationExecuation>> CalculateVacation(EmployeeBasicSallaryDataDto empData, FormEmployeeVacation employeeVcationType, DateTime formDate)
         {
 
             int totalMonthWorkingDays = DateTime.DaysInMonth(formDate.Year, formDate.Month);
@@ -86,12 +86,12 @@ namespace Application.Services.Calculations
             RoundEmployeeSallary empSallary = new RoundEmployeeSallary();
           empSallaryDataToReturn=  empSallary.RoundEmployeeReturn(empSallaryDataToReturn);
 
-             List <EmployeeVacationTypeExecuation > empVacationsExec = new List<EmployeeVacationTypeExecuation>();
+             List <EmployeeVacationExecuation > empVacationsExec = new List<EmployeeVacationExecuation>();
 
             if (empSallaryDataToReturn.Wazifi >0) {
-                empVacationsExec.Add(new EmployeeVacationTypeExecuation()
+                empVacationsExec.Add(new EmployeeVacationExecuation()
                 {
-                    EmployeeVacationTypeId= employeeVcationType.Id,
+                    FormEmployeeVacationId= employeeVcationType.Id,
                     BudgetItemId = _budgetItems.SingleOrDefault(x => x.Name == Constant.Model.BudgetItems.WAZIFI).Id,
                     Amount= empSallaryDataToReturn.Wazifi
 
@@ -99,9 +99,9 @@ namespace Application.Services.Calculations
             }
             if (empSallaryDataToReturn.Mokamel > 0)
             {
-                empVacationsExec.Add(new EmployeeVacationTypeExecuation()
+                empVacationsExec.Add(new EmployeeVacationExecuation()
                 {
-                    EmployeeVacationTypeId = employeeVcationType.Id,
+                    FormEmployeeVacationId = employeeVcationType.Id,
                     BudgetItemId = _budgetItems.SingleOrDefault(x => x.Name == Constant.Model.BudgetItems.MOKAMEL).Id,
                     Amount = empSallaryDataToReturn.Mokamel
 
@@ -109,9 +109,9 @@ namespace Application.Services.Calculations
             }
             if (empSallaryDataToReturn.Taawidi > 0)
             {
-                empVacationsExec.Add(new EmployeeVacationTypeExecuation()
+                empVacationsExec.Add(new EmployeeVacationExecuation()
                 {
-                    EmployeeVacationTypeId = employeeVcationType.Id,
+                    FormEmployeeVacationId = employeeVcationType.Id,
                     BudgetItemId = _budgetItems.SingleOrDefault(x => x.Name == Constant.Model.BudgetItems.TA3WIDI).Id,
                     Amount = empSallaryDataToReturn.Taawidi
 

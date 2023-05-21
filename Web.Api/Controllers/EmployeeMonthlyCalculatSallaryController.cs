@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Api.Controllers
 {
 
-    public class EmployeeMonthlyCalculatSallaryController : BaseController
+    public class EmployeeOrderController : BaseController
 
 
     {
 
-        public EmployeeMonthlyCalculatSallaryController(IMediator mediator) : base(mediator) { }
+        public EmployeeOrderController(IMediator mediator) : base(mediator) { }
 
 
         [HttpGet("GetEmployeeOrders")]

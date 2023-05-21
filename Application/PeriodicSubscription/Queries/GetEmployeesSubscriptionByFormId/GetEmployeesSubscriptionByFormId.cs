@@ -37,17 +37,17 @@ namespace Application.PeriodicSubscriptions.Queries.GetEmployeesSubscriptionByFo
 
 
             employeesSubscription.Data = new List<EmployeeSubscriptionForm.EmployeeSubscriptionDataForm>();
-            var periodicSubscriptions = await _uow.PeriodicSubscriptionRepository.GetAllBySpecAsync(new GetEmployeesSubscriptionByFormIdQuerySpecification(request.formId, request.subscriptionId));
+            var periodicSubscriptions = await _uow.FormEmployeeSubscriptionRepository.GetAllBySpecAsync(new GetEmployeesSubscriptionByFormIdQuerySpecification(request.formId, request.subscriptionId));
             foreach (var periodicSubscription in periodicSubscriptions.Data)
             {
                 employeesSubscription.Data.Add(new EmployeeSubscriptionForm.EmployeeSubscriptionDataForm()
                 {
 
-                    EmployeeName = periodicSubscription.Employee.Name,
+                    EmployeeName = periodicSubscription.FormEmployee.Employee.Name,
                     Amount = periodicSubscription.Amount,
-                    EmployeeTabCode = periodicSubscription.Employee.TabCode,
+                    EmployeeTabCode = periodicSubscription.FormEmployee.Employee.TabCode,
                     CredirOrDebit = periodicSubscription.CreditOrDebit,
-                    EmployeeTegaraCode = periodicSubscription.Employee.TegaraCode,
+                    EmployeeTegaraCode = periodicSubscription.FormEmployee.Employee.TegaraCode,
                     Id = periodicSubscription.Id
 
                 });
@@ -59,15 +59,18 @@ namespace Application.PeriodicSubscriptions.Queries.GetEmployeesSubscriptionByFo
         }
     }
 }
-public class GetEmployeesSubscriptionByFormIdQuerySpecification : Specification<Domain.Models.PeriodicSubscription>
+public class GetEmployeesSubscriptionByFormIdQuerySpecification : Specification<Domain.Models.FormEmployeeSubscription>
 {
 
     public GetEmployeesSubscriptionByFormIdQuerySpecification(int formId, int subscriptionId)
     {
-        AddCriteries(x => x.FormId == formId);
+        AddInclude(x => x.FormEmployee);
+        AddInclude(x => x.FormEmployee.Employee);
+
+        AddCriteries(x => x.FormEmployee.FormId == formId);
         AddCriteries(x => x.SubscriptionId == subscriptionId);
-        AddInclude(x => x.Employee);
-        AddOrderBy(x => x.Employee.TegaraCode);
+     
+        AddOrderBy(x => x.FormEmployee.Employee.TegaraCode);
 
     }
 }

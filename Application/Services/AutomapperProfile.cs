@@ -7,6 +7,9 @@ using Application.EmployeeVacationTypes;
 using Application.FinancialDataTypes;
 //using Application.FinancialYears;
 using Application.Form;
+using Application.FormEmployee.Queries.GetFormEmployeeByEmployeeIdAndFormId;
+using Application.FormEmployeeOrderExecutions.Queries.GetFormEmployeeOrderExecutionByFormEmployeeOrderId;
+using Application.FormEmployeeVacations;
 using Application.Orders;
 using Application.Subscriptions;
 using Application.VacationTypes;
@@ -23,30 +26,33 @@ namespace Domain.Services
     {
         public AutomapperProfile()
         {
-            CreateMap<EmployeeOrderType, EmployeeOrderTypeDto>()
-            .ReverseMap();
 
-            CreateMap<EmployeeOrder, EmployeeOrderDto>()
+            CreateMap<FormEmployee, Application.FormEmployee.Queries.GetFormEmployeeByEmployeeIdAndFormId.FormEmployeeDto>()
+            .ReverseMap();
+    
+            CreateMap<FormEmployeeOrder, EmployeeOrderDto>()
             .ReverseMap();
 
             CreateMap<Vacation, VacationTypeDto>()
            .ReverseMap();
 
-            CreateMap<EmployeeVacationType, EmployeeVacationTypeDto>()
+            CreateMap<FormEmployeeVacation, FormEmployeeVacationTypeDto>()
                 .ReverseMap();
 
-            CreateMap<PeriodicSubscription, PeriodicSubscriptionDto>()
+            CreateMap<FormEmployeeSubscription, FormEmployeeSubscriptionDto>()
                 .ReverseMap();
 
-            //CreateMap<EmployeePartTime, EmployeePartTimeDto>()
-            //  .ReverseMap();
-
-            CreateMap<EmployeeSubscription, EmployeeSubscriptionBalanceDto>()
-                .ForMember(dest => dest.Credit, opt => opt.MapFrom(src => src.Employee.PeriodicSubscriptions.Where(t => t.CreditOrDebit == 'c').Sum(x => x.Amount)))
-                .ForMember(dest => dest.Debit, opt => opt.MapFrom(src => src.Employee.PeriodicSubscriptions.Where(t => t.CreditOrDebit == 'd').Sum(x => x.Amount)))
-
-               .ForMember(dest => dest.SubscriptionName, opt => opt.MapFrom(src => src.Subscription.Name))
+            CreateMap<FormEmployeeOrderExecuation, FormEmployeeOrderExecutionsDto>()
+                .ForMember(dest => dest.BudgetItemName ,opt => opt.MapFrom(src => src.BudgetItem.Name))
+              .ReverseMap();
+            CreateMap<FormEmployeeVacation, FormEmployeeVacationDto>()
+                  .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.FormEmployee.Employee))
                 .ReverseMap();
+            //CreateMap<FormEmployeeSubscription, EmployeeSubscriptionBalanceDto>()
+            //    .ForMember(dest => dest.Credit, opt => opt.MapFrom(src => src.FormEmployee.Where(t => t.CreditOrDebit == 'c').Sum(x => x.Amount)))
+            //    .ForMember(dest => dest.Debit, opt => opt.MapFrom(src => src.Employee.FormEmployees.Where(t => t.CreditOrDebit == 'd').Sum(x => x.Amount)))
+            //           .ForMember(dest => dest.SubscriptionName, opt => opt.MapFrom(src => src.Subscription.Name))
+            //          .ReverseMap();
 
             CreateMap<Employee, EmployeeDto>().ReverseMap();
 
@@ -65,21 +71,21 @@ namespace Domain.Services
 
             CreateMap<PagedList<Form>, PagedList<FormDto>>().ReverseMap();
 
-            CreateMap<EmployeeBank, EmployeeBankAccontDataDto>()
+            CreateMap<EmployeeBankAccount, EmployeeBankAccontDataDto>()
                  .ForMember(dest => dest.BankName, opt => opt.MapFrom(src => src.Branche.Bank.Name))
                  .ForMember(dest => dest.BranchName, opt => opt.MapFrom(src => src.Branche.Name))
                 .ReverseMap();
 
-            CreateMap<EmployeeForm, EmployeeFormDto>()
+            CreateMap<FormEmployee, Application.Form.FormEmployeeDto>()
               .ForMember(dest => dest.EmployeeOrderInCollection, opt => opt.MapFrom(src => src.EmployeeOrderNumber))
             .ReverseMap();
 
-            CreateMap<PagedList<EmployeeForm>, PagedList<EmployeeFormDto>>()
+            CreateMap<PagedList<FormEmployee>, PagedList<Application.Form.FormEmployeeDto>>()
             .ReverseMap();
 
             CreateMap<Collection, CollectionDto>().ReverseMap();
 
-            CreateMap<EmployeeSubscription, EmployeeToSubscriptionDto>().ReverseMap();
+            CreateMap<RegisterdEmployeeSubscription, EmployeeToSubscriptionDto>().ReverseMap();
 
             CreateMap<EmployeeCollection, EmployeeCollectionToAddDto>().ReverseMap();
 
@@ -93,9 +99,9 @@ namespace Domain.Services
 
             CreateMap<PagedList<Employee>, PagedList<EmployeeDto>>().ReverseMap();
 
-            CreateMap<EmployeeSubscription, EmployeeSubscriptionDto>().ReverseMap();
+            CreateMap<RegisterdEmployeeSubscription, EmployeeSubscriptionDto>().ReverseMap();
 
-            CreateMap<EmployeeSubscription, EmployeeSubscriptionDto>()
+            CreateMap<RegisterdEmployeeSubscription, EmployeeSubscriptionDto>()
              .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.Employee.Name))
              .ForMember(dest => dest.EmployeeTabCode, opt => opt.MapFrom(src => src.Employee.TabCode))
              .ForMember(dest => dest.EmployeeNationalId, opt => opt.MapFrom(src => src.Employee.NationalId))
@@ -104,7 +110,7 @@ namespace Domain.Services
             .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.Employee.Id))
             .ReverseMap();
 
-            CreateMap<PagedList<EmployeeSubscription>, PagedList<EmployeeSubscriptionDto>>().ReverseMap();
+            CreateMap<PagedList<RegisterdEmployeeSubscription>, PagedList<EmployeeSubscriptionDto>>().ReverseMap();
 
             CreateMap<Bank, BankDto>().ReverseMap();
 

@@ -8,26 +8,14 @@ namespace Application.Services.Calculations
     public class CalculateOrder
     {
         private readonly IReadOnlyList<BudgetItem> _budgetItems;
-
-
-  
-
         public CalculateOrder( IReadOnlyList<BudgetItem> budgetItems)
         {
             _budgetItems = budgetItems;
 
         }
-
-
-
-       
-
-
-        public async Task<List<EmployeeOrderTypeExecuation>> CalculateFixedEmployeeOrder(EmployeeBasicSallaryDataDto empSallary, Order order, DateTime formDate)
+        public async Task<List<FormEmployeeOrderExecuation>> CalculateFixedEmployeeOrder(EmployeeBasicSallaryDataDto empSallary, Order order, DateTime formDate)
         {
-
-
-            List<EmployeeOrderTypeExecuation> empExec = new List<EmployeeOrderTypeExecuation>();
+            List<FormEmployeeOrderExecuation> empExec = new List<FormEmployeeOrderExecuation>();
 
             if (!empSallary.Amount.HasValue)
             {
@@ -37,40 +25,46 @@ namespace Application.Services.Calculations
             {
                 BudgetItem? repay = _budgetItems.SingleOrDefault(x => x.Name == Constant.Model.BudgetItems.ISTRDAD);
 
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     Amount = empSallary.Amount.Value,
                     BudgetItemId = repay.Id,
+                    CreatedBy="Admin",
+                    CreatedDate=DateTime.Now,
                 });
             }
             if (order.Name == Constant.Model.OrderConstants.FIXED_AMOUNT_IRADAT)
             {
                 BudgetItem? repay = _budgetItems.SingleOrDefault(x => x.Name == Constant.Model.BudgetItems.IRADAT);
 
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     Amount = empSallary.Amount.Value,
                     BudgetItemId = repay.Id,
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
                 });
             }
             if (order.Name == Constant.Model.OrderConstants.FIXED_AMOUNT_MORTADAT)
             {
                 BudgetItem? repay = _budgetItems.SingleOrDefault(x => x.Name == Constant.Model.BudgetItems.MORTADAT);
 
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     Amount = empSallary.Amount.Value,
                     BudgetItemId = repay.Id,
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
                 });
             }
             return empExec;
         }
-        public async Task<List<EmployeeOrderTypeExecuation>> CalculateEmployeeOrder(EmployeeBasicSallaryDataDto empSallary, Order order, DateTime formDate)
+        public async Task<List<FormEmployeeOrderExecuation>> CalculateEmployeeOrder(EmployeeBasicSallaryDataDto empSallary, Order order, DateTime formDate)
         {
             int totalMonthWorkingDays = DateTime.DaysInMonth(formDate.Year, formDate.Month);
 
 
-            List<EmployeeOrderTypeExecuation> empExec = new List<EmployeeOrderTypeExecuation>();
+            List<FormEmployeeOrderExecuation> empExec = new List<FormEmployeeOrderExecuation>();
             //عدد ايام الحضور
             if (!empSallary.Quantity.HasValue)
             {
@@ -85,21 +79,27 @@ namespace Application.Services.Calculations
             {
 
 
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     BudgetItemId = _budgetItems.Single(x => x.Name == Constant.Model.BudgetItems.WAZIFI).Id,
                     Amount = empSallary.Wazifi * employeeVacationDays / totalMonthWorkingDays,
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
 
                 });
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     BudgetItemId = _budgetItems.Single(x => x.Name == Constant.Model.BudgetItems.MOKAMEL).Id,
-                    Amount = empSallary.Mokamel * employeeVacationDays / totalMonthWorkingDays
+                    Amount = empSallary.Mokamel * employeeVacationDays / totalMonthWorkingDays,
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
                 });
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     BudgetItemId = _budgetItems.Single(x => x.Name == Constant.Model.BudgetItems.TA3WIDI).Id,
-                    Amount = empSallary.Taawidi * employeeVacationDays / totalMonthWorkingDays
+                    Amount = empSallary.Taawidi * employeeVacationDays / totalMonthWorkingDays,
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,
                 });
 
 
@@ -112,10 +112,12 @@ namespace Application.Services.Calculations
             if (order.Name == Constant.Model.OrderConstants.PUNISHMENT_ABSENCE)
             {
 
-                empExec.Add(new EmployeeOrderTypeExecuation()
+                empExec.Add(new FormEmployeeOrderExecuation()
                 {
                     BudgetItemId = _budgetItems.Single(x => x.Name == Constant.Model.BudgetItems.WAZIFI).Id,
-                    Amount = empSallary.Wazifi * employeeVacationDays / totalMonthWorkingDays
+                    Amount = empSallary.Wazifi * employeeVacationDays / totalMonthWorkingDays,
+                    CreatedBy = "Admin",
+                    CreatedDate = DateTime.Now,  
                 });
                 // empSallary.Wazifi = empSallary.Wazifi * workingDays / totalMonthWorkingDays;
 

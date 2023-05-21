@@ -22,8 +22,8 @@ namespace Application.EmployeeSubscriptions.Queries.GetEmployeeSubscriptionByEmp
         {
             //var spec = new GetEmployeeSubscriptionByEmployeeIdQuerySpecification(request.employeeId);
             // var employeeSubscription=  await _uow.EmployeeSubscriptionRepository.GetAllBySpecAsync(spec );
-            var spec = new GetEmployeePeriodicSubscriptionByEmployeeIdQuerySpecification(request.employeeId);
-            var employeeSubscription = await _uow.PeriodicSubscriptionRepository.GetAllBySpecAsync(spec);
+            var spec = new GetFormEmployeeSubscriptionByEmployeeIdQuerySpecification(request.employeeId);
+            var employeeSubscription = await _uow.FormEmployeeSubscriptionRepository.GetAllBySpecAsync(spec);
 
 
             List<EmployeeSubscriptionBalanceDto> employeesSubs = new List<EmployeeSubscriptionBalanceDto>();
@@ -77,27 +77,27 @@ namespace Application.EmployeeSubscriptions.Queries.GetEmployeeSubscriptionByEmp
     }
 }
 
-public class GetEmployeeSubscriptionByEmployeeIdQuerySpecification : Specification<EmployeeSubscription>
+public class GetEmployeeSubscriptionByEmployeeIdQuerySpecification : Specification<RegisterdEmployeeSubscription>
 {
 
     public GetEmployeeSubscriptionByEmployeeIdQuerySpecification(int employeeId)
     {
         AddInclude(x => x.Employee);
-        AddInclude(x => x.Employee.PeriodicSubscriptions);
+        AddInclude(x => x.Employee.FormEmployees);
         AddInclude(x => x.Subscription);
         AddCriteries(x => x.EmployeeId.Equals(employeeId));
     }
 
 }
-public class GetEmployeePeriodicSubscriptionByEmployeeIdQuerySpecification : Specification<PeriodicSubscription>
+public class GetFormEmployeeSubscriptionByEmployeeIdQuerySpecification : Specification<FormEmployeeSubscription>
 {
 
-    public GetEmployeePeriodicSubscriptionByEmployeeIdQuerySpecification(int employeeId)
+    public GetFormEmployeeSubscriptionByEmployeeIdQuerySpecification(int employeeId)
     {
-        AddInclude(x => x.Employee);
-        AddInclude(x => x.Employee.EmployeeSubscriptions);
+        AddInclude(x => x.FormEmployee.Employee);
+       // AddInclude(x => x.FormEmployee.Employee.EmployeeSubscriptions);
         AddInclude(x => x.Subscription);
-        AddCriteries(x => x.EmployeeId.Equals(employeeId));
+        AddCriteries(x => x.FormEmployee.EmployeeId.Equals(employeeId));
     }
 
 }

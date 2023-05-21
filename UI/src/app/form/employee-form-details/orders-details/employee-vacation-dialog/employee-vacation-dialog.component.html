@@ -1,7 +1,7 @@
 
 <div>
 <mat-card>
-  <mat-card-header>
+  <mat-card-header cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle >
     <div class="close" style="padding: 5px;">
 
       <button color="primary" mat-mini-fab (click)="onNoClick()">
@@ -31,7 +31,7 @@
 
       <div class="order-container">
 
-        <form *ngIf="employee" [formGroup]="employeeVacationForm" (ngSubmit)="vacationFormSubmit()">
+        <form *ngIf="employeeVacation.formEmployeeId>0" [formGroup]="employeeVacationForm" (ngSubmit)="vacationFormSubmit()">
          <div class="order-data">
           <mat-form-field  appearance="fill">
             <mat-label>اسم الموظف</mat-label>
@@ -47,7 +47,7 @@
 
           <mat-form-field color="primary" appearance="fill">
             <mat-label style="font-family: Cairo;">نوع الامر</mat-label>
-            <mat-select formControlName="vacationId"  [(value)]="employeeVacation.vacationId" >
+            <mat-select formControlName="vacationId" >
               <mat-option  *ngFor="let vacationType of vacationTypes" [value]="vacationType.id"  >
                 <span >
                 {{vacationType.name}}
@@ -96,7 +96,5 @@
       </div>
         </form>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Ok</button>
-  </mat-card-actions>
+
 </mat-card>

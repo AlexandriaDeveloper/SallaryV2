@@ -11,10 +11,8 @@ namespace Domain.Models
         public int GradeId { get; set; }
         public DateTime StartFrom { get; set; }
         public DateTime? EndAt { get; set; }
-
         public Grade Grade { get; set; }
         public Employee Employees { get; set; }
-
         public ICollection<EmployeeGrade> EmployeeGrades { get; set; }
         public EmployeeGrade()
         {

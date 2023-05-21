@@ -3,10 +3,10 @@ using Domain.Models;
 
 namespace Application.Interfaces.Repository
 {
-    public interface IEmployeeSubscriptionRepository : IRepository<EmployeeSubscription>
+    public interface IEmployeeSubscriptionRepository : IRepository<RegisterdEmployeeSubscription>
     {
-        Task<List<EmployeeSubscription>> GetEmployeeSubscriptionBySubscriptionId(int subscriptionId);
-        Task<List<EmployeeSubscription>> GetSubscriptionsByEmployeeId(int employeeId);
+        Task<List<RegisterdEmployeeSubscription>> GetEmployeeSubscriptionBySubscriptionId(int subscriptionId);
+        Task<List<RegisterdEmployeeSubscription>> GetSubscriptionsByEmployeeId(int employeeId);
 
     }
 }

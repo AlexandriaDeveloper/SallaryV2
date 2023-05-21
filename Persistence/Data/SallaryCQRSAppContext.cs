@@ -11,25 +11,20 @@ namespace Persistence.Data
         private readonly AuthService _authService;
 
         public DbSet<Employee> Employees { get; set; }
-        // public DbSet<EmployeePartTime> EmployeesPartTimes { get; set; }
 
-     //   public DbSet<EmployeeBasicSallary> EmployeeBasicSallaries { get; set; }
-        // public DbSet<FinancialYear> FinancialYears { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<BudgetItem> BudgetItems { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
-
-        public DbSet<EmployeeOrder> EmployeeOrders { get; set; }
-        public DbSet<EmployeeOrderTypeExecuation> EmployeeOrderExecuations { get; set; }
-
+        public DbSet<FormEmployeeOrder> FormEmployeeOrders { get; set; }
+        public DbSet<FormEmployeeOrderExecuation> FormEmployeeOrderExecuations { get; set; }
         public DbSet<EmployeeGrade> EmployeeGrades { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<EmployeeCollection> EmployeeCollections { get; set; }
 
-        public DbSet<EmployeeSubscription> EmployeeSubscriptions { get; set; }
+        public DbSet<RegisterdEmployeeSubscription> RegisterdEmployeeSubscriptions { get; set; }
 
-        public DbSet<EmployeeForm> EmployeeForms { get; set; }
-        public DbSet<EmployeeBank> EmployeeBanks { get; set; }
+        public DbSet<FormEmployee> FormEmployees { get; set; }
+        public DbSet<EmployeeBankAccount> EmployeeBankAccounts { get; set; }
         public DbSet<FinancialDataType> FinancialDataTypes { get; set; }
         public DbSet<EmployeeBasicFinancialData> EmployeeBasicFinancialData { get; set; }
         public SallaryCQRSAppContext(DbContextOptions<SallaryCQRSAppContext> options) : base(options)
@@ -43,37 +38,17 @@ namespace Persistence.Data
 
             // TODO : after i do auth system i will chage admin hardcode to one created at db ;
 
-
-
-
             modelBuilder.Entity<Employee>().HasOne(x => x.EmployeeBank)
                 .WithOne(t => t.Employee)
                 .HasForeignKey<Employee>(fk => fk.EmployeeBankId);
 
+            modelBuilder.Entity<FormEmployee>().HasOne(x => x.Credit)
+               .WithOne(t => t.FormEmployee)
+               .HasForeignKey<FormEmployeeCredit>(fk => fk.EmployeeFormId);
 
-            modelBuilder.Entity<EmployeeForm>().HasOne(x => x.Credit)
+            modelBuilder.Entity<FormEmployee>().HasOne(x => x.Debit)
                .WithOne(t => t.EmployeeForm)
-               .HasForeignKey<EmployeeFormCredit>(fk => fk.EmployeeFormId);
-
-
-            modelBuilder.Entity<EmployeeVacationType>()
-               .HasOne(entity => entity.EmployeeOrder)
-               .WithOne(e => e.EmployeeVacationType)
-               .HasForeignKey<EmployeeVacationType>(k => k.EmployeeOrderId);
-
-
-            modelBuilder.Entity<EmployeeOrder>()
-               .HasOne(entity => entity.EmployeeOrderType)
-               .WithOne(e => e.EmployeeOrder)
-               .HasForeignKey<EmployeeOrderType>(k => k.EmployeeOrderId);
-
-
-
-
-
-            modelBuilder.Entity<EmployeeForm>().HasOne(x => x.Debit)
-               .WithOne(t => t.EmployeeForm)
-               .HasForeignKey<EmployeeFormDebit>(fk => fk.EmployeeFormId);
+               .HasForeignKey<FormEmployeemDebit>(fk => fk.EmployeeFormId);
 
             modelBuilder.Entity<Employee>()
                 .HasIndex(x => x.NationalId).IsUnique();
@@ -82,19 +57,19 @@ namespace Persistence.Data
              .HasIndex(x => x.TabCode).IsUnique();
 
 
-            modelBuilder.Entity<EmployeeForm>()
+            modelBuilder.Entity<FormEmployee>()
              .HasIndex(x => new { x.EmployeeId, x.FormId }).IsUnique();
 
 
-            modelBuilder.Entity<PeriodicSubscription>()
-             .HasIndex(x => new { x.EmployeeId, x.FormId, x.SubscriptionId, x.CreditOrDebit }).IsUnique();
+            modelBuilder.Entity<FormEmployeeSubscription>()
+             .HasIndex(x => new { x.FormEmployeeId, x.SubscriptionId, x.CreditOrDebit }).IsUnique();
 
 
 
             modelBuilder.Entity<EmployeeGrade>()
                 .HasIndex(x => new { x.EmployeeId, x.GradeId }).IsUnique();
 
-            modelBuilder.Entity<EmployeeSubscription>()
+            modelBuilder.Entity<RegisterdEmployeeSubscription>()
                 .HasIndex(x => new { x.EmployeeId, x.SubscriptionId }).IsUnique();
 
             //modelBuilder.Entity<EmployeeBasicSallary>()
@@ -138,90 +113,75 @@ namespace Persistence.Data
             new Form() { Id = 2, Details = "مرتبات شهر ابريل", FormDate = "2022-4", CreatedDate = DateTime.Now, CreatedBy = "Admin", FileNumber224 = "1", FileNumber55 = "1" },
             new Form() { Id = 3, Details = "مرتبات شهر مايو", FormDate = "2022-5", CreatedDate = DateTime.Now, CreatedBy = "Admin", FileNumber224 = "2", FileNumber55 = "2" },
             new Form() { Id = 4, Details = "مرتبات شهر يونيو", FormDate = "2022-6", CreatedDate = DateTime.Now, CreatedBy = "Admin", FileNumber224 = "3", FileNumber55 = "3" }
-
-
-
-                );
+             );
 
 
             modelBuilder.Entity<BudgetItem>().HasData(
-                new BudgetItem() { Id = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.WAZIFI },
-                new BudgetItem() { Id = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.MOKAMEL },
-                new BudgetItem() { Id = 3, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.TA3WIDI },
-                new BudgetItem() { Id = 4, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.GAZAA },
-                new BudgetItem() { Id = 5, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.IRADAT },
-                new BudgetItem() { Id = 6, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.MORTADAT },
-                new BudgetItem() { Id = 7, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.ISTRDAD }
+            new BudgetItem() { Id = 1, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.WAZIFI },
+            new BudgetItem() { Id = 2, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.MOKAMEL },
+            new BudgetItem() { Id = 3, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.TA3WIDI },
+            new BudgetItem() { Id = 4, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.GAZAA },
+            new BudgetItem() { Id = 5, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.IRADAT },
+            new BudgetItem() { Id = 6, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.MORTADAT },
+            new BudgetItem() { Id = 7, CreatedBy = "Admin", CreatedDate = DateTime.Now, Name = Constant.Model.BudgetItems.ISTRDAD }
 
                 );
 
-            //modelBuilder.Entity<FinancialYear>().HasData(
-            //    new FinancialYear() { Id = 1, Name = "العام المالى 2017-2018", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-            //    new FinancialYear() { Id = 2, Name = "العام المالى 2018-2019", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-            //    new FinancialYear() { Id = 3, Name = "العام المالى 2020-2019", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-            //    new FinancialYear() { Id = 4, Name = "العام المالى 2021-2020", CreatedBy = "Admin", CreatedDate = DateTime.Now },
-            //    new FinancialYear() { Id = 5, Name = "العام المالى 2022-2021", CreatedBy = "Admin", CreatedDate = DateTime.Now }
-
-
-            //    );
+            modelBuilder.Entity<Qanon>().HasData(
+                //قانون
+            new Qanon() { Id = 1, Name = "قانون الخدمه المدنيه 81", CreatedBy = "Admin", CreatedDate = DateTime.Now },
+            new Qanon() { Id = 2, Name = "قانون تنظيم الجامعات 49", CreatedBy = "Admin", CreatedDate = DateTime.Now }
+                );
 
 
             modelBuilder.Entity<FinancialDataType>().HasData(
 
-               //بنود
+           //بنود
+           new FinancialDataType() { Id = 1000, Name = Constant.FinincialData.WAZIFI, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2000, Name = Constant.FinincialData.MOKAMEL, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3000, Name = Constant.FinincialData.AGMALI_AGR, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 4000, Name = Constant.FinincialData.TAWIDI, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 5000, Name = Constant.FinincialData.SHAMEL, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
-               new FinancialDataType() { Id = 1000, Name = Constant.FinincialData.WAZIFI, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2000, Name = Constant.FinincialData.MOKAMEL, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3000, Name = Constant.FinincialData.AGMALI_AGR, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 4000, Name = Constant.FinincialData.TAWIDI, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 5000, Name = Constant.FinincialData.SHAMEL, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           //مكونات اجر وظيفى 
+           new FinancialDataType() { Id = 1002, Name = Constant.FinincialData.BASIC,QanonId=1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1003, Name = Constant.FinincialData.BASIC2, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1004, Name = Constant.FinincialData.BADAL_HAD_ADNA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1005, Name = Constant.FinincialData.ALAWA_KHIR_MADMOMA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1006, Name = Constant.FinincialData.BADAL_ALAWA_IGTMAIA_WE_MENHA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1007, Name = Constant.FinincialData.ALAWA_2015, QanonId = 1, ReservationDate = new DateTime(2015, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1008, Name = Constant.FinincialData.ALAWA_2016, QanonId = 1, ReservationDate = new DateTime(2016, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1009, Name = Constant.FinincialData.ALAWA_2017, QanonId = 1, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1010, Name = Constant.FinincialData.ALAWA_2017_2, QanonId = 1, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1011, Name = Constant.FinincialData.ALAWA_2018, QanonId = 1, ReservationDate = new DateTime(2018, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1012, Name = Constant.FinincialData.ALAWA_2018_2, QanonId = 1, ReservationDate = new DateTime(2018, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1013, Name = Constant.FinincialData.ALAWA_2019, QanonId = 1, ReservationDate = new DateTime(2019, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1014, Name = Constant.FinincialData.ALAWA_2020, QanonId = 1, ReservationDate = new DateTime(2020, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1015, Name = Constant.FinincialData.ALAWA_2021, QanonId = 1, ReservationDate = new DateTime(2021, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 1016, Name = Constant.FinincialData.ALAWA_2022, QanonId = 1, ReservationDate = new DateTime(2022, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
-               //مكونات اجر وظيفى 
+           //مكونات اجمالى الاجر
+           new FinancialDataType() { Id = 3001, Name = Constant.FinincialData.BASIC, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3002, Name = Constant.FinincialData.ALAWA_KHIR_MADMOMA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3003, Name = Constant.FinincialData.MENHA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3004, Name = Constant.FinincialData.ALAWA_IGTMAIA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3005, Name = Constant.FinincialData.ALAWA_IDAFIA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3006, Name = Constant.FinincialData.BADAL_ADWA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 3007, Name = Constant.FinincialData.BASIC_150, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
-               new FinancialDataType() { Id = 1002, Name = Constant.FinincialData.BASIC, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1003, Name = Constant.FinincialData.BASIC2, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1004, Name = Constant.FinincialData.BADAL_HAD_ADNA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1005, Name = Constant.FinincialData.ALAWA_KHIR_MADMOMA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1006, Name = Constant.FinincialData.BADAL_ALAWA_IGTMAIA_WE_MENHA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1007, Name = Constant.FinincialData.ALAWA_2015, ReservationDate = new DateTime(2015, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1008, Name = Constant.FinincialData.ALAWA_2016, ReservationDate = new DateTime(2016, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1009, Name = Constant.FinincialData.ALAWA_2017, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1010, Name = Constant.FinincialData.ALAWA_2017_2, ReservationDate = new DateTime(2017, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1011, Name = Constant.FinincialData.ALAWA_2018, ReservationDate = new DateTime(2018, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1012, Name = Constant.FinincialData.ALAWA_2018_2, ReservationDate = new DateTime(2018, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1013, Name = Constant.FinincialData.ALAWA_2019, ReservationDate = new DateTime(2019, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1014, Name = Constant.FinincialData.ALAWA_2020, ReservationDate = new DateTime(2020, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1015, Name = Constant.FinincialData.ALAWA_2021, ReservationDate = new DateTime(2021, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 1016, Name = Constant.FinincialData.ALAWA_2022, ReservationDate = new DateTime(2022, 7, 1), ParentFinancialDataTypeId = 1000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-
-
-               //مكونات اجمالى الاجر
-
-               new FinancialDataType() { Id = 3001, Name = Constant.FinincialData.BASIC, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3002, Name = Constant.FinincialData.ALAWA_KHIR_MADMOMA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3003, Name = Constant.FinincialData.MENHA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3004, Name = Constant.FinincialData.ALAWA_IGTMAIA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3005, Name = Constant.FinincialData.ALAWA_IDAFIA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3006, Name = Constant.FinincialData.BADAL_ADWA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 3007, Name = Constant.FinincialData.BASIC_150, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 3000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-
-
-               //مكونات الاجر المكمل
-
-               new FinancialDataType() { Id = 2001, Name = Constant.FinincialData.BASIC_50, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2002, Name = Constant.FinincialData.BADAL_GAWDA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2003, Name = Constant.FinincialData.BADAL_HAD_ADNA, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2004, Name = Constant.FinincialData.HAFEZ_2019, ReservationDate = new DateTime(2019, 7, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2005, Name = Constant.FinincialData.HAFEZ_2020, ReservationDate = new DateTime(2020, 7, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2006, Name = Constant.FinincialData.HAFEZ_2021, ReservationDate = new DateTime(2021, 7, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2007, Name = Constant.FinincialData.HAFEZ_2022, ReservationDate = new DateTime(2022, 4, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2008, Name = Constant.FinincialData.BADAL_GHALA_2022, ReservationDate = new DateTime(2022, 11, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-               new FinancialDataType() { Id = 2009, Name = Constant.FinincialData.HAFEZ_IDAFI, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
-
+           //مكونات الاجر المكمل
+           new FinancialDataType() { Id = 2001, Name = Constant.FinincialData.BASIC_50, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2002, Name = Constant.FinincialData.BADAL_GAWDA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2003, Name = Constant.FinincialData.BADAL_HAD_ADNA, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2004, Name = Constant.FinincialData.HAFEZ_2019, QanonId = 1, ReservationDate = new DateTime(2019, 7, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2005, Name = Constant.FinincialData.HAFEZ_2020, QanonId = 1, ReservationDate = new DateTime(2020, 7, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2006, Name = Constant.FinincialData.HAFEZ_2021, QanonId = 1, ReservationDate = new DateTime(2021, 7, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2007, Name = Constant.FinincialData.HAFEZ_2022, QanonId = 1, ReservationDate = new DateTime(2022, 4, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2008, Name = Constant.FinincialData.BADAL_GHALA_2022, QanonId = 1, ReservationDate = new DateTime(2022, 11, 1), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
+           new FinancialDataType() { Id = 2009, Name = Constant.FinincialData.HAFEZ_IDAFI, QanonId = 1, ReservationDate = new DateTime(2015, 6, 30), ParentFinancialDataTypeId = 2000, CreatedBy = "Admin", CreatedDate = DateTime.Now },
 
                //حافز تعويضى
-
-               new FinancialDataType() { Id = 4001, Name = Constant.FinincialData.TAWIDI_2016, ParentFinancialDataTypeId = 4000, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now }
+               new FinancialDataType() { Id = 4001, Name = Constant.FinincialData.TAWIDI_2016, QanonId = 1, ParentFinancialDataTypeId = 4000, ReservationDate = new DateTime(2015, 6, 30), CreatedBy = "Admin", CreatedDate = DateTime.Now }
     );
 
 

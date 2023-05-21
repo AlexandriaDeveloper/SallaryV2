@@ -21,7 +21,7 @@ namespace Application.EmployeeSubscriptions.Commands.DeleteEmployeeFromSubscript
         }
         public async Task<Result> Handle(DeleteEmployeeFromSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            EmployeeSubscription employeeSubscriptionFromDb = await _uow.EmployeeSubscriptionRepository.GetByIdAsync(request.id);
+            RegisterdEmployeeSubscription employeeSubscriptionFromDb = await _uow.EmployeeSubscriptionRepository.GetByIdAsync(request.id);
             if (employeeSubscriptionFromDb == null)
             {
                 return Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);

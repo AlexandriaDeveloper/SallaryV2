@@ -22,11 +22,11 @@ namespace Application.PeriodicSubscriptions.Queries.PeriodicSubscriptionHistoryB
         {
 
             var specification = new PeriodicSubscriptionHistoryByEmployeeQuerySpecification(request.subscriptionId, request.employeeId);
-            List<PeriodicSubscription> periodicSubscriptionsHistoryFromDb = _uow.PeriodicSubscriptionRepository.GetAllBySpecAsync(specification).Result.Data;
+            List<FormEmployeeSubscription> periodicSubscriptionsHistoryFromDb = _uow.FormEmployeeSubscriptionRepository.GetAllBySpecAsync(specification).Result.Data;
 
             List<PeriodicSubscriptionHistoryDto> fullHistory = new List<PeriodicSubscriptionHistoryDto>();
 
-            foreach (var item in periodicSubscriptionsHistoryFromDb.GroupBy(x => x.FormId))
+            foreach (var item in periodicSubscriptionsHistoryFromDb.GroupBy(x => x.FormEmployee.FormId))
             {
                 PeriodicSubscriptionHistoryDto history = new PeriodicSubscriptionHistoryDto();
 
@@ -61,14 +61,14 @@ namespace Application.PeriodicSubscriptions.Queries.PeriodicSubscriptionHistoryB
         }
     }
 
-    public class PeriodicSubscriptionHistoryByEmployeeQuerySpecification : Specification<PeriodicSubscription>
+    public class PeriodicSubscriptionHistoryByEmployeeQuerySpecification : Specification<FormEmployeeSubscription>
     {
         public PeriodicSubscriptionHistoryByEmployeeQuerySpecification(int subscriptionId, int employeeId)
         {
             //AddInclude(x => x.Subscription);
-            //AddInclude(x => x.Form);
+           AddInclude(x => x.FormEmployee);
             AddCriteries(x => x.SubscriptionId == subscriptionId);
-            AddCriteries(x => x.EmployeeId == employeeId);
+            AddCriteries(x => x.FormEmployee.EmployeeId == employeeId);
         }
     }
 

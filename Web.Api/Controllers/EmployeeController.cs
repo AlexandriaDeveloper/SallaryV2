@@ -1,7 +1,8 @@
 ﻿
 
-using Application.EmployeeOrders.Queries.GetEmployeeByTabCodeOrTegaraCode;
+
 using Application.Employees.Commands.UploadEmployeesFile;
+using Application.Employees.Queries.GetEmployeeByTabCodeOrTegaraCode;
 using Domain.Employees.Commands.DeleteEmployee;
 
 using Domain.Employees.Commands.RegisterEmployee;
@@ -86,9 +87,9 @@ namespace Web.Api.Controllers
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
         [HttpPost("UploadEmployee")]
-        public async Task<ActionResult<Result<Unit>>> UploadEmployee([FromForm] UploadEmployeeFileCommand command)
+        public async Task<ActionResult<Result<Unit>>> UploadEmployee([FromForm] UploadEmployeesFileParam file)
         {
-            var result = await Mediator.Send(command);
+            var result = await Mediator.Send(new UploadEmployeeFileCommand(file));
             if (result.IsFailure)
             {
                 return HandleFailureResult(result);

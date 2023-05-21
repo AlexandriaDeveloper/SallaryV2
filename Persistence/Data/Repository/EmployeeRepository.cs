@@ -78,7 +78,7 @@ namespace Persistence.Data.Repository
         //    _context.EmployeesPartTimes.Update(existPartTime);
         //    await _context.SaveChangesAsync();
         //}
-        public async Task EmployeeAddBankAccount(int employeeId, EmployeeBank employeeBank)
+        public async Task EmployeeAddBankAccount(int employeeId, EmployeeBankAccount employeeBank)
         {
             var employee = await _context.Employees.FindAsync(employeeId);
             if (employee == null)
@@ -95,7 +95,7 @@ namespace Persistence.Data.Repository
             {
                 throw new Exception("Not Found");
             }
-            _context.EmployeeBanks.Remove(employee.EmployeeBank);
+            _context.EmployeeBankAccounts.Remove(employee.EmployeeBank);
 
 
         }

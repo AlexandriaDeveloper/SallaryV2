@@ -13,7 +13,7 @@ namespace Web.Api.Controllers
         {
         }
         [HttpPost()]
-        public async Task<ActionResult<Result<Unit>>> EmployeeBankAccount(EmployeeVacationTypeDto EmployeeVacationTypeDto)
+        public async Task<ActionResult<Result<Unit>>> EmployeeBankAccount(FormEmployeeVacationTypeDto EmployeeVacationTypeDto)
         {
 
             var result = await Mediator.Send(new AddEmployeeVacationCommand(EmployeeVacationTypeDto));

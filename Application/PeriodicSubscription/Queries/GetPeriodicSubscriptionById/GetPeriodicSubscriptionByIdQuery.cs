@@ -9,8 +9,8 @@ using FluentValidation;
 namespace Application.PeriodicSubscriptions.Queries.GetPeriodicSubscriptionById
 {
 
-    public record GetPeriodicSubscriptionByIdQuery(int id) : IQuery<PeriodicSubscriptionDto>;
-    public class GetPeriodicSubscriptionByIdQueryHandler : IQueryHandler<GetPeriodicSubscriptionByIdQuery, PeriodicSubscriptionDto>
+    public record GetPeriodicSubscriptionByIdQuery(int id) : IQuery<FormEmployeeSubscriptionDto>;
+    public class GetPeriodicSubscriptionByIdQueryHandler : IQueryHandler<GetPeriodicSubscriptionByIdQuery, FormEmployeeSubscriptionDto>
     {
         private readonly IUOW _uow;
         private readonly IMapper _mapper;
@@ -20,16 +20,16 @@ namespace Application.PeriodicSubscriptions.Queries.GetPeriodicSubscriptionById
             _uow = uow;
             _mapper = mapper;
         }
-        public async Task<Result<PeriodicSubscriptionDto>> Handle(GetPeriodicSubscriptionByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<FormEmployeeSubscriptionDto>> Handle(GetPeriodicSubscriptionByIdQuery request, CancellationToken cancellationToken)
         {
-            PeriodicSubscription periodicSubscription = await _uow.PeriodicSubscriptionRepository.GetByIdAsync(request.id);
+            FormEmployeeSubscription periodicSubscription = await _uow.FormEmployeeSubscriptionRepository.GetByIdAsync(request.id);
             if (periodicSubscription == null)
             {
-                return Result<PeriodicSubscriptionDto>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
+                return Result<FormEmployeeSubscriptionDto>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            PeriodicSubscriptionDto periodicSubscriptionToReturn = _mapper.Map<PeriodicSubscriptionDto>(periodicSubscription);
+            FormEmployeeSubscriptionDto periodicSubscriptionToReturn = _mapper.Map<FormEmployeeSubscriptionDto>(periodicSubscription);
 
-            return Result<PeriodicSubscriptionDto>.Success(periodicSubscriptionToReturn);
+            return Result<FormEmployeeSubscriptionDto>.Success(periodicSubscriptionToReturn);
 
         }
     }

@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace Application.PeriodicSubscriptions.Commands.AddEmployeeToPeriodicSubscription
 {
-    public record AddEmployeeToPeriodicSubscriptionCommand(PeriodicSubscriptionDto PeriodicSubscription) : ICommand;
+    public record AddEmployeeToPeriodicSubscriptionCommand(FormEmployeeSubscriptionDto PeriodicSubscription) : ICommand;
     public class AddEmployeeToPeriodicSubscriptionCommandHandler : ICommandHandler<AddEmployeeToPeriodicSubscriptionCommand>
     {
         private readonly IUOW _uow;
@@ -21,9 +21,9 @@ namespace Application.PeriodicSubscriptions.Commands.AddEmployeeToPeriodicSubscr
         }
         public async Task<Result> Handle(AddEmployeeToPeriodicSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            PeriodicSubscription periodicSubscriptionToSave = _mapper.Map<PeriodicSubscription>(request.PeriodicSubscription);
+            FormEmployeeSubscription periodicSubscriptionToSave = _mapper.Map<FormEmployeeSubscription>(request.PeriodicSubscription);
             periodicSubscriptionToSave.CreditOrDebit = 'd';
-            await _uow.PeriodicSubscriptionRepository.AddItem(periodicSubscriptionToSave);
+            await _uow.FormEmployeeSubscriptionRepository.AddItem(periodicSubscriptionToSave);
             var result = await _uow.SaveChangesAsync(cancellationToken);
             if (result != SaveState.Saved)
             {
@@ -38,8 +38,8 @@ namespace Application.PeriodicSubscriptions.Commands.AddEmployeeToPeriodicSubscr
         public AddEmployeeToPeriodicSubscriptionCommandValidator()
         {
             RuleFor(x => x.PeriodicSubscription.Amount).NotEmpty();
-            RuleFor(x => x.PeriodicSubscription.EmployeeId).NotNull().NotEmpty();
-            RuleFor(x => x.PeriodicSubscription.FormId).NotNull().NotEmpty();
+            RuleFor(x => x.PeriodicSubscription.FormEmployeeId).NotNull().NotEmpty();
+           // RuleFor(x => x.PeriodicSubscription.FormId).NotNull().NotEmpty();
             RuleFor(x => x.PeriodicSubscription.SubscriptionId).NotNull().NotEmpty();
 
         }

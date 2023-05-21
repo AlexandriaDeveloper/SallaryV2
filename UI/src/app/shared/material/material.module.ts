@@ -23,6 +23,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+
 @NgModule({
   declarations: [],
   imports: [

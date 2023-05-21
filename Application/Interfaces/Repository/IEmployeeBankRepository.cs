@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces.Repository
 {
-    public interface IEmployeeBankRepository : IRepository<Domain.Models.EmployeeBank>
+    public interface IEmployeeBankAccountRepository : IRepository<Domain.Models.EmployeeBankAccount>
     {
 
 

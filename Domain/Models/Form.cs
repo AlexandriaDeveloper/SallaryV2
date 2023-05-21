@@ -17,8 +17,7 @@ namespace Domain.Models
         [MaxLength(5)]
         public string? FileNumber224 { get; set; }
 
-        public ICollection<EmployeeOrderType> EmployeeOrderTypes { get; set; }
-        public ICollection<PeriodicSubscription> PeriodicSubscription { get; set; }
+        public ICollection<FormEmployee> FormEmployees { get; set; }
 
     }
 }

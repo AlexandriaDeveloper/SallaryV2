@@ -1,3 +1,4 @@
+import { EmployeeFormService } from './../../shared/services/employee-form.service';
 import { combineLatest, concat, concatAll, forkJoin, merge, switchAll, switchMap, zip, map, flatMap } from 'rxjs';
 import { IEmployee, IEmployeeBasicSallary } from './../../shared/models/employee/employee';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
@@ -18,13 +19,15 @@ formId=null;
 employeeBasicSallary:IEmployeeBasicSallary;
 editable =false;
 id:number;
+formEmployeeId:number;
 subscriptionNotification:boolean=false;
 notification : boolean=false;
 constructor(
   private activatedRoute :ActivatedRoute,
   private router:Router,
   private employeeService : EmployeeService,
-  public dialog: MatDialog
+  public dialog: MatDialog,
+  private formEmployeeService : EmployeeFormService
    ) {
   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 }
@@ -50,7 +53,7 @@ if(this.formId ===null){
       this.formId=x.formId;
       if(x.formId !==undefined)
       this.editable=true
-
+this.formEmployeeService.getFormEmployeesByEmployeeIdAndFormId(this.id,this.formId).subscribe(x => {this.formEmployeeId=x.id;console.log(x)})
     });
   }
   NextClick() {

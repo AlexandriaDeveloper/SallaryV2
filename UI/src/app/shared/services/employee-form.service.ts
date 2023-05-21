@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { HttpCustomClientService } from './http-custom-client.service';
 import { Injectable } from '@angular/core';
 import { EmployeeFormParam } from '../models/param';
@@ -12,7 +13,7 @@ export class EmployeeFormService extends HttpCustomClientService {
   }
 
   constructor() {
-    super ('EmployeeForm')
+    super ('formEmployee')
    }
 
    GetEmployeesByFormId(param : EmployeeFormParam){
@@ -40,7 +41,10 @@ export class EmployeeFormService extends HttpCustomClientService {
 
     return this.getAll(params,param);
    }
+   getFormEmployeesByEmployeeIdAndFormId(employeeId : number,formId:number):Observable<any>{
 
+    return this.http.get<any>(this.baseApiUrl+'/getEmployeesByEmployeeIdAndFormId',{params:{ employeeId:employeeId, formId:formId}})
+   }
 checkEmployeeExistInForm(employeeId : number,formId:number){
   let params = new HttpParams();
   params = params.append('employeeId',employeeId);

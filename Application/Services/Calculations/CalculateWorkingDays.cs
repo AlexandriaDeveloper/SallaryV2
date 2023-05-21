@@ -12,7 +12,7 @@ namespace Application.Services.Calculations
 
 
 
-        public int CaluctaeWorkingDays(DateTime formDate, EmployeeVacationType dateToCalculate)
+        public int CaluctaeWorkingDays(DateTime formDate, FormEmployeeVacation dateToCalculate)
         {
 
             int totalWorkingDays = DateTime.DaysInMonth(formDate.Year, formDate.Month);

@@ -12,6 +12,8 @@ import { FinancialYearService } from 'src/app/shared/services/financial-year.ser
 import { OrderService } from 'src/app/shared/services/order.service';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { map, switchMap, zip } from 'rxjs';
+import { EmployeeFormService } from 'src/app/shared/services/employee-form.service';
 
 @Component({
   selector: 'app-employee-vacation-dialog',
@@ -37,6 +39,7 @@ vacationTypes =[];
   private employeeService : EmployeeService,
   private employeeVacationService: EmployeeVacationTypeService,
   private orderService :OrderService,
+  private formEmployeeService : EmployeeFormService
    ) {
 
 
@@ -46,7 +49,7 @@ vacationTypes =[];
     console.log(this.data)
    this.vacationTypeService.getAllVacationType(this.vacationTypeParam).subscribe((x:any) => this.vacationTypes=x);
 
-   this.employeeVacation.formId= this.data.formId
+   //this.employeeVacation.formId= this.data.formId
    this.employeeForm=this.IntilizeEmployeeForm();
 
   }
@@ -67,24 +70,19 @@ vacationTypes =[];
     this.dialogRef.close();
   }
   submitEmployee(){
-    this.employeeService
+    let emp= this.employeeService
     .findEmployeeByTabCodeOrTegaraCode(this.employeeForm.value.tabCode,this.employeeForm.value.tegaraCode)
-    .subscribe((x:IEmployee )=>{
-      this.employee=x;
-      this.employeeVacation.employeeId=x.id;
+    zip(emp.pipe(switchMap(empResult =>{
+      console.log(empResult)
+      this.employee=empResult;
+      return this.formEmployeeService
+      .getFormEmployeesByEmployeeIdAndFormId(empResult.id, this.data.formId)
+      .pipe(map(t => {
+        this.employeeVacation.formEmployeeId=t.id;
 
-      console.log(this.employeeVacation)
-      this.employeeVacationForm=this.IntilizeOrderForm();
-    });
-
-     // this.financialYearService.getAllFinancialYears().subscribe((x:FinancialYear[]) => {this.financialYears=x;console.log(x)});
-     // this.orderService.getAllOrders().subscribe(x => this.orders=x)
-
-
-
-
-    //this.orderForm.get('financialYearId').setValue(this.selectedFinancialYear.id)
-
+        this.employeeVacationForm=this.IntilizeOrderForm();
+      }))}
+      ))).subscribe()
 
   }
 
@@ -93,27 +91,26 @@ vacationTypes =[];
     return this.fb
     .group({
 
-      vacationId:[this.employeeVacation.vacationId],
+      vacationId:[this.employeeVacation.vacationId,Validators.required],
       orderNumber:[this.employeeVacation.orderNumber],
       details:[this.employeeVacation.details],
       quantity:[this.employeeVacation.quantity],
       creditOrDebit :[this.employeeVacation.creditOrDebit],
-      startAt:[this.employeeVacation.startAt ],
+      startAt:[this.employeeVacation.startAt,Validators.required ],
       endAt:[this.employeeVacation.endAt],
 
     });
   }
   startAtDateChange(ev ){
 
-    let startDate = moment(ev.value._d).hours(2).toISOString();
-    console.log(this.employeeVacationForm.value);
-console.log(startDate);
+  let startDate = moment(ev.value._d).hours(2).toISOString();
+
   this.employeeVacationForm.patchValue({startAt:startDate})
   }
 
   endAtDateChange(ev){
 
-    let endDate = moment(ev.value._d).hours(2).toISOString();
+  let endDate = moment(ev.value._d).hours(2).toISOString();
    this.employeeVacationForm.patchValue({endAt:endDate})
   }
   vacationFormSubmit(){
@@ -121,6 +118,6 @@ console.log(startDate);
     console.log(this.employeeVacationForm.value);
    this.employeeVacation= Object.assign(this.employeeVacation,this.employeeVacationForm.value)
 
-    this.employeeVacationService.addNewEmployeeVacationType(this.employeeVacation).subscribe(x => this.onNoClick());
+   this.employeeVacationService.addNewEmployeeVacationType(this.employeeVacation).subscribe(x => this.onNoClick());
   }
 }

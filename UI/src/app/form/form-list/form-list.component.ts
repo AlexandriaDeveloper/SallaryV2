@@ -31,7 +31,7 @@ export class FormListComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
- 
+
     this.formParam.isPagination=true;
 
     this.dataSource = new FormListDataSource(this.formService,this.formParam, this.paginator);
@@ -64,8 +64,10 @@ export class FormListComponent implements AfterViewInit {
   }
   openDialog(){
     const dialogRef = this.dialog.open(AddFormDialogComponent, {
-      width:'600px'
+      width:'600px',
+      disableClose:true
      // data: {name: this.name, animal: this.animal},
+
     });
 
     dialogRef.afterClosed().subscribe(result => {

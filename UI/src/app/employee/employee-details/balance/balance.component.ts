@@ -22,7 +22,7 @@ import * as moment from 'moment';
 export class BalanceComponent  implements OnInit, AfterViewInit{
   @Input('editable') editable=false;
   @Input('employee') employee
-
+  @Input('formEmployeeId') formEmployeeId
   empId ;
  employeeBasicSallary:IEmployeeBasicSallary;
  employeeOrderDeductions: IEmployeeTotalOrdersAndDeductions;
@@ -99,9 +99,14 @@ export class BalanceComponent  implements OnInit, AfterViewInit{
     });
   }
 
-  openPayDeductionDialog(orderId): void {
+  openPayDeductionDialog(ordedId): void {
     const dialogRef = this.dialog.open(PayDeductionDialogComponent, {
-      data: { orderId: orderId ,employeeId :this.employeeOrderDeductions.employeeId},
+      data: {
+
+        employeeId :this.employeeOrderDeductions.employeeId,
+        orderId: ordedId
+        // formEmployeeId:this.formEmployeeId
+      },
      minWidth:'400px',
      minHeight:'300px',
      maxHeight:'900px',

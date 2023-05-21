@@ -4,9 +4,9 @@ using Domain.Models;
 
 namespace Persistence.Data.Repository
 {
-    public class EmployeeVactaionTypeRepository : Repository<EmployeeVacationType>, IEmployeeVacationTypeRepository
+    public class FormEmployeeVacationTypeRepository : Repository<FormEmployeeVacation>, IFormEmployeeVacationTypeRepository
     {
-        public EmployeeVactaionTypeRepository(SallaryCQRSAppContext context, IAuthService authService) : base(context, authService)
+        public FormEmployeeVacationTypeRepository(SallaryCQRSAppContext context, IAuthService authService) : base(context, authService)
         {
         }
     }

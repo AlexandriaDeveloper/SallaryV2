@@ -33,7 +33,7 @@ namespace Domain.Employees.Queries.GetEmployeeById
             if (request.formId.HasValue)
             {
 
-                var employeeForm = await _uow.EmployeeFormRepository.GetByExpressionAsync(x => x.EmployeeId == request.Id && x.FormId == request.formId);
+                var employeeForm = await _uow.FormEmployeeRepository.GetByExpressionAsync(x => x.EmployeeId == request.Id && x.FormId == request.formId);
 
                 if (employeeForm == null)
                 {
@@ -42,8 +42,8 @@ namespace Domain.Employees.Queries.GetEmployeeById
                 }
 
 
-                empToReturn.Next = await _uow.EmployeeFormRepository.NextEmployeeInForm(employeeForm.EmployeeOrderNumber, request.formId.Value);
-                empToReturn.Previous = await _uow.EmployeeFormRepository.PreviousEmployeeInForm(employeeForm.EmployeeOrderNumber, request.formId.Value);
+                empToReturn.Next = await _uow.FormEmployeeRepository.NextEmployeeInForm(employeeForm.EmployeeOrderNumber, request.formId.Value);
+                empToReturn.Previous = await _uow.FormEmployeeRepository.PreviousEmployeeInForm(employeeForm.EmployeeOrderNumber, request.formId.Value);
             }
             else
             {

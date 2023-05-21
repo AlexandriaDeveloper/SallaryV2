@@ -7,8 +7,8 @@ using Domain.Shared;
 
 namespace Application.EmployeeVacationTypes.Queries.EmployeeVacationTypesQuery
 {
-    public record EmployeeVacationTypesQuery(EmployeeVacationTypesQueryParam param) : IQuery<IReadOnlyList<EmployeeVacationTypeDto>>;
-    public class EmployeeVacationTypesQueryHandler : IQueryHandler<EmployeeVacationTypesQuery, IReadOnlyList<EmployeeVacationTypeDto>>
+    public record EmployeeVacationTypesQuery(EmployeeVacationTypesQueryParam param) : IQuery<IReadOnlyList<FormEmployeeVacationTypeDto>>;
+    public class EmployeeVacationTypesQueryHandler : IQueryHandler<EmployeeVacationTypesQuery, IReadOnlyList<FormEmployeeVacationTypeDto>>
     {
         private readonly IUOW _uow;
         private readonly IMapper _mapper;
@@ -18,18 +18,18 @@ namespace Application.EmployeeVacationTypes.Queries.EmployeeVacationTypesQuery
             _uow = uow;
             _mapper = mapper;
         }
-        public async Task<Result<IReadOnlyList<EmployeeVacationTypeDto>>> Handle(EmployeeVacationTypesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IReadOnlyList<FormEmployeeVacationTypeDto>>> Handle(EmployeeVacationTypesQuery request, CancellationToken cancellationToken)
         {
 
             EmployeeVacationTypesQuerySpecification spec = new EmployeeVacationTypesQuerySpecification(request.param);
 
-            var empVacation = await _uow.EmployeeVacationTypeRepository.GetAllBySpecAsync(spec);
+            var empVacation = await _uow.FormEmployeeVacationTypeRepository.GetAllBySpecAsync(spec);
 
             if (empVacation == null)
             {
-                return Result<IReadOnlyList<EmployeeVacationTypeDto>>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
+                return Result<IReadOnlyList<FormEmployeeVacationTypeDto>>.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST);
             }
-            var empVacationToReturn = _mapper.Map<IReadOnlyList<EmployeeVacationTypeDto>>(empVacation);
+            var empVacationToReturn = _mapper.Map<IReadOnlyList<FormEmployeeVacationTypeDto>>(empVacation);
 
             return Result.Success(empVacationToReturn);
 
@@ -38,7 +38,7 @@ namespace Application.EmployeeVacationTypes.Queries.EmployeeVacationTypesQuery
     }
 
 
-    public class EmployeeVacationTypesQuerySpecification : Specification<EmployeeVacationType>
+    public class EmployeeVacationTypesQuerySpecification : Specification<FormEmployeeVacation>
     {
 
         public EmployeeVacationTypesQuerySpecification(EmployeeVacationTypesQueryParam param)
@@ -55,14 +55,14 @@ namespace Application.EmployeeVacationTypes.Queries.EmployeeVacationTypesQuery
             if (param.EmployeeId.HasValue)
             {
 
-                AddInclude(x => x.EmployeeOrder.Employee);
-                AddCriteries(x => x.EmployeeOrder.EmployeeId == (param.EmployeeId));
+                AddInclude(x => x.FormEmployee.Employee);
+                AddCriteries(x => x.FormEmployee.EmployeeId == (param.EmployeeId));
             }
             if (param.FormId.HasValue)
             {
-                AddInclude(x => x.EmployeeOrder.EmployeeOrderType);
-                AddInclude(x => x.EmployeeOrder.EmployeeOrderType.Form);
-                AddCriteries(x => x.EmployeeOrder.EmployeeOrderType.FormId == (param.FormId));
+                AddInclude(x => x.FormEmployee.Form);
+         
+                AddCriteries(x => x.FormEmployee.FormId == (param.FormId));
             }
             if (param.StartAt.HasValue)
             {

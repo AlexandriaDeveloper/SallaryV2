@@ -13,7 +13,7 @@ export class EmployeeOrderDeductionService extends HttpCustomClientService {
   }
 
   postEmployeeDeduction(model){
-    debugger
+
     return this.post(model,'payDeductionEmployee');
 
   }

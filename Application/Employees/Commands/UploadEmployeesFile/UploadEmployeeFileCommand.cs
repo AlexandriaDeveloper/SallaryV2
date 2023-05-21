@@ -10,7 +10,7 @@ using System.Data;
 
 namespace Application.Employees.Commands.UploadEmployeesFile;
 
-public record UploadEmployeeFileCommand(IFormFile file, int financialYearId) : ICommand;
+public record UploadEmployeeFileCommand(UploadEmployeesFileParam file) : ICommand;
 
 public class UploadEmployeeFileCommandHandler : ICommandHandler<UploadEmployeeFileCommand>
 {
@@ -28,7 +28,7 @@ public class UploadEmployeeFileCommandHandler : ICommandHandler<UploadEmployeeFi
     {
         if (request.file == null)
             return await Task.FromResult(Result.Failure(Constant.ResultMessages.ErrorMessages.ENTITY_NOT_EXIST));
-        var tempPath = await CopyFile(request.file);
+        var tempPath = await CopyFile(request.file.Form);
         NPOIService npoi = new NPOIService();
         DataTable dt = npoi.ReadFile(tempPath, "Sheet1");
 
@@ -44,7 +44,9 @@ public class UploadEmployeeFileCommandHandler : ICommandHandler<UploadEmployeeFi
                 employeeToDb.Section = employee.ItemArray[3].ToString();
                 employeeToDb.Name = employee.ItemArray[4].ToString();
                 employeeToDb.NationalId = employee.ItemArray[5].ToString();
-                employeeToDb.CollageName = "كلية الطب";
+                employeeToDb.CollageName = Constant.Model.CollagesName.TAB;
+                employeeToDb.QanonId = request.file.QanonId;
+                employeeToDb.EmployeeBankId = null;
 
                 employeeToDb.EmployeeGrades = new List<EmployeeGrade>();
                 employeeToDb.EmployeeGrades.Add(new EmployeeGrade()
@@ -54,22 +56,16 @@ public class UploadEmployeeFileCommandHandler : ICommandHandler<UploadEmployeeFi
                     CreatedDate = DateTime.Now,
                     StartFrom = DateTime.Now,
                 });
-                //employeeToDb.EmployeeBasicSallaries = new List<EmployeeBasicSallary>();
-                //employeeToDb.EmployeeBasicSallaries.Add(new EmployeeBasicSallary()
-                //{
-                //    FinancialYearId = request.financialYearId,
-                //    BasicSallary = Math.Round(decimal.Parse(employee.ItemArray[7].ToString()), 2),
-                //    Wazifi = Math.Round(decimal.Parse(employee.ItemArray[8].ToString()), 2),
-                //    Mokamel = Math.Round(decimal.Parse(employee.ItemArray[9].ToString()), 2),
-                //    Taawidi = Math.Round(decimal.Parse(employee.ItemArray[10].ToString()), 2),
-                //    CreatedBy = _authService.GetCurrentLoggedInUser(),
-                //    CreatedDate = DateTime.Now,
-                //});
-
                 await _uow.EmployeeRepository.AddItem(employeeToDb);
             }
         }
         var result = await _uow.SaveChangesAsync(cancellationToken);
+
+        if(result != Domain.Enums.SaveState.Saved)
+        {
+
+            return Result.Failure(result);
+        }
 
         return await Task.FromResult(Result.Success());
     }
@@ -89,6 +85,11 @@ public class UploadEmployeeFileCommandHandler : ICommandHandler<UploadEmployeeFi
         }
         return tempPath;
     }
+}
+
+public class UploadEmployeesFileParam {
+    public int QanonId { get; set; }
+    public IFormFile Form { get; set; }
 }
 
 

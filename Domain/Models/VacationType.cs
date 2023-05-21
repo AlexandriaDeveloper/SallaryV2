@@ -4,8 +4,6 @@ namespace Domain.Models
 {
     public class Vacation : Entity
     {
-
-
-        public ICollection<EmployeeVacationType> EmployeeVacationTypes { get; set; }
+        public ICollection<FormEmployeeVacation>? EmployeeVacationTypes { get; set; }
     }
 }

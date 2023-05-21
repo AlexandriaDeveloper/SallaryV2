@@ -1,12 +1,11 @@
 
-<div class="header">
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="header">
   <button mat-mini-fab color="primary" (click)="onNoClick()">
     <mat-icon>close</mat-icon>
   </button>
 <div class="title">تنفيذ أستقطاع</div>
-
 </div>
-<div>
+<div *ngIf="formEmployeeOrderExecutions">
 
   <mat-divider></mat-divider>
 <div class="order-container">
@@ -15,16 +14,29 @@
    <div class="order-data">
 
 
-    <mat-form-field  appearance="fill">
-      <mat-label  style="font-family: Cairo;"> المبلغ  </mat-label>
-      <input type="number"  matInput formControlName="amount" >
-    </mat-form-field>
+
     <mat-form-field  appearance="fill">
       <mat-label  style="font-family: Cairo;"> البيان  </mat-label>
       <textarea matInput formControlName="details"  ></textarea>
     </mat-form-field>
 
+<div formArrayName="formEmployeeOrderExecutions">
 
+  <ng-container *ngFor="let formEmployeeOrderExecution of getFormEmployeeOrderExections.controls; let findex=index">
+      <div [formGroupName]="findex">
+        <mat-form-field  appearance="fill">
+
+          <input [readonly]="true" matInput formControlName="budgetItemName" >
+        </mat-form-field>
+
+        <mat-form-field  appearance="fill">
+          <mat-label  style="font-family: Cairo;" > المبلغ  </mat-label>
+          <input type="number"  matInput formControlName="amount" >
+        </mat-form-field>
+
+      </div>
+  </ng-container>
+</div>
 
 
     <!-- <mat-form-field appearance="fill">
